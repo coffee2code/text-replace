@@ -66,4 +66,4 @@ Search engines will see those posts since they only ever see the posts after the
 
 == Screenshots ==
 
-1. A screenshot of the admin options page for the plugin, where you define the terms/acronyms/phrases and their related hover text
+1. A screenshot of the admin options page for the plugin.
