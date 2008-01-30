@@ -167,8 +167,8 @@ class TextReplace {
 		$action_url = $_SERVER[PHP_SELF] . '?page=' . basename(__FILE__);
 
 		echo <<<END
-		<div class='wrap'>\n
-			<h2>Text Replace Plugin Options</h2>\n
+		<div class='wrap'>
+			<h2>Text Replace Plugin Options</h2>
 			<p>Text Replace is a plugin that allows you to replace text with other text in posts, etc.  
 			Very handy to create shortcuts to commonly-typed and/or lengthy text/HTML, or for smilies.</p>
 						
