@@ -281,6 +281,7 @@ END;
 		$newchars = array("\(", "\)", "\[", "\]", "\?", "\.", "\,", "\|", "\\\$", "\*", "\+", "\^", "\{", "\}");
 		$options = $this->get_options();
 		$text_to_replace = $options['text_to_replace'];
+		$text = ' ' . $text . ' ';
 		if (!empty($text_to_replace)) {
 			foreach ($text_to_replace as $old_text => $new_text) {
 				$old_text = str_replace($oldchars, $newchars, $old_text);
@@ -291,7 +292,7 @@ END;
 				$text = preg_replace("|(?!<.*?)$old_text(?![^<>]*?>)|$preg_flags", $new_text, $text);
 			}
 		}
-		return $text;
+		return trim($text);
 	} //end text_replace()
 
 } // end TextReplace
