@@ -2,8 +2,9 @@
 /*
 Plugin Name: Text Replace
 Version: 2.0
+Plugin URI: http://coffee2code.com/wp-plugins/text-replace
 Author: Scott Reilly
-Author URI: http://www.coffee2code.com
+Author URI: http://coffee2code.com
 Description: Replace text with other text in posts, etc.  Very handy to create shortcuts to commonly-typed and/or lengthy text/HTML, or for smilies.
 
 This plugin can be utilized to make shortcuts for frequently typed text, but keep these things in mind:
@@ -37,20 +38,18 @@ use the updated replacement text.
 - SPECIAL NOTE FOR UPGRADERS: If you have used v1.0 or prior of this plugin, you will have to copy your $text_to_replace
 array contents into the plugin's new option's page field.
 
-Compatible with WordPress 2.2+, and 2.3+.
+Compatible with WordPress 2.2+, 2.3+, and 2.5.
 
 =>> Read the accompanying readme.txt file for more information.  Also, visit the plugin's homepage
 =>> for more information and the latest updates
 
 Installation:
 
-1. Download the file http://www.coffee2code.com/wp-plugins/text-replace.zip and unzip it into your 
+1. Download the file http://coffee2code.com/wp-plugins/text-replace.zip and unzip it into your 
 /wp-content/plugins/ directory.
--OR-
-Copy and paste the the code ( http://www.coffee2code.com/wp-plugins/text-replace.phps ) into a file called 
-text-replace.php, and put that file into your /wp-content/plugins/ directory.
 2. Activate the plugin through the 'Plugins' admin menu in WordPress
 3. Go to the new Options -> Text Replace admin options page.  Optionally customize the options.
+(For WordPress 2.5 this would be Settings -> Text Replace)
 4. Start using the shortcuts in posts.  (Also applies to shortcuts alread defined in older posts as well)
 
 */
@@ -199,7 +198,7 @@ class TextReplace {
 
 END;
 				wp_nonce_field($this->nonce_field);
-		echo '<fieldset class="option"><table width="100%" cellspacing="2" cellpadding="5" class="optiontable editform">';
+		echo '<table width="100%" cellspacing="2" cellpadding="5" class="optiontable editform form-table">';
 				foreach (array_keys($options) as $opt) {
 					$input = $this->config[$opt]['input'];
 					if ($input == 'none') continue;
@@ -223,10 +222,10 @@ END;
 					echo "<tr valign='top'>";
 					if ($this->config[$opt]['input'] == 'textarea') {
 						echo "<td colspan='2'>";
-						if ($label) echo "<strong>$label :</strong><br />";
+						if ($label) echo "<strong>$label</strong><br />";
 						echo "<textarea name='$opt' id='$opt' {$this->config[$opt]['input_attributes']}>" . $value . '</textarea>';
 					} else {
-						echo "<th width='50%' scope='row'>$label : </th><td>";
+						echo "<th scope='row'>$label</th><td>";
 						echo "<input name='$opt' type='$input' id='$opt' value='$value' $checked {$this->config[$opt]['input_attributes']} />";
 					}
 					if ($this->config[$opt]['help']) {
@@ -238,14 +237,42 @@ END;
 				}
 		echo <<<END
 			</table>
-			</fieldset>
 			<input type="hidden" name="submitted" value="1" />
-			<div class="submit"><input type="submit" name="Submit" value="Update Options &raquo;" /></div>
+			<div class="submit"><input type="submit" name="Submit" value="Save Changes" /></div>
 		</form>
 			</div>
 END;
+		$logo = get_option('siteurl') . '/wp-content/plugins/' . basename($_GET['page'], '.php') . '/c2c_minilogo.png';
 		echo <<<END
-		<div class='wrap' style="text-align:center; color:#888;">This plugin brought to you by <a href="http://coffee2code.com" title="coffee2code.com">Scott Reilly, aka coffee2code</a>.<br /><span style="font-size:x-small;"><a href="http://coffee2code.com/donate">Did you find this plugin useful?</a></span></div>
+		<style type="text/css">
+			#c2c {
+				text-align:center;
+				color:#888;
+				background-color:#ffffef;
+				padding:5px 0 0;
+				margin-top:12px;
+				border-style:solid;
+				border-color:#dadada;
+				border-width:1px 0;
+			}
+			#c2c div {
+				margin:0 auto;
+				padding:5px 40px 0 0;
+				width:45%;
+				min-height:40px;
+				background:url('$logo') no-repeat top right;
+			}
+			#c2c span {
+				display:block;
+				font-size:x-small;
+			}
+		</style>
+		<div id='c2c' class='wrap'>
+			<div>
+			This plugin brought to you by <a href="http://coffee2code.com" title="coffee2code.com">Scott Reilly, aka coffee2code</a>.
+			<span><a href="http://coffee2code.com/donate" title="Please consider a donation">Did you find this plugin useful?</a></span>
+			</div>
+		</div>
 END;
 	}
 

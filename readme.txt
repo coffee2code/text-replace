@@ -3,7 +3,7 @@ Contributors: coffee2code
 Donate link: http://coffee2code.com
 Tags: text, replace, shortcuts, post content
 Requires at least: 2.2
-Tested up to: 2.3.2
+Tested up to: 2.5
 Stable tag: trunk
 Version: 2.0
 
@@ -66,4 +66,4 @@ Search engines will see those posts since they only ever see the posts after the
 
 == Screenshots ==
 
-1. A screenshot of the admin options page for the plugin.
+1. A screenshot of the admin options page for the plugin, where you define the terms/acronyms/phrases and their related hover text
