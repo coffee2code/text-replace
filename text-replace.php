@@ -50,7 +50,7 @@ Installation:
 2. Activate the plugin through the 'Plugins' admin menu in WordPress
 3. Go to the new Options -> Text Replace admin options page.  Optionally customize the options.
 (For WordPress 2.5 this would be Settings -> Text Replace)
-4. Start using the shortcuts in posts.  (Also applies to shortcuts alread defined in older posts as well)
+4. Start using the shortcuts in posts.  (Also applies to shortcuts already defined in older posts as well)
 
 */
 
