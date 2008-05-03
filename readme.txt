@@ -37,7 +37,7 @@ Would have the effect of changing "His majesty" to "Hellos majesty".
 
 1. Unzip `text-replace.zip` inside the `/wp-content/plugins/` directory, or upload `text-replace.php` there
 1. Activate the plugin through the 'Plugins' admin menu in WordPress
-1. Go to the new `Options` -> `Text Replac`e (or for WP 2.5: `Settings` -> `Text Replace`) admin options page.  Optionally customize the options (notably to define the shortcuts and their replacements).
+1. Go to the new `Options` -> `Text Replace` (or for WP 2.5: `Settings` -> `Text Replace`) admin options page.  Optionally customize the options (notably to define the shortcuts and their replacements).
 1. Start using the shortcuts in posts.  (Also applies to shortcuts already defined in older posts as well)
 
 * SPECIAL NOTE FOR UPGRADERS: If you have used v1.0 or prior of this plugin, you will have to copy your `$text_to_replace` array contents into the plugin's option's page field.
