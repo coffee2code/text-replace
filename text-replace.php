@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Text Replace
-Version: 2.0
+Version: 2.5
 Plugin URI: http://coffee2code.com/wp-plugins/text-replace
 Author: Scott Reilly
 Author URI: http://coffee2code.com
@@ -38,7 +38,7 @@ use the updated replacement text.
 - SPECIAL NOTE FOR UPGRADERS: If you have used v1.0 or prior of this plugin, you will have to copy your $text_to_replace
 array contents into the plugin's new option's page field.
 
-Compatible with WordPress 2.2+, 2.3+, and 2.5.
+Compatible with WordPress 2.6+, 2.7+, 2.8+
 
 =>> Read the accompanying readme.txt file for more information.  Also, visit the plugin's homepage
 =>> for more information and the latest updates
@@ -48,14 +48,13 @@ Installation:
 1. Download the file http://coffee2code.com/wp-plugins/text-replace.zip and unzip it into your 
 /wp-content/plugins/ directory.
 2. Activate the plugin through the 'Plugins' admin menu in WordPress
-3. Go to the new Options -> Text Replace (or for WP 2.5: Settings -> Text Replace) admin options page.
-Optionally customize the options (notably to define the shortcuts and their replacements).
+3. Go to Settings -> Text Replace admin options page and customize the options (notably to define the shortcuts and their replacements).
 4. Start using the shortcuts in posts.  (Also applies to shortcuts already defined in older posts as well)
 
 */
 
 /*
-Copyright (c) 2004-2008 by Scott Reilly (aka coffee2code)
+Copyright (c) 2004-2009 by Scott Reilly (aka coffee2code)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation 
 files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, 
@@ -114,20 +113,37 @@ class TextReplace {
 	}
 
 	function admin_menu() {
-		if ( $this->show_admin )
-			add_options_page('Text Replace', 'Text Replace', 9, basename(__FILE__), array(&$this, 'options_page'));
+		static $plugin_basename;
+		if ( $this->show_admin ) {
+			global $wp_version;
+			if ( current_user_can('manage_options') ) {
+				$plugin_basename = plugin_basename(__FILE__); 
+				if ( version_compare( $wp_version, '2.6.999', '>' ) )
+					add_filter( 'plugin_action_links_' . $plugin_basename, array(&$this, 'plugin_action_links') );
+				add_options_page(__('Text Replace', 'text-replace'), __('Text Replace', 'text-replace'), 9, $plugin_basename, array(&$this, 'options_page'));
+			}
+		}
+	}
+
+	function plugin_action_links( $action_links ) {
+		static $plugin_basename;
+		if ( !$plugin_basename ) $plugin_basename = plugin_basename(__FILE__); 
+		$settings_link = '<a href="options.php?page='.$plugin_basename.'">' . __('Settings', 'text-replace') . '</a>';
+		array_unshift( $action_links, $settings_link );
+
+		return $action_links;
 	}
 
 	function get_options() {
-		if ( !empty($this->options)) return $this->options;
+		if ( !empty($this->options) ) return $this->options;
 		// Derive options from the config
 		$options = array();
-		foreach (array_keys($this->config) as $opt) {
+		foreach ( array_keys($this->config) as $opt ) {
 			$options[$opt] = $this->config[$opt]['default'];
 		}
         $existing_options = get_option($this->admin_options_name);
-        if (!empty($existing_options)) {
-            foreach ($existing_options as $key => $value)
+        if ( !empty($existing_options) ) {
+            foreach ( $existing_options as $key => $value )
                 $options[$key] = $value;
         }            
 		$this->options = $options;
@@ -135,6 +151,8 @@ class TextReplace {
 	}
 
 	function options_page() {
+		static $plugin_basename;
+		if ( !$plugin_basename ) $plugin_basename = plugin_basename(__FILE__); 
 		$options = $this->get_options();
 		// See if user has submitted form
 		if ( isset($_POST['submitted']) ) {
@@ -160,14 +178,16 @@ class TextReplace {
 			// Remember to put all the other options into the array or they'll get lost!
 			update_option($this->admin_options_name, $options);
 
-			echo "<div class='updated'><p>Plugin settings saved.</p></div>";
+			echo "<div id='message' class='updated fade'><p><strong>" . __('Settings saved', 'text-replace') . '</strong></p></div>';
 		}
 
-		$action_url = $_SERVER[PHP_SELF] . '?page=' . basename(__FILE__);
+		$action_url = $_SERVER[PHP_SELF] . '?page=' . $plugin_basename;
+		$logo = plugins_url() . '/' . basename($_GET['page'], '.php') . '/c2c_minilogo.png';
 
 		echo <<<END
 		<div class='wrap'>
-			<h2>Text Replace Plugin Options</h2>
+			<div class='icon32' style='width:44px;'><img src='$logo' alt='A plugin by coffee2code' /><br /></div>
+			<h2>Text Replace Settings</h2>
 			<p>Text Replace is a plugin that allows you to replace text with other text in posts, etc.  
 			Very handy to create shortcuts to commonly-typed and/or lengthy text/HTML, or for smilies.</p>
 						
@@ -210,23 +230,44 @@ END;
 					} else {
 						$checked = '';
 					};
-					if ($this->config[$opt]['datatype'] == 'array')
-						$value = implode(', ', $value);
-					elseif ($this->config[$opt]['datatype'] == 'hash') {
-						$new_value = '';
-						foreach ($value AS $shortcut => $replacement) {
-							$new_value .= "$shortcut => $replacement\n";
+					if ($this->config[$opt]['datatype'] == 'array') {
+						if (!is_array($value))
+							$value = '';
+						else {
+							if ($input == 'textarea' || $input == 'inline_textarea')
+								$value = implode("\n", $value);
+							else
+								$value = implode(', ', $value);
 						}
-						$value = $new_value;
+					} elseif ($this->config[$opt]['datatype'] == 'hash') {
+						if (!is_array($value))
+							$value = '';
+						else {
+							$new_value = '';
+							foreach ($value AS $shortcut => $replacement) {
+								$new_value .= "$shortcut => $replacement\n";
+							}
+							$value = $new_value;
+						}
 					}
 					echo "<tr valign='top'>";
-					if ($this->config[$opt]['input'] == 'textarea') {
+					if ($input == 'textarea') {
 						echo "<td colspan='2'>";
 						if ($label) echo "<strong>$label</strong><br />";
 						echo "<textarea name='$opt' id='$opt' {$this->config[$opt]['input_attributes']}>" . $value . '</textarea>';
 					} else {
 						echo "<th scope='row'>$label</th><td>";
-						echo "<input name='$opt' type='$input' id='$opt' value='$value' $checked {$this->config[$opt]['input_attributes']} />";
+						if ($input == "inline_textarea")
+							echo "<textarea name='$opt' id='$opt' {$this->config[$opt]['input_attributes']}>" . $value . '</textarea>';
+						elseif ($input == 'select') {
+							echo "<select name='$opt' id='$opt'>";
+							foreach ($this->config[$opt]['options'] as $sopt) {
+								$selected = $value == $sopt ? " selected='selected'" : '';
+								echo "<option value='$sopt'$selected>$sopt</option>";
+							}
+							echo "</select>";
+						} else
+							echo "<input name='$opt' type='$input' id='$opt' value='$value' $checked {$this->config[$opt]['input_attributes']} />";
 					}
 					if ($this->config[$opt]['help']) {
 						echo "<br /><span style='color:#777; font-size:x-small;'>";
@@ -235,14 +276,15 @@ END;
 					}
 					echo "</td></tr>";
 				}
+		$txt = __('Save Changes');
 		echo <<<END
-			</table>
+			</tbody></table>
 			<input type="hidden" name="submitted" value="1" />
-			<div class="submit"><input type="submit" name="Submit" value="Save Changes" /></div>
+			<div class="submit"><input type="submit" name="Submit" class="button-primary" value="{$txt}" /></div>
 		</form>
 			</div>
 END;
-		$logo = get_option('siteurl') . '/wp-content/plugins/' . basename($_GET['page'], '.php') . '/c2c_minilogo.png';
+
 		echo <<<END
 		<style type="text/css">
 			#c2c {
@@ -282,8 +324,8 @@ END;
 		$options = $this->get_options();
 		$text_to_replace = $options['text_to_replace'];
 		$text = ' ' . $text . ' ';
-		if (!empty($text_to_replace)) {
-			foreach ($text_to_replace as $old_text => $new_text) {
+		if ( !empty($text_to_replace) ) {
+			foreach ( $text_to_replace as $old_text => $new_text ) {
 				$old_text = str_replace($oldchars, $newchars, $old_text);
 				// Old method for string replacement.
 				//$text = preg_replace("|([\s\>]*)(".$old_text.")([\s\<\.,;:\\/\-]*)|imsU" , "$1".$new_text."$3", $text);
@@ -298,13 +340,11 @@ END;
 } // end TextReplace
 
 endif; // end if !class_exists()
+
 if ( class_exists('TextReplace') ) :
-	// Get the ball rolling
 	$text_replace = new TextReplace();
-	// Actions and filters
-	if (isset($text_replace)) {
+	if ( isset($text_replace) )
 		register_activation_hook( __FILE__, array(&$text_replace, 'install') );
-	}
 endif;
 
 ?>

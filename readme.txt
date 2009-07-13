@@ -1,22 +1,22 @@
 === Text Replace ===
 Contributors: coffee2code
-Donate link: http://coffee2code.com
-Tags: text, replace, shortcuts, post content
-Requires at least: 2.2
-Tested up to: 2.5
-Stable tag: trunk
-Version: 2.0
+Donate link: http://coffee2code.com/donate
+Tags: text, replace, shortcuts, post, post content, coffee2code
+Requires at least: 2.6
+Tested up to: 2.8.1
+Stable tag: 2.5
+Version: 2.5
 
-Replace text with other text in posts, etc.  Very handy to create shortcuts to commonly-typed and/or lengthy text/HTML, or for smilies.
+Replace text with other text in posts, pages, etc.  Very handy to create shortcuts to commonly-typed and/or lengthy text/HTML, or for smilies.
 
 == Description ==
 
-Replace text with other text in posts, etc.  Very handy to create shortcuts to commonly-typed and/or lengthy text/HTML, or for smilies.
+Replace text with other text in posts, pages, etc.  Very handy to create shortcuts to commonly-typed and/or lengthy text/HTML, or for smilies.
 
 This plugin can be utilized to make shortcuts for frequently typed text, but keep these things in mind:
 
 * Your best bet with defining shortcuts is to define something that would never otherwise appear in your text.  For instance, bookend the shortcut with colons:
-	`wp: => <a href='http://wordpress.org'>WordPress</a>`
+	`:wp: => <a href='http://wordpress.org'>WordPress</a>`
 	`:aol: => <a href='http://www.aol.com'>America Online, Inc.</a>`
 Otherwise, you risk proper but undesired replacements:
 	`Hi => Hello`
@@ -37,10 +37,7 @@ Would have the effect of changing "His majesty" to "Hellos majesty".
 
 1. Unzip `text-replace.zip` inside the `/wp-content/plugins/` directory, or upload `text-replace.php` there
 1. Activate the plugin through the 'Plugins' admin menu in WordPress
-1. Go to the new `Options` -> `Text Replace` (or for WP 2.5: `Settings` -> `Text Replace`) admin options page.  Optionally customize the options (notably to define the shortcuts and their replacements).
-1. Start using the shortcuts in posts.  (Also applies to shortcuts already defined in older posts as well)
-
-* SPECIAL NOTE FOR UPGRADERS: If you have used v1.0 or prior of this plugin, you will have to copy your `$text_to_replace` array contents into the plugin's option's page field.
+1. (optional) Go to the `Settings` -> `Text Replace` admin options page and customize the options (notably to define the shortcuts and their replacements).
 
 == Frequently Asked Questions ==
 
@@ -67,3 +64,44 @@ Search engines will see those posts since they only ever see the posts after the
 == Screenshots ==
 
 1. A screenshot of the admin options page for the plugin, where you define the terms/phrases/shortcuts and their related replacement text
+
+== Changelog ==
+
+= 2.5 =
+* Fixed path-related issue for options page
+* Added 'Settings' link for plugin on admin Plugins page
+* Changed permission check
+* More localization-related work
+* Minor code reformatting (spacing)
+* Removed hardcoded path
+* Updated copyright
+* Noted compatibility through 2.8+
+* Dropped compatibility with versions of WP older than 2.6
+
+= 2.0 =
+* Handled case where shortcut appears at the very beginning or ending of the text
+* Created its own class to encapsulate plugin functionality
+* Added an admin options page
+* Added option text_replace_comments (defaulted to false) to control whether text replacements should occur in comments
+* Tweaked description and installation instructions
+* Added compatibility note
+* Updated copyright date
+* Added readme.txt and screenshot
+* Tested compatibility with WP 2.3.3 and 2.5
+
+= 1.0 =
+* Moved the array $text_to_replace outside of the function and into global space
+* Renamed function from text_replace() to c2c_text_replace()
+* Added installation instruction and notes to plugin file
+* Verified that plugin works for WordPress v1.2+ and v1.5+
+
+= 0.92 =
+* Added optional argument $case_sensitive (defaulted to "false")
+* Changed from BSD-new to MIT license
+
+= 0.91 =
+* Removed the need to escape special characters used in the shortcut text. Now "?", "(", ")", "[", "]", etc can be used without problems. However, the backspace character "\" should be avoided.
+* Employed a new pattern for matching and replacing text. A huge advantage of this new matching pattern is that it won't match text in a tag (text appearing between "<" and ">").
+
+= 0.9 =
+* Initial release
