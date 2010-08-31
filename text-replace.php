@@ -1,64 +1,32 @@
 <?php
+/**
+ * @package Text_Replace
+ * @author Scott Reilly
+ * @version 3.0
+ */
 /*
 Plugin Name: Text Replace
-Version: 2.5
-Plugin URI: http://coffee2code.com/wp-plugins/text-replace
+Version: 3.0
+Plugin URI: http://coffee2code.com/wp-plugins/text-replace/
 Author: Scott Reilly
 Author URI: http://coffee2code.com
-Description: Replace text with other text in posts, etc.  Very handy to create shortcuts to commonly-typed and/or lengthy text/HTML, or for smilies.
+Text Domain: text-replace
+Description: Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
 
-This plugin can be utilized to make shortcuts for frequently typed text, but keep these things in mind:
+Compatible with WordPress 2.8+, 2.9+, 3.0+.
 
-- Your best bet with defining shortcuts is to define something that would never otherwise appear in your text.  For instance, 
-bookend the shortcut with colons:
-	:wp: => <a href='http://wordpress.org'>WordPress</a>
-	:aol: => <a href='http://www.aol.com'>America Online, Inc.</a>
-Otherwise, you risk proper but undesired replacements:
-	Hi => Hello
-Would have the effect of changing "His majesty" to "Hellos majesty".
-
-- List the more specific matches early, to avoid stomping on another of your shortcuts.  For example, if you have both 
-":p" and ":pout:" as shortcuts, put ":pout:" first, otherwise, the ":p" will match against all the ":pout:" in your text.
-
-- If you intend to use this plugin to handle smilies, you should probably disable WordPress's default smilie handler.
-
-- This plugin is set to filter the_content, the_excerpt, and optionally, get_comment_text and get_comment_excerpt.
-
-- SPECIAL CONSIDERATION: Be aware that the shortcut text that you use in your posts will be stored that way in 
-the database (naturally).  While calls to display the posts will see the filtered, text replaced version, 
-anything that operates directly on the database will not see the expanded replacement text.  So if you only
-ever referred to "America Online" as ":aol:" (where ":aol:" => "<a href='http://www.aol.com'>America Online</a>"),
-visitors to your site will see the linked, expanded text due to the text replace, but a database search would
-never turn up a match for "America Online".
-
-- However, a benefit of the replacement text not being saved to the database and instead evaluated when the data is being
-loaded into a web page is that if the replacement text is modified, all pages making use of the shortcut will henceforth 
-use the updated replacement text.
-
-- SPECIAL NOTE FOR UPGRADERS: If you have used v1.0 or prior of this plugin, you will have to copy your $text_to_replace
-array contents into the plugin's new option's page field.
-
-Compatible with WordPress 2.6+, 2.7+, 2.8+
-
-=>> Read the accompanying readme.txt file for more information.  Also, visit the plugin's homepage
-=>> for more information and the latest updates
-
-Installation:
-
-1. Download the file http://coffee2code.com/wp-plugins/text-replace.zip and unzip it into your 
-/wp-content/plugins/ directory.
-2. Activate the plugin through the 'Plugins' admin menu in WordPress
-3. Go to Settings -> Text Replace admin options page and customize the options (notably to define the shortcuts and their replacements).
-4. Start using the shortcuts in posts.  (Also applies to shortcuts already defined in older posts as well)
+=>> Read the accompanying readme.txt file for instructions and documentation.
+=>> Also, visit the plugin's homepage for additional information and updates.
+=>> Or visit: http://wordpress.org/extend/plugins/text-replace/
 
 */
 
 /*
-Copyright (c) 2004-2009 by Scott Reilly (aka coffee2code)
+Copyright (c) 2004-2010 by Scott Reilly (aka coffee2code)
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation 
-files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, 
-modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the 
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy,
+modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
 Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
@@ -69,282 +37,131 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRA
 IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-if ( !class_exists('TextReplace') ) :
 
-class TextReplace {
-	var $admin_options_name = 'c2c_text_replace';
-	var $nonce_field = 'update-text_replace';
-	var $show_admin = true;	// Change this to false if you don't want the plugin's admin page shown.
-	var $config = array();
-	var $options = array(); // Don't use this directly
+if ( !class_exists( 'c2c_TextReplace' ) ) :
 
-	function TextReplace() {
+require_once( 'c2c-plugin.php' );
+
+class c2c_TextReplace extends C2C_Plugin_012 {
+
+	/**
+	 * Handles installation tasks, such as ensuring plugin options are instantiated and saved to options table.
+	 *
+	 * @return void
+	 */
+	function c2c_TextReplace() {
+		$this->C2C_Plugin_012( '3.0', 'text-replace', 'c2c', __FILE__, array() );
+	}
+
+	/**
+	 * Override the plugin framework's register_filters() to actually actions against filters.
+	 *
+	 * @return void
+	 */
+	function register_filters() {
+		$filters = apply_filters( 'c2c_text_replace_filters', array( 'the_content', 'the_excerpt', 'widget_text' ) );
+		foreach ( (array) $filters as $filter )
+			add_filter( $filter, array( &$this, 'text_replace' ), 2 );
+
+		// Note that the priority must be set high enough to avoid <img> tags inserted by the text replace process from
+		// getting omitted as a result of the comment text sanitation process, if you use this plugin for smilies, for instance.
+		$options = $this->get_options();
+		if ( apply_filters( 'c2c_text_replace_comments', $options['text_replace_comments'] ) ) {
+			add_filter( 'get_comment_text', array( &$this, 'text_replace' ), 11 );
+			add_filter( 'get_comment_excerpt', array( &$this, 'text_replace' ), 11 );
+		}
+	}
+
+	/**
+	 * Initializes the plugin's configuration and localizable text variables.
+	 *
+	 * @return void
+	 */
+	function load_config() {
+		$this->name = __( 'Text Replace', $this->textdomain );
+		$this->menu_name = __( 'Text Replace', $this->textdomain );
+
 		$this->config = array(
-			// input can be 'checkbox', 'text', 'textarea', 'hidden', or 'none'
-			'text_to_replace' => array('input' => 'textarea', 'datatype' => 'hash', 'default' => array(
+			'text_to_replace' => array( 'input' => 'textarea', 'datatype' => 'hash', 'default' => array(
 					":wp:" => "<a href='http://wordpress.org'>WordPress</a>",
 					":codex:" => "<a href='http://codex.wordpress.org'>WordPress Codex</a>",
 					":coffee2code:" => "<a href='http://coffee2code.com' title='coffee2code'>coffee2code</a>"
-				), 'label' => '',
-				'help' => '',
-				'input_attributes' => 'style="width: 98%; font-family: \"Courier New\", Courier, mono;" rows="15" cols="40"'
+				), 'allow_html' => true, 'no_wrap' => true, 'input_attributes' => 'rows="15" cols="40"',
+				'label' => '', 'help' => ''
 			),
-			'text_replace_comments' => array('input' => 'checkbox', 'default' => false,
-					'label' => 'Enable text replacement in comments?',
-					'help' => '')
+			'text_replace_comments' => array( 'input' => 'checkbox', 'default' => false,
+					'label' => __( 'Enable text replacement in comments?', $this->textdomain ),
+					'help' => ''
+			),
+			'case_sensitive' => array( 'input' => 'checkbox', 'default' => false,
+					'label' => __( 'Case sensitive text replacement?', $this->textdomain ),
+					'help' => __( 'If checked, then a replacement for :wp: would also replace :WP:.', $this->textdomain )
+			)
 		);
+	}
 
-		add_action('admin_menu', array(&$this, 'admin_menu'));		
+	/**
+	 * Outputs the text above the setting form
+	 *
+	 * @return void (Text will be echoed.)
+	 */
+	function options_page_description() {
+		parent::options_page_description( __( 'Text Replace Settings', $this->textdomain ) );
 
-		add_filter('the_content', array(&$this, 'text_replace'), 2);
-		add_filter('the_excerpt', array(&$this, 'text_replace'), 2);
-		// Note that the priority must be set high enough to avoid <img> tags inserted by the text replace process from 
-		// getting omitted as a result of the comment text sanitation process, if you use this plugin for smilies, for instance.
+		echo '<p>' . __( 'Text Replace is a plugin that allows you to replace text with other text in posts, etc. Very handy to create shortcuts to commonly-typed and/or lengthy text/HTML, or for smilies.', $this->textdomain ) . '</p>';
+		echo '<div class="c2c-hr">&nbsp;</div>';
+		echo '<h3>' . __( 'Shortcuts and text replacements', $this->textdomain ) . '</h3>';
+		echo '<p>' . __( 'Define shortcuts and text replacement expansions here. The format should be like this:', $this->textdomain ) . '</p>';
+		echo "<blockquote><code>:wp: => &lt;a href='http://wordpress.org'>WordPress&lt;/a></code></blockquote>";
+		echo '<p>' . __( 'Where <code>:wp:</code> is the shortcut you intend to use in your posts and the <code>&lt;a href=\'http://wordpress.org\'>WordPress&lt;/a></code> would be what you want the shortcut to be replaced with when the post is shown on your site.', $this->textdomain ) . '</p>';
+		echo '<p>' . __( 'Other considerations:', $this->textdomain ) . '</p>';
+		echo '<ul class="c2c-plugin-list"><li>';
+		echo __( 'List the more specific matches early, to avoid stomping on another of your shortcuts.  For example, if you have both <code>:p</code> and <code>:pout:</code> as shortcuts, put <code>:pout:</code> first; otherwise, the <code>:p</code> will match against all the <code>:pout:</code> in your text.', $this->textdomain );
+		echo '</li><li>';
+		echo __( 'Be careful not to define text that could match partially when you don\'t want it to:<br />i.e.  <code>Me => Scott</code> would also inadvertently change "Men" to be "Scottn"', $this->textdomain );
+		echo '</li><li>';
+		echo __( 'If you intend to use this plugin to handle smilies, you should probably disable WordPress\'s default smilie handler.', $this->textdomain );
+		echo '</li><li>';
+		echo __( 'HTML is allowed.', $this->textdomain );
+		echo __( 'Only use quotes it they are actual part of the original or replacement strings.', $this->textdomain );
+		echo '</li><li><strong><em>';
+		echo __( 'Define only one shortcut per line.', $this->textdomain );
+		echo '</em></strong></li><li><strong><em>';
+		echo __( 'Shortcuts must not span multiple lines.', $this->textdomain );
+		echo '</em></strong></li></ul>';
+	}
+
+	/**
+	 * Perform text replacements
+	 *
+	 * @param string $text Text to be processed for text replacements
+	 * @return string Text with replacements already processed
+	 */
+	function text_replace( $text ) {
+		$oldchars = array( "(", ")", "[", "]", "?", ".", ",", "|", "\$", "*", "+", "^", "{", "}" );
+		$newchars = array( "\(", "\)", "\[", "\]", "\?", "\.", "\,", "\|", "\\\$", "\*", "\+", "\^", "\{", "\}" );
 		$options = $this->get_options();
-		if ( $options['text_replace_comments'] ) {
-			add_filter('get_comment_text', array(&$this, 'text_replace'), 11);
-			add_filter('get_comment_excerpt', array(&$this, 'text_replace'), 11);
-		}
-	}
-
-	function install() {
-		$this->options = $this->get_options();
-		update_option($this->admin_options_name, $this->options);
-	}
-
-	function admin_menu() {
-		static $plugin_basename;
-		if ( $this->show_admin ) {
-			global $wp_version;
-			if ( current_user_can('manage_options') ) {
-				$plugin_basename = plugin_basename(__FILE__); 
-				if ( version_compare( $wp_version, '2.6.999', '>' ) )
-					add_filter( 'plugin_action_links_' . $plugin_basename, array(&$this, 'plugin_action_links') );
-				add_options_page(__('Text Replace', 'text-replace'), __('Text Replace', 'text-replace'), 9, $plugin_basename, array(&$this, 'options_page'));
-			}
-		}
-	}
-
-	function plugin_action_links( $action_links ) {
-		static $plugin_basename;
-		if ( !$plugin_basename ) $plugin_basename = plugin_basename(__FILE__); 
-		$settings_link = '<a href="options.php?page='.$plugin_basename.'">' . __('Settings', 'text-replace') . '</a>';
-		array_unshift( $action_links, $settings_link );
-
-		return $action_links;
-	}
-
-	function get_options() {
-		if ( !empty($this->options) ) return $this->options;
-		// Derive options from the config
-		$options = array();
-		foreach ( array_keys($this->config) as $opt ) {
-			$options[$opt] = $this->config[$opt]['default'];
-		}
-        $existing_options = get_option($this->admin_options_name);
-        if ( !empty($existing_options) ) {
-            foreach ( $existing_options as $key => $value )
-                $options[$key] = $value;
-        }            
-		$this->options = $options;
-        return $options;
-	}
-
-	function options_page() {
-		static $plugin_basename;
-		if ( !$plugin_basename ) $plugin_basename = plugin_basename(__FILE__); 
-		$options = $this->get_options();
-		// See if user has submitted form
-		if ( isset($_POST['submitted']) ) {
-			check_admin_referer($this->nonce_field);
-
-			foreach (array_keys($options) AS $opt) {
-				$options[$opt] = $_POST[$opt];
-				if (($this->config[$opt]['input'] == 'checkbox') && !$options[$opt])
-					$options[$opt] = 0;
-				if ($this->config[$opt]['datatype'] == 'array')
-					$options[$opt] = explode(',', str_replace(array(', ', ' ', ','), ',', $options[$opt]));
-				elseif ($this->config[$opt]['datatype'] == 'hash') {
-					if ( !empty($options[$opt]) ) {
-						$new_values = array();
-						foreach (explode("\n", $options[$opt]) AS $line) {
-							list($shortcut, $text) = array_map('trim', explode("=>", $line, 2));
-							if (!empty($shortcut)) $new_values[str_replace('\\', '', $shortcut)] = str_replace('\\', '', $text);
-						}
-						$options[$opt] = $new_values;
-					}
-				}
-			}
-			// Remember to put all the other options into the array or they'll get lost!
-			update_option($this->admin_options_name, $options);
-
-			echo "<div id='message' class='updated fade'><p><strong>" . __('Settings saved', 'text-replace') . '</strong></p></div>';
-		}
-
-		$action_url = $_SERVER[PHP_SELF] . '?page=' . $plugin_basename;
-		$logo = plugins_url() . '/' . basename($_GET['page'], '.php') . '/c2c_minilogo.png';
-
-		echo <<<END
-		<div class='wrap'>
-			<div class='icon32' style='width:44px;'><img src='$logo' alt='A plugin by coffee2code' /><br /></div>
-			<h2>Text Replace Settings</h2>
-			<p>Text Replace is a plugin that allows you to replace text with other text in posts, etc.  
-			Very handy to create shortcuts to commonly-typed and/or lengthy text/HTML, or for smilies.</p>
-						
-			<form name="text_replace" action="$action_url" method="post">	
-
-			<h3>Shortcuts and text replacements</h3>
-
-			<p>Define shortcuts and text replacement expansions here.  The format should be like this:</p>
-
-			<blockquote><code>:wp: => &lt;a href='http://wordpress.org'>WordPress&lt;/a></code></blockquote>
-
-			<p>Where <code>:wp:</code> is the shortcut you intend to use in your posts, and the <code>&lt;a href='http://wordpress.org'>WordPress&lt;/a></code>
-			would be what you want the shortcut to be replaced with when the post is shown on your site.</p>
-			</p>
-
-			<p>Other considerations:</p>
-
-			<ul>
-			<li>List the more specific matches early, to avoid stomping on another of your shortcuts.  For example, if you 
-			have both <code>:p</code> and <code>:pout:</code> as shortcuts, put <code>:pout:</code> first; otherwise, the 
-			<code>:p</code> will match against all the <code>:pout:</code> in your text.</li>
-			<li>Be careful not to define text that could match partially when you don't want it to:<br />
-			i.e.  <code>Me => Scott</code> would also inadvertantly change "Men" to be "Scottn"</li>
-			<li>If you intend to use this plugin to handle smilies, you should probably disable WordPress's default smilie handler.</li>
-			<li><strong><em>Define only one shortcut per line.</em></strong></li>
-			<li><strong><em>Shortcuts must not span multiple lines (auto-wordwrapping in the textarea is fine).</em></strong></li>
-			</ul>
-
-END;
-				wp_nonce_field($this->nonce_field);
-		echo '<table width="100%" cellspacing="2" cellpadding="5" class="optiontable editform form-table">';
-				foreach (array_keys($options) as $opt) {
-					$input = $this->config[$opt]['input'];
-					if ($input == 'none') continue;
-					$label = $this->config[$opt]['label'];
-					$value = $options[$opt];
-					if ($input == 'checkbox') {
-						$checked = ($value == 1) ? 'checked=checked ' : '';
-						$value = 1;
-					} else {
-						$checked = '';
-					};
-					if ($this->config[$opt]['datatype'] == 'array') {
-						if (!is_array($value))
-							$value = '';
-						else {
-							if ($input == 'textarea' || $input == 'inline_textarea')
-								$value = implode("\n", $value);
-							else
-								$value = implode(', ', $value);
-						}
-					} elseif ($this->config[$opt]['datatype'] == 'hash') {
-						if (!is_array($value))
-							$value = '';
-						else {
-							$new_value = '';
-							foreach ($value AS $shortcut => $replacement) {
-								$new_value .= "$shortcut => $replacement\n";
-							}
-							$value = $new_value;
-						}
-					}
-					echo "<tr valign='top'>";
-					if ($input == 'textarea') {
-						echo "<td colspan='2'>";
-						if ($label) echo "<strong>$label</strong><br />";
-						echo "<textarea name='$opt' id='$opt' {$this->config[$opt]['input_attributes']}>" . $value . '</textarea>';
-					} else {
-						echo "<th scope='row'>$label</th><td>";
-						if ($input == "inline_textarea")
-							echo "<textarea name='$opt' id='$opt' {$this->config[$opt]['input_attributes']}>" . $value . '</textarea>';
-						elseif ($input == 'select') {
-							echo "<select name='$opt' id='$opt'>";
-							foreach ($this->config[$opt]['options'] as $sopt) {
-								$selected = $value == $sopt ? " selected='selected'" : '';
-								echo "<option value='$sopt'$selected>$sopt</option>";
-							}
-							echo "</select>";
-						} else
-							echo "<input name='$opt' type='$input' id='$opt' value='$value' $checked {$this->config[$opt]['input_attributes']} />";
-					}
-					if ($this->config[$opt]['help']) {
-						echo "<br /><span style='color:#777; font-size:x-small;'>";
-						echo $this->config[$opt]['help'];
-						echo "</span>";
-					}
-					echo "</td></tr>";
-				}
-		$txt = __('Save Changes');
-		echo <<<END
-			</tbody></table>
-			<input type="hidden" name="submitted" value="1" />
-			<div class="submit"><input type="submit" name="Submit" class="button-primary" value="{$txt}" /></div>
-		</form>
-			</div>
-END;
-
-		echo <<<END
-		<style type="text/css">
-			#c2c {
-				text-align:center;
-				color:#888;
-				background-color:#ffffef;
-				padding:5px 0 0;
-				margin-top:12px;
-				border-style:solid;
-				border-color:#dadada;
-				border-width:1px 0;
-			}
-			#c2c div {
-				margin:0 auto;
-				padding:5px 40px 0 0;
-				width:45%;
-				min-height:40px;
-				background:url('$logo') no-repeat top right;
-			}
-			#c2c span {
-				display:block;
-				font-size:x-small;
-			}
-		</style>
-		<div id='c2c' class='wrap'>
-			<div>
-			This plugin brought to you by <a href="http://coffee2code.com" title="coffee2code.com">Scott Reilly, aka coffee2code</a>.
-			<span><a href="http://coffee2code.com/donate" title="Please consider a donation">Did you find this plugin useful?</a></span>
-			</div>
-		</div>
-END;
-	}
-
-	function text_replace( $text, $case_sensitive=false ) {
-		$oldchars = array("(", ")", "[", "]", "?", ".", ",", "|", "\$", "*", "+", "^", "{", "}");
-		$newchars = array("\(", "\)", "\[", "\]", "\?", "\.", "\,", "\|", "\\\$", "\*", "\+", "\^", "\{", "\}");
-		$options = $this->get_options();
-		$text_to_replace = $options['text_to_replace'];
+		$text_to_replace = apply_filters( 'c2c_text_replace', $options['text_to_replace'] );
+		$case_sensitive = apply_filters( 'c2c_text_replace_case_sensitive', $options['case_sensitive'] );
 		$text = ' ' . $text . ' ';
-		if ( !empty($text_to_replace) ) {
+		if ( !empty( $text_to_replace ) ) {
 			foreach ( $text_to_replace as $old_text => $new_text ) {
-				$old_text = str_replace($oldchars, $newchars, $old_text);
-				// Old method for string replacement.
-				//$text = preg_replace("|([\s\>]*)(".$old_text.")([\s\<\.,;:\\/\-]*)|imsU" , "$1".$new_text."$3", $text);
-				// New method.  WILL match string within string, but WON'T match within tags
-				$preg_flags = ($case_sensitive) ? 's' : 'si';
-				$text = preg_replace("|(?!<.*?)$old_text(?![^<>]*?>)|$preg_flags", $new_text, $text);
+				if ( strpos( $old_text, '<' ) !== false || strpos( $old_text, '>' ) !== false ) {
+					$text = str_replace( $old_text, $new_text, $text );
+				} else {
+					$old_text = str_replace( $oldchars, $newchars, $old_text );
+					$preg_flags = ($case_sensitive) ? 's' : 'si';
+					$text = preg_replace( "|(?!<.*?)$old_text(?![^<>]*?>)|$preg_flags", $new_text, $text );
+				}
 			}
 		}
-		return trim($text);
+		return trim( $text );
 	} //end text_replace()
 
-} // end TextReplace
+} // end c2c_TextReplace
+
+$GLOBALS['c2c_text_replace'] = new c2c_TextReplace();
 
 endif; // end if !class_exists()
-
-if ( class_exists('TextReplace') ) :
-	$text_replace = new TextReplace();
-	if ( isset($text_replace) )
-		register_activation_hook( __FILE__, array(&$text_replace, 'install') );
-endif;
 
 ?>
