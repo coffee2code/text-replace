@@ -29,7 +29,7 @@ Would have the effect of changing "His majesty" to "Hellos majesty".
 
 * If you intend to use this plugin to handle smilies, you should probably disable WordPress's default smilie handler.
 
-* This plugin is set to filter the_content, the_excerpt, widget_text, and optionally, get_comment_text and get_comment_excerpt.  the filter 'text_replace_filters' can be used to add or modify the list of filters affected.
+* This plugin is set to filter the_content, the_excerpt, widget_text, and optionally, get_comment_text and get_comment_excerpt.  the filter 'c2c_text_replace_filters' can be used to add or modify the list of filters affected.
 
 * **SPECIAL CONSIDERATION:** Be aware that the shortcut text that you use in your posts will be stored that way in the database (naturally).  While calls to display the posts will see the filtered, text replaced version, anything that operates directly on the database will not see the expanded replacement text.  So if you only ever referred to "America Online" as ":aol:" (where ":aol:" => "<a href='http://www.aol.com'>America Online</a>"), visitors to your site will see the linked, expanded text due to the text replace, but a database search would never turn up a match for "America Online".
 
