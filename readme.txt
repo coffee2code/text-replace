@@ -3,9 +3,9 @@ Contributors: coffee2code
 Donate link: http://coffee2code.com/donate
 Tags: text, replace, shortcut, shortcuts, post, post content, coffee2code
 Requires at least: 2.8
-Tested up to: 3.0.1
-Stable tag: 3.0
-Version: 3.0
+Tested up to: 3.1
+Stable tag: 3.0.2
+Version: 3.0.2
 
 Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
 
@@ -34,6 +34,8 @@ Would have the effect of changing "His majesty" to "Hellos majesty".
 * **SPECIAL CONSIDERATION:** Be aware that the shortcut text that you use in your posts will be stored that way in the database (naturally).  While calls to display the posts will see the filtered, text replaced version, anything that operates directly on the database will not see the expanded replacement text.  So if you only ever referred to "America Online" as ":aol:" (where ":aol:" => "<a href='http://www.aol.com'>America Online</a>"), visitors to your site will see the linked, expanded text due to the text replace, but a database search would never turn up a match for "America Online".
 
 * However, a benefit of the replacement text not being saved to the database and instead evaluated when the data is being loaded into a web page is that if the replacement text is modified, all pages making use of the shortcut will henceforth use the updated replacement text.
+
+Links: [Plugin Homepage]:(http://coffee2code.com/wp-plugins/text-replace/) | [Author Homepage]:(http://coffee2code.com)
 
 
 == Installation ==
@@ -69,7 +71,7 @@ function more_text_replacements( $filters ) {
 
 = Is the plugin case sensitive? =
 
-By default, yes.  There is a setting you can change to make it case insensitive.
+By default, yes.  There is a setting you can change to make it case insensitive.  Or you can use the 'c2c_text_replace_case_sensitive' filter (see Filters section).
 
 = I use :wp: all the time as a shortcut for WordPress, but when I search posts for the term "WordPress", I don't see posts where I used the shortcut; why not? =
 
@@ -153,6 +155,17 @@ add_filter( 'c2c_text_replace_case_sensitive', '__return_false' );`
 
 == Changelog ==
 
+= 3.0.2 =
+* Update plugin framework to version 021
+* Delete plugin options upon uninstallation
+* Explicitly declare all class functions public static
+* Note compatibility through WP 3.1+
+* Update copyright date (2011)
+
+= 3.0.1 =
+* Update plugin framework to version 018
+* Fix so that textarea displays vertical scrollbar when lines exceed visible textarea space
+
 = 3.0 =
 * Re-implementation by extending C2C_Plugin_012, which among other things adds support for:
     * Reset of options to default values
@@ -227,6 +240,9 @@ add_filter( 'c2c_text_replace_case_sensitive', '__return_false' );`
 
 
 == Upgrade Notice ==
+
+= 3.0.2 =
+Trivial update: updated plugin framework to v021; noted compatibility with WP 3.1+ and updated copyright date.
 
 = 3.0 =
 Significant and recommended update. Highlights: re-implementation; added more settings and hooks for customization; allow replacing HTML; allow case insensitivity; disable autowrap in textarea; misc improvements; verified WP 3.0 compatibility; dropped compatibility with WP older than 2.8.

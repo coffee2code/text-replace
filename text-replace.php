@@ -2,18 +2,18 @@
 /**
  * @package Text_Replace
  * @author Scott Reilly
- * @version 3.0
+ * @version 3.0.3
  */
 /*
 Plugin Name: Text Replace
-Version: 3.0
+Version: 3.0.3
 Plugin URI: http://coffee2code.com/wp-plugins/text-replace/
 Author: Scott Reilly
 Author URI: http://coffee2code.com
 Text Domain: text-replace
 Description: Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
 
-Compatible with WordPress 2.8+, 2.9+, 3.0+.
+Compatible with WordPress 2.8+, 2.9+, 3.0+, 3.1+.
 
 =>> Read the accompanying readme.txt file for instructions and documentation.
 =>> Also, visit the plugin's homepage for additional information and updates.
@@ -22,7 +22,7 @@ Compatible with WordPress 2.8+, 2.9+, 3.0+.
 */
 
 /*
-Copyright (c) 2004-2010 by Scott Reilly (aka coffee2code)
+Copyright (c) 2004-2011 by Scott Reilly (aka coffee2code)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
 files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy,
@@ -42,15 +42,27 @@ if ( !class_exists( 'c2c_TextReplace' ) ) :
 
 require_once( 'c2c-plugin.php' );
 
-class c2c_TextReplace extends C2C_Plugin_012 {
+class c2c_TextReplace extends C2C_Plugin_021 {
 
 	/**
 	 * Handles installation tasks, such as ensuring plugin options are instantiated and saved to options table.
 	 *
 	 * @return void
 	 */
-	function c2c_TextReplace() {
-		$this->C2C_Plugin_012( '3.0', 'text-replace', 'c2c', __FILE__, array() );
+	public function c2c_TextReplace() {
+		$this->C2C_Plugin_021( '3.0.3', 'text-replace', 'c2c', __FILE__, array() );
+		register_uninstall_hook( __FILE__, array( __CLASS__, 'uninstall' ) );
+	}
+
+	/**
+	 * Handles uninstallation tasks, such as deleting plugin options.
+	 *
+	 * This can be overridden.
+	 *
+	 * @return void
+	 */
+	public static function uninstall() {
+		delete_option( 'c2c_text_replace' );
 	}
 
 	/**
@@ -58,7 +70,7 @@ class c2c_TextReplace extends C2C_Plugin_012 {
 	 *
 	 * @return void
 	 */
-	function register_filters() {
+	public function register_filters() {
 		$filters = apply_filters( 'c2c_text_replace_filters', array( 'the_content', 'the_excerpt', 'widget_text' ) );
 		foreach ( (array) $filters as $filter )
 			add_filter( $filter, array( &$this, 'text_replace' ), 2 );
@@ -77,7 +89,7 @@ class c2c_TextReplace extends C2C_Plugin_012 {
 	 *
 	 * @return void
 	 */
-	function load_config() {
+	public function load_config() {
 		$this->name = __( 'Text Replace', $this->textdomain );
 		$this->menu_name = __( 'Text Replace', $this->textdomain );
 
@@ -105,7 +117,7 @@ class c2c_TextReplace extends C2C_Plugin_012 {
 	 *
 	 * @return void (Text will be echoed.)
 	 */
-	function options_page_description() {
+	public function options_page_description() {
 		parent::options_page_description( __( 'Text Replace Settings', $this->textdomain ) );
 
 		echo '<p>' . __( 'Text Replace is a plugin that allows you to replace text with other text in posts, etc. Very handy to create shortcuts to commonly-typed and/or lengthy text/HTML, or for smilies.', $this->textdomain ) . '</p>';
@@ -137,12 +149,13 @@ class c2c_TextReplace extends C2C_Plugin_012 {
 	 * @param string $text Text to be processed for text replacements
 	 * @return string Text with replacements already processed
 	 */
-	function text_replace( $text ) {
+	public function text_replace( $text ) {
 		$oldchars = array( "(", ")", "[", "]", "?", ".", ",", "|", "\$", "*", "+", "^", "{", "}" );
 		$newchars = array( "\(", "\)", "\[", "\]", "\?", "\.", "\,", "\|", "\\\$", "\*", "\+", "\^", "\{", "\}" );
 		$options = $this->get_options();
 		$text_to_replace = apply_filters( 'c2c_text_replace', $options['text_to_replace'] );
 		$case_sensitive = apply_filters( 'c2c_text_replace_case_sensitive', $options['case_sensitive'] );
+		$preg_flags = ($case_sensitive) ? 's' : 'si';
 		$text = ' ' . $text . ' ';
 		if ( !empty( $text_to_replace ) ) {
 			foreach ( $text_to_replace as $old_text => $new_text ) {
@@ -150,7 +163,6 @@ class c2c_TextReplace extends C2C_Plugin_012 {
 					$text = str_replace( $old_text, $new_text, $text );
 				} else {
 					$old_text = str_replace( $oldchars, $newchars, $old_text );
-					$preg_flags = ($case_sensitive) ? 's' : 'si';
 					$text = preg_replace( "|(?!<.*?)$old_text(?![^<>]*?>)|$preg_flags", $new_text, $text );
 				}
 			}
