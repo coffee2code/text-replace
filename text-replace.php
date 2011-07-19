@@ -2,22 +2,26 @@
 /**
  * @package Text_Replace
  * @author Scott Reilly
- * @version 3.0.3
+ * @version 3.1
  */
 /*
 Plugin Name: Text Replace
-Version: 3.0.3
+Version: 3.1
 Plugin URI: http://coffee2code.com/wp-plugins/text-replace/
 Author: Scott Reilly
 Author URI: http://coffee2code.com
 Text Domain: text-replace
 Description: Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
 
-Compatible with WordPress 2.8+, 2.9+, 3.0+, 3.1+.
+Compatible with WordPress 3.0+, 3.1+, 3.2+.
 
 =>> Read the accompanying readme.txt file for instructions and documentation.
 =>> Also, visit the plugin's homepage for additional information and updates.
 =>> Or visit: http://wordpress.org/extend/plugins/text-replace/
+
+TODO:
+	* Update screenshot for WP 3.2
+	* Facilitate multi-line replacement strings
 
 */
 
@@ -38,19 +42,41 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 
-if ( !class_exists( 'c2c_TextReplace' ) ) :
+if ( ! class_exists( 'c2c_TextReplace' ) ) :
 
 require_once( 'c2c-plugin.php' );
 
-class c2c_TextReplace extends C2C_Plugin_021 {
+class c2c_TextReplace extends C2C_Plugin_023 {
+
+	public static $instance;
 
 	/**
-	 * Handles installation tasks, such as ensuring plugin options are instantiated and saved to options table.
+	 * Constructor
 	 *
 	 * @return void
 	 */
+	public function __construct() {
+		$this->c2c_TextReplace();
+	}
+
 	public function c2c_TextReplace() {
-		$this->C2C_Plugin_021( '3.0.3', 'text-replace', 'c2c', __FILE__, array() );
+		// Be a singleton
+		if ( ! is_null( self::$instance ) )
+			return;
+
+		$this->C2C_Plugin_023( '3.1', 'text-replace', 'c2c', __FILE__, array() );
+		register_activation_hook( __FILE__, array( __CLASS__, 'activation' ) );
+		self::$instance = $this;
+	}
+
+	/**
+	 * Handles activation tasks, such as registering the uninstall hook.
+	 *
+	 * @since 3.1
+	 *
+	 * @return void
+	 */
+	public function activation() {
 		register_uninstall_hook( __FILE__, array( __CLASS__, 'uninstall' ) );
 	}
 
@@ -90,7 +116,7 @@ class c2c_TextReplace extends C2C_Plugin_021 {
 	 * @return void
 	 */
 	public function load_config() {
-		$this->name = __( 'Text Replace', $this->textdomain );
+		$this->name      = __( 'Text Replace', $this->textdomain );
 		$this->menu_name = __( 'Text Replace', $this->textdomain );
 
 		$this->config = array(
@@ -157,7 +183,7 @@ class c2c_TextReplace extends C2C_Plugin_021 {
 		$case_sensitive = apply_filters( 'c2c_text_replace_case_sensitive', $options['case_sensitive'] );
 		$preg_flags = ($case_sensitive) ? 's' : 'si';
 		$text = ' ' . $text . ' ';
-		if ( !empty( $text_to_replace ) ) {
+		if ( ! empty( $text_to_replace ) ) {
 			foreach ( $text_to_replace as $old_text => $new_text ) {
 				if ( strpos( $old_text, '<' ) !== false || strpos( $old_text, '>' ) !== false ) {
 					$text = str_replace( $old_text, $new_text, $text );
@@ -172,6 +198,8 @@ class c2c_TextReplace extends C2C_Plugin_021 {
 
 } // end c2c_TextReplace
 
+// NOTICE: The 'c2c_text_replace' global is deprecated and will be removed in the plugin's version 3.2.
+// Instead, use: c2c_TextReplace::$instance
 $GLOBALS['c2c_text_replace'] = new c2c_TextReplace();
 
 endif; // end if !class_exists()

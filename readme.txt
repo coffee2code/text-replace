@@ -2,10 +2,10 @@
 Contributors: coffee2code
 Donate link: http://coffee2code.com/donate
 Tags: text, replace, shortcut, shortcuts, post, post content, coffee2code
-Requires at least: 2.8
-Tested up to: 3.1
-Stable tag: 3.0.2
-Version: 3.0.2
+Requires at least: 3.0
+Tested up to: 3.2
+Stable tag: 3.1
+Version: 3.1
 
 Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
 
@@ -35,7 +35,7 @@ Would have the effect of changing "His majesty" to "Hellos majesty".
 
 * However, a benefit of the replacement text not being saved to the database and instead evaluated when the data is being loaded into a web page is that if the replacement text is modified, all pages making use of the shortcut will henceforth use the updated replacement text.
 
-Links: [Plugin Homepage]:(http://coffee2code.com/wp-plugins/text-replace/) | [Author Homepage]:(http://coffee2code.com)
+Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/text-replace/) | [Author Homepage](http://coffee2code.com)
 
 
 == Installation ==
@@ -155,6 +155,17 @@ add_filter( 'c2c_text_replace_case_sensitive', '__return_false' );`
 
 == Changelog ==
 
+= 3.1 =
+* Fix to properly register activation and uninstall hooks
+* Update plugin framework to version v023
+* Save a static version of itself in class variable $instance
+* Deprecate use of global variable $c2c_text_replace to store instance
+* Add __construct() and activation()
+* Note compatibility through WP 3.2+
+* Drop compatibility with version of WP older than 3.0
+* Minor code formatting changes (spacing)
+* Fix plugin homepage and author links in description in readme.txt
+
 = 3.0.2 =
 * Update plugin framework to version 021
 * Delete plugin options upon uninstallation
@@ -240,6 +251,9 @@ add_filter( 'c2c_text_replace_case_sensitive', '__return_false' );`
 
 
 == Upgrade Notice ==
+
+= 3.1 =
+Recommended update. Highlights: updated compatibility through WP 3.2; dropped compatibility with version of WP older than 3.0; updated plugin framework, bugfix; and more.
 
 = 3.0.2 =
 Trivial update: updated plugin framework to v021; noted compatibility with WP 3.1+ and updated copyright date.
