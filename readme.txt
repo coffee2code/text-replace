@@ -4,8 +4,8 @@ Donate link: http://coffee2code.com/donate
 Tags: text, replace, shortcut, shortcuts, post, post content, coffee2code
 Requires at least: 3.0
 Tested up to: 3.2
-Stable tag: 3.1
-Version: 3.1
+Stable tag: 3.1.1
+Version: 3.1.1
 
 Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
 
@@ -155,6 +155,13 @@ add_filter( 'c2c_text_replace_case_sensitive', '__return_false' );`
 
 == Changelog ==
 
+= 3.1.1 =
+* Fix cross-browser (namely IE) handling of non-wrapping textarea text (flat out can't use CSS for it)
+* Update plugin framework to version 028
+* Change parent constructor invocation
+* Create 'lang' subdirectory and move .pot file into it
+* Regenerate .pot
+
 = 3.1 =
 * Fix to properly register activation and uninstall hooks
 * Update plugin framework to version v023
@@ -251,6 +258,9 @@ add_filter( 'c2c_text_replace_case_sensitive', '__return_false' );`
 
 
 == Upgrade Notice ==
+
+= 3.1.1 =
+Bugfix release: fixed bug with cross-browser (mainly, IE) handling of non-wrapping textarea text; updated plugin framework; regenerated .pot file and put it into 'lang' subdirectory.
 
 = 3.1 =
 Recommended update. Highlights: updated compatibility through WP 3.2; dropped compatibility with version of WP older than 3.0; updated plugin framework, bugfix; and more.

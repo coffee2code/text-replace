@@ -2,11 +2,11 @@
 /**
  * @package Text_Replace
  * @author Scott Reilly
- * @version 3.1
+ * @version 3.1.1
  */
 /*
 Plugin Name: Text Replace
-Version: 3.1
+Version: 3.1.1
 Plugin URI: http://coffee2code.com/wp-plugins/text-replace/
 Author: Scott Reilly
 Author URI: http://coffee2code.com
@@ -22,6 +22,7 @@ Compatible with WordPress 3.0+, 3.1+, 3.2+.
 TODO:
 	* Update screenshot for WP 3.2
 	* Facilitate multi-line replacement strings
+	* Shortcode and template tag to display listing of all supported text hovers (filterable)
 
 */
 
@@ -46,7 +47,7 @@ if ( ! class_exists( 'c2c_TextReplace' ) ) :
 
 require_once( 'c2c-plugin.php' );
 
-class c2c_TextReplace extends C2C_Plugin_023 {
+class c2c_TextReplace extends C2C_Plugin_028 {
 
 	public static $instance;
 
@@ -64,7 +65,7 @@ class c2c_TextReplace extends C2C_Plugin_023 {
 		if ( ! is_null( self::$instance ) )
 			return;
 
-		$this->C2C_Plugin_023( '3.1', 'text-replace', 'c2c', __FILE__, array() );
+		parent::__construct( '3.1.1', 'text-replace', 'c2c', __FILE__, array() );
 		register_activation_hook( __FILE__, array( __CLASS__, 'activation' ) );
 		self::$instance = $this;
 	}
