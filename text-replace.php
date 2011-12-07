@@ -2,32 +2,32 @@
 /**
  * @package Text_Replace
  * @author Scott Reilly
- * @version 3.1.1
+ * @version 3.2
  */
 /*
 Plugin Name: Text Replace
-Version: 3.1.1
+Version: 3.2
 Plugin URI: http://coffee2code.com/wp-plugins/text-replace/
 Author: Scott Reilly
 Author URI: http://coffee2code.com
 Text Domain: text-replace
+Domain Path: /lang/
 Description: Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
 
-Compatible with WordPress 3.0+, 3.1+, 3.2+.
+Compatible with WordPress 3.1+, 3.2+, 3.3+.
 
 =>> Read the accompanying readme.txt file for instructions and documentation.
 =>> Also, visit the plugin's homepage for additional information and updates.
 =>> Or visit: http://wordpress.org/extend/plugins/text-replace/
 
 TODO:
-	* Update screenshot for WP 3.2
+	* Update screenshot for WP 3.3
 	* Facilitate multi-line replacement strings
 	* Shortcode and template tag to display listing of all supported text hovers (filterable)
-
 */
 
 /*
-Copyright (c) 2004-2011 by Scott Reilly (aka coffee2code)
+Copyright (c) 2004-2012 by Scott Reilly (aka coffee2code)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
 files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy,
@@ -47,7 +47,7 @@ if ( ! class_exists( 'c2c_TextReplace' ) ) :
 
 require_once( 'c2c-plugin.php' );
 
-class c2c_TextReplace extends C2C_Plugin_028 {
+class c2c_TextReplace extends C2C_Plugin_030 {
 
 	public static $instance;
 
@@ -65,7 +65,7 @@ class c2c_TextReplace extends C2C_Plugin_028 {
 		if ( ! is_null( self::$instance ) )
 			return;
 
-		parent::__construct( '3.1.1', 'text-replace', 'c2c', __FILE__, array() );
+		parent::__construct( '3.2', 'text-replace', 'c2c', __FILE__, array() );
 		register_activation_hook( __FILE__, array( __CLASS__, 'activation' ) );
 		self::$instance = $this;
 	}
@@ -199,9 +199,8 @@ class c2c_TextReplace extends C2C_Plugin_028 {
 
 } // end c2c_TextReplace
 
-// NOTICE: The 'c2c_text_replace' global is deprecated and will be removed in the plugin's version 3.2.
-// Instead, use: c2c_TextReplace::$instance
-$GLOBALS['c2c_text_replace'] = new c2c_TextReplace();
+// To access plugin object instance use: c2c_TextReplace::$instance
+new c2c_TextReplace();
 
 endif; // end if !class_exists()
 

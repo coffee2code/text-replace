@@ -2,10 +2,10 @@
 Contributors: coffee2code
 Donate link: http://coffee2code.com/donate
 Tags: text, replace, shortcut, shortcuts, post, post content, coffee2code
-Requires at least: 3.0
-Tested up to: 3.2
-Stable tag: 3.1.1
-Version: 3.1.1
+Requires at least: 3.1
+Tested up to: 3.3
+Stable tag: 3.2
+Version: 3.2
 
 Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
 
@@ -35,11 +35,12 @@ Would have the effect of changing "His majesty" to "Hellos majesty".
 
 * However, a benefit of the replacement text not being saved to the database and instead evaluated when the data is being loaded into a web page is that if the replacement text is modified, all pages making use of the shortcut will henceforth use the updated replacement text.
 
-Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/text-replace/) | [Author Homepage](http://coffee2code.com)
+Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/text-replace/) | [Plugin Directory Page](http://wordpress.org/extend/plugins/text-replace/) | [Author Homepage](http://coffee2code.com)
 
 
 == Installation ==
 
+1. Whether installing or updating, whether this plugin or any other, it is always advisable to back-up your data before starting
 1. Unzip `text-replace.zip` inside the `/wp-content/plugins/` directory (or install via the built-in WordPress plugin installer)
 1. Activate the plugin through the 'Plugins' admin menu in WordPress
 1. (optional) Go to the `Settings` -> `Text Replace` admin options page and customize the options (notably to define the shortcuts and their replacements).
@@ -155,6 +156,17 @@ add_filter( 'c2c_text_replace_case_sensitive', '__return_false' );`
 
 == Changelog ==
 
+= 3.2 =
+* Fix bug with settings form not appearing in MS
+* Update plugin framework to 030
+* Remove support for 'c2c_text_replace' global
+* Note compatibility through WP 3.3+
+* Drop support for versions of WP older than 3.1
+* Regenerate .pot
+* Add 'Domain Path' directive to top of main plugin file
+* Add link to plugin directory page to readme.txt
+* Update copyright date (2012)
+
 = 3.1.1 =
 * Fix cross-browser (namely IE) handling of non-wrapping textarea text (flat out can't use CSS for it)
 * Update plugin framework to version 028
@@ -258,6 +270,9 @@ add_filter( 'c2c_text_replace_case_sensitive', '__return_false' );`
 
 
 == Upgrade Notice ==
+
+= 3.2 =
+Recommended update. Highlights: fixed bug with settings not appearing in MS; updated plugin framework; noted compatiblity with WP 3.3+; dropped compatibility with versions of WP older than 3.1.
 
 = 3.1.1 =
 Bugfix release: fixed bug with cross-browser (mainly, IE) handling of non-wrapping textarea text; updated plugin framework; regenerated .pot file and put it into 'lang' subdirectory.
