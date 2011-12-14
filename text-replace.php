@@ -2,11 +2,11 @@
 /**
  * @package Text_Replace
  * @author Scott Reilly
- * @version 3.2
+ * @version 3.2.1
  */
 /*
 Plugin Name: Text Replace
-Version: 3.2
+Version: 3.2.1
 Plugin URI: http://coffee2code.com/wp-plugins/text-replace/
 Author: Scott Reilly
 Author URI: http://coffee2code.com
@@ -47,7 +47,7 @@ if ( ! class_exists( 'c2c_TextReplace' ) ) :
 
 require_once( 'c2c-plugin.php' );
 
-class c2c_TextReplace extends C2C_Plugin_030 {
+class c2c_TextReplace extends C2C_Plugin_032 {
 
 	public static $instance;
 
@@ -65,7 +65,7 @@ class c2c_TextReplace extends C2C_Plugin_030 {
 		if ( ! is_null( self::$instance ) )
 			return;
 
-		parent::__construct( '3.2', 'text-replace', 'c2c', __FILE__, array() );
+		parent::__construct( '3.2.1', 'text-replace', 'c2c', __FILE__, array() );
 		register_activation_hook( __FILE__, array( __CLASS__, 'activation' ) );
 		self::$instance = $this;
 	}
@@ -90,6 +90,24 @@ class c2c_TextReplace extends C2C_Plugin_030 {
 	 */
 	public static function uninstall() {
 		delete_option( 'c2c_text_replace' );
+	}
+
+	/**
+	 * Handle plugin updates.
+	 *
+	 * @since 3.2.1
+	 *
+	 * @param string $old_version The version number of the old version of
+	 *        the plugin. '0.0' indicates no version previously stored
+	 * @param array $options Array of all plugin options
+	 */
+	protected function handle_plugin_upgrade( $old_version, $options ) {
+		if ( version_compare( $old_version, '3.2.1', '<' ) ) {
+			// Plugin got upgraded from a version earlier than 3.2.1
+			// Logic was inverted for case_sensitive.
+			$options['case_sensitive'] = ! $options['case_sensitive'];
+		}
+		return $options; // Important!
 	}
 
 	/**
@@ -132,9 +150,9 @@ class c2c_TextReplace extends C2C_Plugin_030 {
 					'label' => __( 'Enable text replacement in comments?', $this->textdomain ),
 					'help' => ''
 			),
-			'case_sensitive' => array( 'input' => 'checkbox', 'default' => false,
+			'case_sensitive' => array( 'input' => 'checkbox', 'default' => true,
 					'label' => __( 'Case sensitive text replacement?', $this->textdomain ),
-					'help' => __( 'If checked, then a replacement for :wp: would also replace :WP:.', $this->textdomain )
+					'help' => __( 'If unchecked, then a replacement for :wp: would also replace :WP:.', $this->textdomain )
 			)
 		);
 	}
@@ -182,15 +200,15 @@ class c2c_TextReplace extends C2C_Plugin_030 {
 		$options = $this->get_options();
 		$text_to_replace = apply_filters( 'c2c_text_replace', $options['text_to_replace'] );
 		$case_sensitive = apply_filters( 'c2c_text_replace_case_sensitive', $options['case_sensitive'] );
-		$preg_flags = ($case_sensitive) ? 's' : 'si';
+		$preg_flags = $case_sensitive ? 's' : 'si';
 		$text = ' ' . $text . ' ';
 		if ( ! empty( $text_to_replace ) ) {
 			foreach ( $text_to_replace as $old_text => $new_text ) {
 				if ( strpos( $old_text, '<' ) !== false || strpos( $old_text, '>' ) !== false ) {
 					$text = str_replace( $old_text, $new_text, $text );
 				} else {
-					$old_text = str_replace( $oldchars, $newchars, $old_text );
-					$text = preg_replace( "|(?!<.*?)$old_text(?![^<>]*?>)|$preg_flags", $new_text, $text );
+					$old_text = preg_quote( str_replace( $oldchars, $newchars, $old_text ) );
+					$text = preg_replace( "|(?!<.*?)$old_text(?![^<>]*?>)|$preg_flags", addcslashes( $new_text, '\\$' ), $text );
 				}
 			}
 		}

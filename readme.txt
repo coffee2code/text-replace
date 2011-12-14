@@ -4,8 +4,8 @@ Donate link: http://coffee2code.com/donate
 Tags: text, replace, shortcut, shortcuts, post, post content, coffee2code
 Requires at least: 3.1
 Tested up to: 3.3
-Stable tag: 3.2
-Version: 3.2
+Stable tag: 3.2.1
+Version: 3.2.1
 
 Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
 
@@ -156,6 +156,15 @@ add_filter( 'c2c_text_replace_case_sensitive', '__return_false' );`
 
 == Changelog ==
 
+= 3.2.1 =
+* Fix bug where $x (where x is number) when used in replacement text gets removed on display
+* Fix to properly escape shortcut keys prior to internal use in preg_replace()
+* Change default for case_sensitive to true
+* Add handle_plugin_upgrade() to fix logic inversion for case_sensitive setting
+* Fix incorrect help text (inverted logic) for case_sensitive setting
+* Update plugin framework to 032
+* Regenerate .pot
+
 = 3.2 =
 * Fix bug with settings form not appearing in MS
 * Update plugin framework to 030
@@ -271,8 +280,11 @@ add_filter( 'c2c_text_replace_case_sensitive', '__return_false' );`
 
 == Upgrade Notice ==
 
+= 3.2.1 =
+Recommended bugfix release: fixed bug when $x (where x is a number) would not display when used in replacement string; fix to properly escape shortcut keys prior to internal use; and updated plugin framework.
+
 = 3.2 =
-Recommended update. Highlights: fixed bug with settings not appearing in MS; updated plugin framework; noted compatiblity with WP 3.3+; dropped compatibility with versions of WP older than 3.1.
+Recommended update. Highlights: fixed bug with settings not appearing in MS; updated plugin framework; noted compatibility with WP 3.3+; dropped compatibility with versions of WP older than 3.1.
 
 = 3.1.1 =
 Bugfix release: fixed bug with cross-browser (mainly, IE) handling of non-wrapping textarea text; updated plugin framework; regenerated .pot file and put it into 'lang' subdirectory.

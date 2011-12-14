@@ -2,7 +2,7 @@
 /**
  * @package C2C_Plugins
  * @author Scott Reilly
- * @version 030
+ * @version 032
  */
 /*
 Basis for other plugins
@@ -32,9 +32,9 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRA
 IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-if ( ! class_exists( 'C2C_Plugin_030' ) ) :
+if ( ! class_exists( 'C2C_Plugin_032' ) ) :
 
-abstract class C2C_Plugin_030 {
+abstract class C2C_Plugin_032 {
 	protected $plugin_css_version = '008';
 	protected $options            = array();
 	protected $options_from_db    = '';
@@ -119,6 +119,15 @@ abstract class C2C_Plugin_030 {
 	}
 
 	/**
+	 * Returns the plugin's version.
+	 *
+	 * @since 031
+	 */
+	public function version() {
+		return $this->version;
+	}
+
+	/**
 	 * Handles installation tasks, such as ensuring plugin options are instantiated and saved to options table.
 	 *
 	 * This can be overridden.
@@ -191,9 +200,8 @@ abstract class C2C_Plugin_030 {
 			update_option( 'bkup_' . $this->admin_options_name, $this->options );
 
 			$this->options['_version'] = $this->version;
-			$options = $this->handle_plugin_upgrade( $_version, $this->options );
-			update_option( $this->admin_options_name, $options );
-			$this->options = $options;
+			$this->options = $this->handle_plugin_upgrade( $_version, $this->options );
+			update_option( $this->admin_options_name, $this->options );
 		}
 	}
 
@@ -236,8 +244,8 @@ abstract class C2C_Plugin_030 {
 		if ( 0 !== strpos( $url, 'http://api.wordpress.org/plugins/update-check' ) )
 			return $r; // Not a plugin update request. Bail immediately.
 		$plugins = unserialize( $r['body']['plugins'] );
-		unset( $plugins->plugins[ plugin_basename( __FILE__ ) ] );
-		unset( $plugins->active[ array_search( plugin_basename( __FILE__ ), $plugins->active ) ] );
+		unset( $plugins->plugins[ $this->plugin_basename ] );
+		unset( $plugins->active[ array_search( $this->plugin_basename, $plugins->active ) ] );
 		$r['body']['plugins'] = serialize( $plugins );
 		return $r;
 	}
