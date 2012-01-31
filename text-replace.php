@@ -2,14 +2,14 @@
 /**
  * @package Text_Replace
  * @author Scott Reilly
- * @version 3.2.1
+ * @version 3.2.2
  */
 /*
 Plugin Name: Text Replace
-Version: 3.2.1
+Version: 3.2.2
 Plugin URI: http://coffee2code.com/wp-plugins/text-replace/
 Author: Scott Reilly
-Author URI: http://coffee2code.com
+Author URI: http://coffee2code.com/
 Text Domain: text-replace
 Domain Path: /lang/
 Description: Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
@@ -47,7 +47,7 @@ if ( ! class_exists( 'c2c_TextReplace' ) ) :
 
 require_once( 'c2c-plugin.php' );
 
-class c2c_TextReplace extends C2C_Plugin_032 {
+class c2c_TextReplace extends C2C_Plugin_034 {
 
 	public static $instance;
 
@@ -65,7 +65,7 @@ class c2c_TextReplace extends C2C_Plugin_032 {
 		if ( ! is_null( self::$instance ) )
 			return;
 
-		parent::__construct( '3.2.1', 'text-replace', 'c2c', __FILE__, array() );
+		parent::__construct( '3.2.2', 'text-replace', 'c2c', __FILE__, array() );
 		register_activation_hook( __FILE__, array( __CLASS__, 'activation' ) );
 		self::$instance = $this;
 	}
@@ -180,6 +180,7 @@ class c2c_TextReplace extends C2C_Plugin_032 {
 		echo __( 'If you intend to use this plugin to handle smilies, you should probably disable WordPress\'s default smilie handler.', $this->textdomain );
 		echo '</li><li>';
 		echo __( 'HTML is allowed.', $this->textdomain );
+		echo '</li><li>';
 		echo __( 'Only use quotes it they are actual part of the original or replacement strings.', $this->textdomain );
 		echo '</li><li><strong><em>';
 		echo __( 'Define only one shortcut per line.', $this->textdomain );
@@ -195,8 +196,6 @@ class c2c_TextReplace extends C2C_Plugin_032 {
 	 * @return string Text with replacements already processed
 	 */
 	public function text_replace( $text ) {
-		$oldchars = array( "(", ")", "[", "]", "?", ".", ",", "|", "\$", "*", "+", "^", "{", "}" );
-		$newchars = array( "\(", "\)", "\[", "\]", "\?", "\.", "\,", "\|", "\\\$", "\*", "\+", "\^", "\{", "\}" );
 		$options = $this->get_options();
 		$text_to_replace = apply_filters( 'c2c_text_replace', $options['text_to_replace'] );
 		$case_sensitive = apply_filters( 'c2c_text_replace_case_sensitive', $options['case_sensitive'] );
@@ -207,7 +206,7 @@ class c2c_TextReplace extends C2C_Plugin_032 {
 				if ( strpos( $old_text, '<' ) !== false || strpos( $old_text, '>' ) !== false ) {
 					$text = str_replace( $old_text, $new_text, $text );
 				} else {
-					$old_text = preg_quote( str_replace( $oldchars, $newchars, $old_text ) );
+					$old_text = preg_quote( $old_text, '|' );
 					$text = preg_replace( "|(?!<.*?)$old_text(?![^<>]*?>)|$preg_flags", addcslashes( $new_text, '\\$' ), $text );
 				}
 			}

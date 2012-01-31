@@ -2,7 +2,7 @@
 /**
  * @package C2C_Plugins
  * @author Scott Reilly
- * @version 032
+ * @version 034
  */
 /*
 Basis for other plugins
@@ -17,7 +17,7 @@ Installation:
 */
 
 /*
-Copyright (c) 2010-2011 by Scott Reilly (aka coffee2code)
+Copyright (c) 2010-2012 by Scott Reilly (aka coffee2code)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
 files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy,
@@ -32,9 +32,9 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRA
 IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-if ( ! class_exists( 'C2C_Plugin_032' ) ) :
+if ( ! class_exists( 'C2C_Plugin_034' ) ) :
 
-abstract class C2C_Plugin_032 {
+abstract class C2C_Plugin_034 {
 	protected $plugin_css_version = '008';
 	protected $options            = array();
 	protected $options_from_db    = '';
@@ -170,7 +170,8 @@ abstract class C2C_Plugin_032 {
 		if ( $this->show_admin && $this->settings_page && ! empty( $this->config ) && current_user_can( 'manage_options' ) ) {
 			add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
 			if ( ! $this->disable_contextual_help ) {
-				add_filter( 'contextual_help', array( &$this, 'contextual_help' ), 10, 3 );
+				if ( version_compare( $GLOBALS['wp_version'], '3.3', '<' ) )
+					add_filter( 'contextual_help', array( &$this, 'contextual_help' ), 10, 3 );
 				if ( $this->is_plugin_admin_page() )
 					add_thickbox();
 			}
@@ -283,7 +284,10 @@ abstract class C2C_Plugin_032 {
 	 * @param string $localized_heading_text (optional) Localized page heading text.
 	 * @return void
 	 */
-	protected function options_page_description( $localized_heading_text = '' ) {
+	public function options_page_description( $localized_heading_text = '' ) {
+		if ( ! is_string( $localized_heading_text ) )
+			$localized_heading_text = '';
+
 		if ( empty( $localized_heading_text ) )
 			$localized_heading_text = $this->name;
 		if ( $localized_heading_text )
@@ -460,7 +464,8 @@ abstract class C2C_Plugin_032 {
 
 		$help_url = admin_url( "plugin-install.php?tab=plugin-information&amp;plugin={$this->id_base}&amp;TB_iframe=true&amp;width=640&amp;height=656" );
 
-		$help = '<p class="more-help">';
+		$help = '<h3>More Plugin Help</h3>';
+		$help .= '<p class="more-help">';
 		$help .= '<a title="' . esc_attr( sprintf( __( 'More information about %1$s %2$s', $this->textdomain ), $this->name, $this->version ) ) .
 			'" class="thickbox" href="' . $help_url . '">' . __( 'Click for more help on this plugin', $this->textdomain ) . '</a>' .
 			__( ' (especially check out the "Other Notes" tab, if present)', $this->textdomain );
@@ -541,8 +546,45 @@ CSS;
 				$func_root = $this->settings_page;
 		}
 		$menu_func = 'add_' . $func_root . '_page';
-		if ( function_exists( $menu_func ) )
+		if ( function_exists( $menu_func ) ) {
 			$this->options_page = call_user_func( $menu_func, $this->name, $this->menu_name, 'manage_options', $this->plugin_basename, array( &$this, 'options_page' ) );
+			add_action( 'load-' . $this->options_page, array( &$this, 'help_tabs' ) );
+		}
+	}
+
+	/**
+	 * Initialize help tabs.
+	 *
+	 * @since 034
+	 * @return void
+	 */
+	public function help_tabs() {
+		if ( ! class_exists( 'WP_Screen' ) )
+			return;
+
+		$screen = get_current_screen();
+
+		if ( $screen->id != $this->options_page )
+			return;
+
+		$this->help_tabs_content( $screen );
+	}
+
+	/**
+	 * Configures help tabs content.
+	 *
+	 * This should be overridden by inheriting class if it needs help content.
+	 *
+	 * @since 034
+	 *
+	 * @return void
+	 */
+	public function help_tabs_content( $screen ) {
+		$screen->add_help_tab( array(
+			'id'      => 'c2c-more-help-' . $this->id_base,
+			'title'   => __( 'More Help', $this->textdomain ),
+			'content' => self::contextual_help( '', $this->options_page )
+		) );
 	}
 
 	/**
@@ -807,7 +849,7 @@ CSS;
 
 		do_action( $this->get_hook( 'before_settings_form' ), $this );
 
-		echo "<form action='options.php' method='post' class='c2c-form'>\n";
+		echo "<form action='" . admin_url( 'options.php' ) . "' method='post' class='c2c-form'>\n";
 
 		settings_fields( $this->admin_options_name );
 		do_settings_sections( $this->plugin_file );

@@ -3,9 +3,9 @@ Contributors: coffee2code
 Donate link: http://coffee2code.com/donate
 Tags: text, replace, shortcut, shortcuts, post, post content, coffee2code
 Requires at least: 3.1
-Tested up to: 3.3
-Stable tag: 3.2.1
-Version: 3.2.1
+Tested up to: 3.3.1
+Stable tag: 3.2.2
+Version: 3.2.2
 
 Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
 
@@ -17,10 +17,15 @@ This plugin can be utilized to make shortcuts for frequently typed text, but kee
 
 * Your best bet with defining shortcuts is to define something that would never otherwise appear in your text.  For instance, bookend the shortcut with colons:
 
-    `:wp: => <a href='http://wordpress.org'>WordPress</a>`
-    `:aol: => <a href='http://www.aol.com'>America Online, Inc.</a>`
+`
+:wp: => <a href='http://wordpress.org'>WordPress</a>
+:aol: => <a href='http://www.aol.com'>America Online, Inc.</a>
+
+`
+
 Otherwise, you risk proper but undesired replacements:
-    `Hi => Hello`
+
+`Hi => Hello`
 
 Would have the effect of changing "His majesty" to "Hellos majesty".
 
@@ -156,6 +161,11 @@ add_filter( 'c2c_text_replace_case_sensitive', '__return_false' );`
 
 == Changelog ==
 
+= 3.2.2 =
+* Fix bug where special characters were being double-escaped prior to use in regex
+* Update plugin framework to 034
+* Minor readme.txt formatting tweaks
+
 = 3.2.1 =
 * Fix bug where $x (where x is number) when used in replacement text gets removed on display
 * Fix to properly escape shortcut keys prior to internal use in preg_replace()
@@ -279,6 +289,9 @@ add_filter( 'c2c_text_replace_case_sensitive', '__return_false' );`
 
 
 == Upgrade Notice ==
+
+= 3.2.2 =
+Minor bugfix release: fixed bug where special characters were being double-escaped; updated plugin framework.
 
 = 3.2.1 =
 Recommended bugfix release: fixed bug when $x (where x is a number) would not display when used in replacement string; fix to properly escape shortcut keys prior to internal use; and updated plugin framework.
