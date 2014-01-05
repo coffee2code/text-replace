@@ -1,21 +1,28 @@
 === Text Replace ===
 Contributors: coffee2code
-Donate link: http://coffee2code.com/donate
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ARCFJ9TX3522
 Tags: text, replace, shortcut, shortcuts, post, post content, coffee2code
-Requires at least: 3.1
-Tested up to: 3.3.1
-Stable tag: 3.2.2
-Version: 3.2.2
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Requires at least: 3.6
+Tested up to: 3.8
+Stable tag: 3.5
 
 Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
 
 == Description ==
 
-Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
+This plugin allows you to easily define text or HTML that should be used in your posts in place of words or phrases that are actually present in the posts. This is a handy technique for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
 
-This plugin can be utilized to make shortcuts for frequently typed text, but keep these things in mind:
+Additional features of the plugin controlled both via settings and filters:
 
-* Your best bet with defining shortcuts is to define something that would never otherwise appear in your text.  For instance, bookend the shortcut with colons:
+* Text replacement can be enabled for comments (it isn't by default)
+* Text replacement can be made case insensitive (it is case sensitive by default)
+* Text replacement can be limited to doing only one replacement per term, per post (by default, all occurrences of a term are replaced)
+
+A few things to keep these things in mind:
+
+* Your best bet with defining shortcuts is to define something that would never otherwise appear in your text. For instance, bookend the shortcut with colons:
 
 `
 :wp: => <a href='http://wordpress.org'>WordPress</a>
@@ -29,18 +36,20 @@ Otherwise, you risk proper but undesired replacements:
 
 Would have the effect of changing "His majesty" to "Hellos majesty".
 
-* List the more specific matches early, to avoid stomping on another of your shortcuts.  For example, if you have both 
+* List the more specific matches early, to avoid stomping on another of your shortcuts. For example, if you have both
 `:p` and `:pout:` as shortcuts, put `:pout:` first, otherwise, the `:p` will match against all the `:pout:` in your text.
 
 * If you intend to use this plugin to handle smilies, you should probably disable WordPress's default smilie handler.
 
-* This plugin is set to filter the_content, the_excerpt, widget_text, and optionally, get_comment_text and get_comment_excerpt.  the filter 'c2c_text_replace_filters' can be used to add or modify the list of filters affected.
+* This plugin is set to filter the_content, the_excerpt, widget_text, and optionally, get_comment_text and get_comment_excerpt. The filter 'c2c_text_replace_filters' can be used to add or modify the list of filters affected.
 
-* **SPECIAL CONSIDERATION:** Be aware that the shortcut text that you use in your posts will be stored that way in the database (naturally).  While calls to display the posts will see the filtered, text replaced version, anything that operates directly on the database will not see the expanded replacement text.  So if you only ever referred to "America Online" as ":aol:" (where ":aol:" => "<a href='http://www.aol.com'>America Online</a>"), visitors to your site will see the linked, expanded text due to the text replace, but a database search would never turn up a match for "America Online".
+* Text inside of HTML tags (such as tag names and attributes) will not be matched. So, for example, you can't expect the :mycss: shortcut to work in: &lt;a href="" :mycss:&gt;text&lt;/a&gt;.'.
+
+* **SPECIAL CONSIDERATION:** Be aware that the shortcut text that you use in your posts will be stored that way in the database (naturally). While calls to display the posts will see the filtered, text replaced version, anything that operates directly on the database will not see the expanded replacement text. So if you only ever referred to "America Online" as ":aol:" (where ":aol:" => "<a href='http://www.aol.com'>America Online</a>"), visitors to your site will see the linked, expanded text due to the text replace, but a database search would never turn up a match for "America Online".
 
 * However, a benefit of the replacement text not being saved to the database and instead evaluated when the data is being loaded into a web page is that if the replacement text is modified, all pages making use of the shortcut will henceforth use the updated replacement text.
 
-Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/text-replace/) | [Plugin Directory Page](http://wordpress.org/extend/plugins/text-replace/) | [Author Homepage](http://coffee2code.com)
+Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/text-replace/) | [Plugin Directory Page](http://wordpress.org/plugins/text-replace/) | [Author Homepage](http://coffee2code.com)
 
 
 == Installation ==
@@ -55,7 +64,7 @@ Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/text-replace/) | [Plu
 
 = Does this plugin modify the post content in the database? =
 
-No.  The plugin filters post content on-the-fly.
+No. The plugin filters post content on-the-fly.
 
 = Will this work for posts I wrote prior to installing this plugin? =
 
@@ -63,7 +72,7 @@ Yes, if they include strings that you've now defined as shortcuts.
 
 = What post fields get handled by this plugin? =
 
-By default, the plugin filters the post content, post excerpt fields, widget text, and optionally comments and comment excerpts.  You can use the 'c2c_text_replace_filters' filter to modify that behavior (see Filters section).
+By default, the plugin filters the post content, post excerpt fields, widget text, and optionally comments and comment excerpts. You can use the 'c2c_text_replace_filters' filter to modify that behavior (see Filters section).
 
 = How can I get text replacements to apply for post titles (or something not text-replaced by default)? =
 
@@ -77,11 +86,19 @@ function more_text_replacements( $filters ) {
 
 = Is the plugin case sensitive? =
 
-By default, yes.  There is a setting you can change to make it case insensitive.  Or you can use the 'c2c_text_replace_case_sensitive' filter (see Filters section).
+By default, yes. There is a setting you can change to make it case insensitive. Or you can use the 'c2c_text_replace_case_sensitive' filter (see Filters section).
 
 = I use :wp: all the time as a shortcut for WordPress, but when I search posts for the term "WordPress", I don't see posts where I used the shortcut; why not? =
 
-Rest assured search engines will see those posts since they only ever see the posts after the shortcuts have been replaced.  However, WordPress's search function searches the database directly, where only the shortcut exists, so WordPress doesn't know about the replacement text you've defined.
+Rest assured search engines will see those posts since they only ever see the posts after the shortcuts have been replaced. However, WordPress's search function searches the database directly, where only the shortcut exists, so WordPress doesn't know about the replacement text you've defined.
+
+= Will all instances of a given term be replaced in a single post? =
+
+By default, yes. There is a setting you can change so that only the first occurrence of the term in the post gets replaced. Or if you are a coder, you can use the 'c2c_text_replace_once' filter (see Filters section).
+
+= Does this plugin include unit tests? =
+
+Yes.
 
 
 == Screenshots ==
@@ -91,7 +108,7 @@ Rest assured search engines will see those posts since they only ever see the po
 
 == Filters ==
 
-The plugin exposes four filters for hooking.  Typically, the code to utilize these hooks would go inside your active theme's functions.php file.
+The plugin exposes five filters for hooking. Typically, the code to utilize these hooks would go inside your active theme's functions.php file. Bear in mind that all of the features controlled by these filters are configurable via the plugin's settings page. These filters are likely only of interest to advanced users able to code.
 
 = c2c_text_replace_filters (filter) =
 
@@ -116,7 +133,7 @@ The 'c2c_text_replace_comments' hook allows you to customize or override the set
 
 Arguments:
 
-* $state (bool): Either true or false indicating if text replacement is enabled for comments.  This will be the value set via the plugin's settings page.
+* $state (bool): Either true or false indicating if text replacement is enabled for comments. This will be the value set via the plugin's settings page.
 
 Example:
 
@@ -129,7 +146,7 @@ The 'c2c_text_replace' hook allows you to customize or override the setting defi
 
 Arguments:
 
-* $text_replacement_array (array): Array of text replacement shortcuts and their replacements.  This will be the value set via the plugin's settings page.
+* $text_replacement_array (array): Array of text replacement shortcuts and their replacements. This will be the value set via the plugin's settings page.
 
 Example:
 
@@ -145,21 +162,80 @@ function my_text_replacements( $replacements ) {
 	return $replacements;
 }`
 
+= c2c_text_replace_comments (filter) =
+
+The 'c2c_text_replace_comments' hook allows you to customize or override the setting indicating if text replacement should be enabled in comments.
+
+Arguments:
+
+* $state (bool): Either true or false indicating if text replacement is enabled for comments. The default value will be the value set via the plugin's settings page.
+
+Example:
+
+`// Prevent text replacements from ever being enabled in comments.
+add_filter( 'c2c_text_replace_comments', '__return_false' );`
+
 = c2c_text_replace_case_sensitive (filter) =
 
 The 'c2c_text_replace_case_sensitive' hook allows you to customize or override the setting indicating if text replacement should be case sensitive.
 
 Arguments:
 
-* $state (bool): Either true or false indicating if text replacement is case sensitive.  This will be the value set via the plugin's settings page.
+* $state (bool): Either true or false indicating if text replacement is case sensitive. This will be the value set via the plugin's settings page.
 
 Example:
 
 `// Prevent text replacement from ever being case sensitive.
 add_filter( 'c2c_text_replace_case_sensitive', '__return_false' );`
 
+= c2c_text_replace_once (filter) =
+
+The 'c2c_text_replace_once' hook allows you to customize or override the setting indicating if text replacement should be limited to once per term per piece of text being processed regardless of how many times the term appears.
+
+Arguments:
+
+* $state (bool): Either true or false indicating if text replacement is to only occur once per term. The default value will be the value set via the plugin's settings page.
+
+Example:
+
+`// Only replace a term/shortcut once per post.
+add_filter( 'c2c_text_replace_once', '__return_true' );`
+
 
 == Changelog ==
+
+= 3.5 (2014-01-05) =
+* Fix to allow case insensitivity to work when the text being replaced includes HTML
+* Add setting to allow limiting text replacement to once per term per text
+* Add filter 'c2c_text_replace_once'
+* Change to just-in-time (rather than on init) determination if comments should be filtered
+* Add text_replace_comment_text()
+* Add unit tests
+* Update plugin framework to 037
+* Better singleton implementation:
+    * Add `get_instance()` static method for returning/creating singleton instance
+    * Make static variable 'instance' private
+    * Make constructor protected
+    * Make class final
+    * Additional related changes in plugin framework (protected constructor, erroring `__clone()` and `__wakeup()`)
+* Add checks to prevent execution of code if file is directly accessed
+* Re-license as GPLv2 or later (from X11)
+* Add 'License' and 'License URI' header tags to readme.txt and plugin file
+* Use explicit path for require_once()
+* Discontinue use of PHP4-style constructor
+* Discontinue use of explicit pass-by-reference for objects
+* Remove ending PHP close tag
+* Documentation improvements
+* Minor code reformatting (spacing)
+* Note compatibility through WP 3.8+
+* Drop compatibility with version of WP older than 3.6
+* Update copyright date (2014)
+* Regenerate .pot
+* Change donate link
+* Add assets directory to plugin repository checkout
+* Update screenshot
+* Move screenshot into repo's assets directory
+* Add banner
 
 = 3.2.2 =
 * Fix bug where special characters were being double-escaped prior to use in regex
@@ -289,6 +365,9 @@ add_filter( 'c2c_text_replace_case_sensitive', '__return_false' );`
 
 
 == Upgrade Notice ==
+
+= 3.5 =
+Recommended update: fix to allow case insensitivity when HTML is being replaced; added ability to do one replacement per term per post; added unit tests; compatibility now WP 3.6-3.8+
 
 = 3.2.2 =
 Minor bugfix release: fixed bug where special characters were being double-escaped; updated plugin framework.
