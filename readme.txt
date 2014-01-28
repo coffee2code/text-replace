@@ -5,8 +5,8 @@ Tags: text, replace, shortcut, shortcuts, post, post content, coffee2code
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.6
-Tested up to: 3.8
-Stable tag: 3.5
+Tested up to: 3.8.1
+Stable tag: 3.5.1
 
 Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
 
@@ -204,6 +204,9 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 
 == Changelog ==
 
+= 3.5.1 (2014-01-28) =
+* Fix logic evaluation to properly honor case_sensitive and replace_once checkbox values
+
 = 3.5 (2014-01-05) =
 * Fix to allow case insensitivity to work when the text being replaced includes HTML
 * Add setting to allow limiting text replacement to once per term per text
@@ -365,6 +368,9 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 
 
 == Upgrade Notice ==
+
+= 3.5.1 =
+Recommended minor bugfix: fix to honor case sensitivity setting when HTML is being replaced
 
 = 3.5 =
 Recommended update: fix to allow case insensitivity when HTML is being replaced; added ability to do one replacement per term per post; added unit tests; compatibility now WP 3.6-3.8+

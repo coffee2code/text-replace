@@ -2,11 +2,11 @@
 /**
  * @package Text_Replace
  * @author Scott Reilly
- * @version 3.5
+ * @version 3.5.1
  */
 /*
 Plugin Name: Text Replace
-Version: 3.5
+Version: 3.5.1
 Plugin URI: http://coffee2code.com/wp-plugins/text-replace/
 Author: Scott Reilly
 Author URI: http://coffee2code.com/
@@ -74,7 +74,7 @@ final class c2c_TextReplace extends C2C_Plugin_037 {
 	 * Constructor
 	 */
 	protected function __construct() {
-		parent::__construct( '3.5', 'text-replace', 'c2c', __FILE__, array() );
+		parent::__construct( '3.5.1', 'text-replace', 'c2c', __FILE__, array() );
 		register_activation_hook( __FILE__, array( __CLASS__, 'activation' ) );
 
 		return self::$instance = $this;
@@ -221,8 +221,8 @@ final class c2c_TextReplace extends C2C_Plugin_037 {
 	public function text_replace( $text ) {
 		$options         = $this->get_options();
 		$text_to_replace = apply_filters( 'c2c_text_replace',                $options['text_to_replace'] );
-		$case_sensitive  = apply_filters( 'c2c_text_replace_case_sensitive', $options['case_sensitive'] ) === true;
-		$limit           = apply_filters( 'c2c_text_replace_once',           $options['replace_once'] ) === true ? '1' : '-1';
+		$case_sensitive  = apply_filters( 'c2c_text_replace_case_sensitive', $options['case_sensitive'] );
+		$limit           = apply_filters( 'c2c_text_replace_once',           $options['replace_once'] ) ? 1 : -1;
 		$preg_flags      = $case_sensitive ? 's' : 'si';
 
 		$text = ' ' . $text . ' ';
@@ -232,7 +232,7 @@ final class c2c_TextReplace extends C2C_Plugin_037 {
 			if ( strpos( $old_text, '<' ) !== false || strpos( $old_text, '>' ) !== false ) {
 				// If only doing one replacement, need to handle specially since there is
 				// no built-in, non-preg_replace method to do a single replacement.
-				if ( '1' === $limit ) {
+				if ( 1 === $limit ) {
 					$pos = $case_sensitive ? strpos( $text, $old_text ) : stripos( $text, $old_text );
 					if ( $pos !== false ) {
 						$text = substr_replace( $text, $new_text, $pos, strlen( $old_text ) );
