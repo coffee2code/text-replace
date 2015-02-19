@@ -5,8 +5,8 @@ Tags: text, replace, shortcut, shortcuts, post, post content, coffee2code
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.6
-Tested up to: 3.8.1
-Stable tag: 3.5.1
+Tested up to: 4.1
+Stable tag: 3.6
 
 Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
 
@@ -25,7 +25,7 @@ A few things to keep these things in mind:
 * Your best bet with defining shortcuts is to define something that would never otherwise appear in your text. For instance, bookend the shortcut with colons:
 
 `
-:wp: => <a href='http://wordpress.org'>WordPress</a>
+:wp: => <a href='https://wordpress.org'>WordPress</a>
 :aol: => <a href='http://www.aol.com'>America Online, Inc.</a>
 
 `
@@ -49,7 +49,7 @@ Would have the effect of changing "His majesty" to "Hellos majesty".
 
 * However, a benefit of the replacement text not being saved to the database and instead evaluated when the data is being loaded into a web page is that if the replacement text is modified, all pages making use of the shortcut will henceforth use the updated replacement text.
 
-Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/text-replace/) | [Plugin Directory Page](http://wordpress.org/plugins/text-replace/) | [Author Homepage](http://coffee2code.com)
+Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/text-replace/) | [Plugin Directory Page](https://wordpress.org/plugins/text-replace/) | [Author Homepage](http://coffee2code.com)
 
 
 == Installation ==
@@ -78,11 +78,13 @@ By default, the plugin filters the post content, post excerpt fields, widget tex
 
 You can add to the list of filters that get text replacements using something like this (added to your theme's functions.php file, for instance):
 
-`add_filter( 'c2c_text_replace_filters', 'more_text_replacements' );
+`
 function more_text_replacements( $filters ) {
 	$filters[] = 'the_title'; // Here you could put in the name of any filter you want
 	return $filters;
-}`
+}
+add_filter( 'c2c_text_replace_filters', 'more_text_replacements' );
+`
 
 = Is the plugin case sensitive? =
 
@@ -121,11 +123,12 @@ Arguments:
 Example:
 
 `// Enable text replacement for post/page titles
-add_filter( 'c2c_text_replace_filters', 'more_text_replacements' );
 function more_text_replacements( $filters ) {
 	$filters[] = 'the_title'; // Here you could put in the name of any filter you want
 	return $filters;
-}`
+}
+add_filter( 'c2c_text_replace_filters', 'more_text_replacements' );
+`
 
 = c2c_text_replace_comments (filter) =
 
@@ -151,7 +154,6 @@ Arguments:
 Example:
 
 `// Add dynamic shortcuts
-add_filter( 'c2c_text_replace', 'my_text_replacements' );
 function my_text_replacements( $replacements ) {
 	// Add replacement
 	$replacements[':matt:'] => 'Matt Mullenweg';
@@ -160,7 +162,9 @@ function my_text_replacements( $replacements ) {
 		unset( $replacements[':wp:'] );
 	// Important!
 	return $replacements;
-}`
+}
+add_filter( 'c2c_text_replace', 'my_text_replacements' );
+`
 
 = c2c_text_replace_comments (filter) =
 
@@ -203,6 +207,23 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 
 
 == Changelog ==
+
+= 3.6 (2015-02-18) =
+* Improve support of '&' in text to be replaced by recognizing its encoded alternatives ('&amp;', '&#038;') as equivalents
+* Support replacing multibyte strings. NOTE: Multibyte strings don't honor limiting their replacement within a piece of text to once
+* Update plugin framework to 039
+* Add more unit tests
+* Explicitly declare `activation()` static
+* Cast filtered value of 'c2c_text_replace' filter as array
+* Reformat plugin header
+* Use __DIR__ instead of `dirname(__FILE__)`
+* Change regex delimiter from '|' to '~'
+* Change documentation links to wp.org to be https
+* Minor documentation spacing changes throughout
+* Note compatibility through WP 4.1+
+* Update copyright date (2015)
+* Add plugin icon
+* Regenerate .pot
 
 = 3.5.1 (2014-01-28) =
 * Fix logic evaluation to properly honor case_sensitive and replace_once checkbox values
@@ -368,6 +389,9 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 
 
 == Upgrade Notice ==
+
+= 3.6 =
+Recommended update: improved support of '&' in text to be replaced; added support for replacing multibyte text; updated plugin framework to version 039; noted compatibility through WP 4.1+; added plugin icon
 
 = 3.5.1 =
 Recommended minor bugfix: fix to honor case sensitivity setting when HTML is being replaced

@@ -1,15 +1,15 @@
-# Translation of the WordPress plugin Text Replace v3.5 by Scott Reilly.
+# Translation of the WordPress plugin Text Replace v3.6 by Scott Reilly.
 # Copyright (C) 2014 Scott Reilly
 # This file is distributed under the same license as the Text Replace plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Text Replace 3.5\n"
+"Project-Id-Version: Text Replace 3.6\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/text-replace\n"
-"POT-Creation-Date: 2014-01-05 21:57:30+00:00\n"
+"POT-Creation-Date: 2015-02-19 06:53:28+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
@@ -17,132 +17,132 @@ msgstr ""
 msgid "Invalid file specified for C2C_Plugin: %s"
 msgstr ""
 
-#: c2c-plugin.php:125 c2c-plugin.php:132
+#: c2c-plugin.php:127 c2c-plugin.php:134
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: c2c-plugin.php:309
+#: c2c-plugin.php:322
 msgid "See the \"Help\" link to the top-right of the page for more help."
 msgstr ""
 
-#: c2c-plugin.php:342
+#: c2c-plugin.php:357
 msgid "Settings reset."
 msgstr ""
 
-#: c2c-plugin.php:353 c2c-plugin.php:361
+#: c2c-plugin.php:368 c2c-plugin.php:376
 msgid "A value is required for: \"%s\""
 msgstr ""
 
-#: c2c-plugin.php:370
+#: c2c-plugin.php:385
 msgid "Expected integer value for: %s"
 msgstr ""
 
-#: c2c-plugin.php:482
+#: c2c-plugin.php:502
 msgid "More information about %1$s %2$s"
 msgstr ""
 
-#: c2c-plugin.php:483
+#: c2c-plugin.php:503
 msgid "Click for more help on this plugin"
 msgstr ""
 
-#: c2c-plugin.php:484
+#: c2c-plugin.php:504
 msgid " (especially check out the \"Other Notes\" tab, if present)"
 msgstr ""
 
-#: c2c-plugin.php:598
+#: c2c-plugin.php:620
 msgid "More Help"
 msgstr ""
 
-#: c2c-plugin.php:610
+#: c2c-plugin.php:632
 msgid "Settings"
 msgstr ""
 
-#: c2c-plugin.php:622
+#: c2c-plugin.php:644
 msgid "Donation for coffee2code plugin: %s"
 msgstr ""
 
-#: c2c-plugin.php:623
+#: c2c-plugin.php:645
 msgid "Coffee fuels my coding."
 msgstr ""
 
-#: c2c-plugin.php:876
+#: c2c-plugin.php:914
 msgid "A plugin by coffee2code"
 msgstr ""
 
-#: c2c-plugin.php:885
+#: c2c-plugin.php:923
 msgid "Save Changes"
 msgstr ""
 
-#: c2c-plugin.php:886
+#: c2c-plugin.php:924
 msgid "Reset Settings"
 msgstr ""
 
-#: c2c-plugin.php:892
+#: c2c-plugin.php:930
 msgid "Scott Reilly, aka coffee2code"
 msgstr ""
 
-#: c2c-plugin.php:893
+#: c2c-plugin.php:931
 msgid "This plugin brought to you by %s."
 msgstr ""
 
-#: c2c-plugin.php:894
+#: c2c-plugin.php:932
 msgid "Please consider a donation"
 msgstr ""
 
-#: c2c-plugin.php:895
+#: c2c-plugin.php:933
 msgid "Did you find this plugin useful?"
 msgstr ""
 
-#. #-#-#-#-#  text-replace.pot (Text Replace 3.5)  #-#-#-#-#
+#. #-#-#-#-#  text-replace.pot (Text Replace 3.6)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
-#: text-replace.php:121 text-replace.php:122
+#: text-replace.php:126 text-replace.php:127
 msgid "Text Replace"
 msgstr ""
 
-#: text-replace.php:133
+#: text-replace.php:138
 msgid "Enable text replacement in comments?"
 msgstr ""
 
-#: text-replace.php:137
+#: text-replace.php:142
 msgid "Only text replace once per term per post?"
 msgstr ""
 
-#: text-replace.php:138
+#: text-replace.php:143
 msgid ""
 "If checked, then each term will only be replaced the first time it appears "
 "in a post."
 msgstr ""
 
-#: text-replace.php:141
+#: text-replace.php:146
 msgid "Case sensitive text replacement?"
 msgstr ""
 
-#: text-replace.php:142
+#: text-replace.php:147
 msgid "If unchecked, then a replacement for :wp: would also replace :WP:."
 msgstr ""
 
-#: text-replace.php:169
+#: text-replace.php:173
 msgid "Text Replace Settings"
 msgstr ""
 
-#: text-replace.php:171
+#: text-replace.php:175
 msgid ""
 "Text Replace is a plugin that allows you to replace text with other text in "
 "posts, etc. Very handy to create shortcuts to commonly-typed and/or lengthy "
 "text/HTML, or for smilies."
 msgstr ""
 
-#: text-replace.php:173
+#: text-replace.php:177
 msgid "Shortcuts and text replacements"
 msgstr ""
 
-#: text-replace.php:174
+#: text-replace.php:178
 msgid ""
 "Define shortcuts and text replacement expansions here. The format should be "
 "like this:"
 msgstr ""
 
-#: text-replace.php:176
+#: text-replace.php:180
 msgid ""
 "Where <code>:wp:</code> is the shortcut you intend to use in your posts and "
 "the <code>&lt;a href='http://wordpress.org'>WordPress&lt;/a></code> would be "
@@ -150,11 +150,11 @@ msgid ""
 "your site."
 msgstr ""
 
-#: text-replace.php:177
+#: text-replace.php:181
 msgid "Other considerations:"
 msgstr ""
 
-#: text-replace.php:179
+#: text-replace.php:183
 msgid ""
 "List the more specific matches early, to avoid stomping on another of your "
 "shortcuts.  For example, if you have both <code>:p</code> and <code>:pout:</"
@@ -162,41 +162,41 @@ msgid ""
 "code> will match against all the <code>:pout:</code> in your text."
 msgstr ""
 
-#: text-replace.php:181
+#: text-replace.php:185
 msgid ""
 "Be careful not to define text that could match partially when you don't want "
 "it to:<br />i.e.  <code>Me => Scott</code> would also inadvertently change "
 "\"Men\" to be \"Scottn\""
 msgstr ""
 
-#: text-replace.php:183
+#: text-replace.php:187
 msgid ""
 "If you intend to use this plugin to handle smilies, you should probably "
 "disable WordPress's default smilie handler."
 msgstr ""
 
-#: text-replace.php:185
+#: text-replace.php:189
 msgid ""
 "Text inside of HTML tags (such as tag names and attributes) will not be "
 "matched. So, for example, you can't expect the :mycss: shortcut to work in: "
 "&lt;a href=\"\" :mycss:&gt;text&lt;/a&gt;."
 msgstr ""
 
-#: text-replace.php:187
+#: text-replace.php:191
 msgid "HTML is allowed."
 msgstr ""
 
-#: text-replace.php:189
+#: text-replace.php:193
 msgid ""
 "Only use quotes it they are actual part of the original or replacement "
 "strings."
 msgstr ""
 
-#: text-replace.php:191
+#: text-replace.php:195
 msgid "Define only one shortcut per line."
 msgstr ""
 
-#: text-replace.php:193
+#: text-replace.php:197
 msgid "Shortcuts must not span multiple lines."
 msgstr ""
 

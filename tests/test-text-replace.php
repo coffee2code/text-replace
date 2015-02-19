@@ -2,6 +2,18 @@
 
 class Text_Replace_Test extends WP_UnitTestCase {
 
+	protected static $text_to_link = array(
+		':wp:'           => 'WordPress',
+		":coffee2code:"  => "<a href='http://coffee2code.com' title='coffee2code'>coffee2code</a>",
+		'Matt Mullenweg' => '<span title="Founder of WordPress">Matt Mullenweg</span>',
+		'<strong>to be linked</strong>' => '<a href="http://example.org/link">to be linked</a>',
+		'blank'          => '',
+		':WP:'           => "<a href='https://w.org'>WP</a> <!-- Replacement by <contact>person</contact> -->",
+		'example.com/wp-content/uploads' => 'example.org/wp-content/uploads',
+		':A&A:'          => 'Axis & Allies',
+		'は'             => 'Foo',
+	);
+
 	function setUp() {
 		parent::setUp();
 		$this->set_option();
@@ -18,7 +30,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	}
 
 
-	/**
+	/*
 	 *
 	 * DATA PROVIDERS
 	 *
@@ -33,21 +45,27 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		);
 	}
 
+	public static function get_comment_filters() {
+		return array(
+			array( 'get_comment_text' ),
+			array( 'get_comment_excerpt' ),
+		);
+	}
 
-	/**
+	public static function get_text_to_link() {
+		return array_map( function($v) { return array( $v ); }, array_keys( self::$text_to_link ) );
+	}
+
+
+	/*
 	 *
 	 * HELPER FUNCTIONS
 	 *
 	 */
 
+
 	function text_replacements( $term = '' ) {
-		$text_to_link = array(
-			':wp:' => 'WordPress',
-			":coffee2code:" => "<a href='http://coffee2code.com' title='coffee2code'>coffee2code</a>",
-			'Matt Mullenweg' => '<span title="Founder of WordPress">Matt Mullenweg</span>',
-			'<strong>to be linked</strong>' => '<a href="http://example.org/link">to be linked</a>',
-			'blank' => '',
-		);
+		$text_to_link = self::$text_to_link;
 
 		if ( ! empty( $term ) ) {
 			$text_to_link = isset( $text_to_link[ $term ] ) ? $text_to_link[ $term ] : '';
@@ -75,7 +93,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 
 	function add_text_to_replace( $text_to_replace ) {
 		$text_to_replace = (array) $text_to_replace;
-		$text_to_replace['bbPress'] = '<a href="http://bbpress.org">bbPress - Forum Software</a>';
+		$text_to_replace['bbPress'] = '<a href="https://bbpress.org">bbPress - Forum Software</a>';
 		return $text_to_replace;
 	}
 
@@ -85,12 +103,24 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	}
 
 
-	/**
+	/*
 	 *
 	 * TESTS
 	 *
 	 */
 
+
+	function test_class_exists() {
+		$this->assertTrue( class_exists( 'c2c_TextReplace' ) );
+	}
+
+	function test_version() {
+		$this->assertEquals( '3.6', c2c_TextReplace::get_instance()->version() );
+	}
+
+	function test_instance_object_is_returned() {
+		$this->assertTrue( is_a( c2c_TextReplace::get_instance(), 'c2c_TextReplace' ) );
+	}
 
 	function test_replaces_text() {
 		$expected = $this->expected_text( ':coffee2code:' );
@@ -101,6 +131,25 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( "$expected starts", $this->text_replace( ':coffee2code: starts' ) );
 
 		$this->assertEquals( $this->expected_text( 'Matt Mullenweg' ), $this->text_replace( 'Matt Mullenweg' ) );
+	}
+
+	/**
+	 * @dataProvider get_text_to_link
+	 */
+	function test_replaces_text_as_defined_in_setting( $text ) {
+		$this->assertEquals( $this->expected_text( $text ), $this->text_replace( $text ) );
+	}
+
+	function test_replaces_text_with_html_encoded_amp_ampersand() {
+		$this->assertEquals( $this->expected_text( ':A&A:' ), $this->text_replace( ':A&amp;A:' ) );
+	}
+
+	function test_replaces_text_with_html_encoded_038_ampersand() {
+		$this->assertEquals( $this->expected_text( ':A&A:' ), $this->text_replace( ':A&#038;A:' ) );
+	}
+
+	function test_replaces_multibyte_text() {
+		$this->assertEquals( '漢字Fooユニコード', $this->text_replace( '漢字はユニコード' ) );
 	}
 
 	function test_replaces_single_term_multiple_times() {
@@ -128,8 +177,33 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( $this->expected_text( '<strong>to be linked</strong>' ), $this->text_replace( '<strong>to be linked</strong>' ) );
 	}
 
+	function test_replace_with_html_comment() {
+		$expected = $this->expected_text( ':WP:' );
+
+		$this->assertEquals( $expected, $this->text_replace( ':WP:' ) );
+	}
+
 	function test_empty_replacement_removes_term() {
 		$this->assertEquals( '', $this->text_replace( 'blank' ) );
+	}
+
+	function test_does_not_replace_within_markup_attributes() {
+		$format = '<a href="http://%s/file.png">http://%s/file.png</a>';
+		$old    = 'example.com/wp-content/uploads';
+		$new    = $this->expected_text( $old );
+
+		$this->assertEquals(
+			sprintf(
+				$format,
+				$old,
+				$new
+			),
+			$this->text_replace( sprintf(
+				$format,
+				$old,
+				$old
+			) )
+		);
 	}
 
 	function test_replaces_with_case_sensitivity_by_default() {
@@ -202,7 +276,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 
 	function test_replaces_term_added_via_filter() {
 		$this->assertEquals( 'bbPress', $this->text_replace( 'bbPress' ) );
-		$expected = '<a href="http://bbpress.org">bbPress - Forum Software</a>';
+		$expected = '<a href="https://bbpress.org">bbPress - Forum Software</a>';
 		add_filter( 'c2c_text_replace', array( $this, 'add_text_to_replace' ) );
 
 		$this->assertEquals( $expected, $this->text_replace( 'bbPress' ) );
@@ -225,6 +299,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	function test_replace_applies_to_comments_via_filter() {
 		$expected = $this->expected_text( ':coffee2code:' );
 		$this->test_replace_does_not_apply_to_comments_by_default();
+
 		add_filter( 'c2c_text_replace_comments', '__return_true' );
 
 		$this->assertEquals( $expected, apply_filters( 'get_comment_text', ':coffee2code:' ) );
@@ -237,6 +312,19 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	function test_replace_applies_to_default_filters( $filter ) {
 		$expected = $this->expected_text( ':coffee2code:' );
 
+		$this->assertNotFalse( has_filter( $filter, array( c2c_TextReplace::get_instance(), 'text_replace' ), 12 ) );
+		$this->assertGreaterThan( 0, strpos( apply_filters( $filter, 'a :coffee2code:' ), $expected ) );
+	}
+
+	/**
+	 * @dataProvider get_comment_filters
+	 */
+	function test_replace_applies_to_comment_filters( $filter ) {
+		$expected = $this->expected_text( ':coffee2code:' );
+
+		add_filter( 'c2c_text_replace_comments', '__return_true' );
+
+		$this->assertNotFalse( has_filter( $filter, array( c2c_TextReplace::get_instance(), 'text_replace_comment_text' ), 11 ) );
 		$this->assertGreaterThan( 0, strpos( apply_filters( $filter, 'a :coffee2code:' ), $expected ) );
 	}
 

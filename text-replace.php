@@ -1,34 +1,35 @@
 <?php
 /**
+ * Plugin Name: Text Replace
+ * Version:     3.6
+ * Plugin URI:  http://coffee2code.com/wp-plugins/text-replace/
+ * Author:      Scott Reilly
+ * Author URI:  http://coffee2code.com/
+ * License:     GPLv2 or later
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain: text-replace
+ * Domain Path: /lang/
+ * Description: Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
+ *
+ * Compatible with WordPress 3.6+ through 4.1+.
+ *
+ * =>> Read the accompanying readme.txt file for instructions and documentation.
+ * =>> Also, visit the plugin's homepage for additional information and updates.
+ * =>> Or visit: https://wordpress.org/plugins/text-replace/
+ *
  * @package Text_Replace
  * @author Scott Reilly
- * @version 3.5.1
+ * @version 3.6
  */
+
 /*
-Plugin Name: Text Replace
-Version: 3.5.1
-Plugin URI: http://coffee2code.com/wp-plugins/text-replace/
-Author: Scott Reilly
-Author URI: http://coffee2code.com/
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: text-replace
-Domain Path: /lang/
-Description: Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
-
-Compatible with WordPress 3.6+ through 3.8+.
-
-=>> Read the accompanying readme.txt file for instructions and documentation.
-=>> Also, visit the plugin's homepage for additional information and updates.
-=>> Or visit: http://wordpress.org/plugins/text-replace/
-
-TODO:
-	* Facilitate multi-line replacement strings
-	* Shortcode and template tag to display listing of all supported text hovers (filterable)
+ * TODO:
+ * = Facilitate multi-line replacement strings
+ * - Shortcode and template tag (and widget?) to display listing of all supported text replacements (filterable)
 */
 
 /*
-	Copyright (c) 2004-2014 by Scott Reilly (aka coffee2code)
+	Copyright (c) 2004-2015 by Scott Reilly (aka coffee2code)
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
@@ -49,12 +50,14 @@ defined( 'ABSPATH' ) or die();
 
 if ( ! class_exists( 'c2c_TextReplace' ) ) :
 
-require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'c2c-plugin.php' );
+require_once( __DIR__ . DIRECTORY_SEPARATOR . 'c2c-plugin.php' );
 
-final class c2c_TextReplace extends C2C_Plugin_037 {
+final class c2c_TextReplace extends C2C_Plugin_039 {
 
 	/**
-	 * @var c2c_TextReplace The one true instance
+	 * The one true instance.
+	 *
+	 * @var c2c_TextReplace
 	 */
 	private static $instance;
 
@@ -64,17 +67,18 @@ final class c2c_TextReplace extends C2C_Plugin_037 {
 	 * @since 3.5
 	 */
 	public static function get_instance() {
-		if ( ! isset( self::$instance ) )
+		if ( ! isset( self::$instance ) ) {
 			self::$instance = new self();
+		}
 
 		return self::$instance;
 	}
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 */
 	protected function __construct() {
-		parent::__construct( '3.5.1', 'text-replace', 'c2c', __FILE__, array() );
+		parent::__construct( '3.6', 'text-replace', 'c2c', __FILE__, array() );
 		register_activation_hook( __FILE__, array( __CLASS__, 'activation' ) );
 
 		return self::$instance = $this;
@@ -85,7 +89,7 @@ final class c2c_TextReplace extends C2C_Plugin_037 {
 	 *
 	 * @since 3.1
 	 */
-	public function activation() {
+	public static function activation() {
 		register_uninstall_hook( __FILE__, array( __CLASS__, 'uninstall' ) );
 	}
 
@@ -102,8 +106,9 @@ final class c2c_TextReplace extends C2C_Plugin_037 {
 	 * @since 3.2.1
 	 *
 	 * @param string $old_version The version number of the old version of
-	 *        the plugin. '0.0' indicates no version previously stored
-	 * @param array $options Array of all plugin options
+	 *                            the plugin. '0.0' indicates no version
+	 *                            previously stored
+	 * @param array  $options     Array of all plugin options
 	 */
 	protected function handle_plugin_upgrade( $old_version, $options ) {
 		if ( version_compare( $old_version, '3.2.1', '<' ) ) {
@@ -123,7 +128,7 @@ final class c2c_TextReplace extends C2C_Plugin_037 {
 
 		$this->config = array(
 			'text_to_replace' => array( 'input' => 'textarea', 'datatype' => 'hash', 'default' => array(
-					":wp:" => "<a href='http://wordpress.org'>WordPress</a>",
+					":wp:" => "<a href='https://wordpress.org'>WordPress</a>",
 					":codex:" => "<a href='http://codex.wordpress.org'>WordPress Codex</a>",
 					":coffee2code:" => "<a href='http://coffee2code.com' title='coffee2code'>coffee2code</a>"
 				), 'allow_html' => true, 'no_wrap' => true, 'input_attributes' => 'rows="15" cols="40"',
@@ -131,15 +136,15 @@ final class c2c_TextReplace extends C2C_Plugin_037 {
 			),
 			'text_replace_comments' => array( 'input' => 'checkbox', 'default' => false,
 					'label' => __( 'Enable text replacement in comments?', $this->textdomain ),
-					'help' => ''
+					'help'  => ''
 			),
 			'replace_once' => array( 'input' => 'checkbox', 'default' => false,
-				'label' => __( 'Only text replace once per term per post?', $this->textdomain ),
-				'help' => __( 'If checked, then each term will only be replaced the first time it appears in a post.', $this->textdomain )
+					'label' => __( 'Only text replace once per term per post?', $this->textdomain ),
+					'help'  => __( 'If checked, then each term will only be replaced the first time it appears in a post.', $this->textdomain )
 			),
 			'case_sensitive' => array( 'input' => 'checkbox', 'default' => true,
 					'label' => __( 'Case sensitive text replacement?', $this->textdomain ),
-					'help' => __( 'If unchecked, then a replacement for :wp: would also replace :WP:.', $this->textdomain )
+					'help'  => __( 'If unchecked, then a replacement for :wp: would also replace :WP:.', $this->textdomain )
 			)
 		);
 	}
@@ -160,10 +165,9 @@ final class c2c_TextReplace extends C2C_Plugin_037 {
 	}
 
 	/**
-	 * Outputs the text above the setting form
+	 * Outputs the text above the setting form.
 	 *
-	 * @param string $localized_heading_text (optional) Localized page heading text.
-	 * @return void (Text will be echoed.)
+	 * @param string $localized_heading_text Optional. Localized page heading text.
 	 */
 	public function options_page_description( $localized_heading_text = '' ) {
 		parent::options_page_description( __( 'Text Replace Settings', $this->textdomain ) );
@@ -213,9 +217,9 @@ final class c2c_TextReplace extends C2C_Plugin_037 {
 	}
 
 	/**
-	 * Perform text replacements
+	 * Perform text replacements.
 	 *
-	 * @param string $text Text to be processed for text replacements
+	 * @param string  $text Text to be processed for text replacements
 	 * @return string Text with replacements already processed
 	 */
 	public function text_replace( $text ) {
@@ -224,11 +228,19 @@ final class c2c_TextReplace extends C2C_Plugin_037 {
 		$case_sensitive  = apply_filters( 'c2c_text_replace_case_sensitive', $options['case_sensitive'] );
 		$limit           = apply_filters( 'c2c_text_replace_once',           $options['replace_once'] ) ? 1 : -1;
 		$preg_flags      = $case_sensitive ? 's' : 'si';
+		$mb_regex_encoding = null;
 
 		$text = ' ' . $text . ' ';
 
-		foreach ( $text_to_replace as $old_text => $new_text ) {
+		// Store original mb_regex_encoding and then set it to UTF-8.
+		if ( function_exists( 'mb_regex_encoding' ) ) {
+			$mb_regex_encoding = mb_regex_encoding();
+			mb_regex_encoding( 'UTF-8' );
+		}
 
+		foreach ( (array) $text_to_replace as $old_text => $new_text ) {
+
+			// If the text to be replaced includes a '<' or '>', do direct string replacement.
 			if ( strpos( $old_text, '<' ) !== false || strpos( $old_text, '>' ) !== false ) {
 				// If only doing one replacement, need to handle specially since there is
 				// no built-in, non-preg_replace method to do a single replacement.
@@ -244,11 +256,35 @@ final class c2c_TextReplace extends C2C_Plugin_037 {
 						$text = str_ireplace( $old_text, $new_text, $text );
 					}
 				}
-			} else {
-				$old_text = preg_quote( $old_text, '|' );
-				$text = preg_replace( "|(?!<.*?)$old_text(?![^<>]*?>)|$preg_flags", addcslashes( $new_text, '\\$' ), $text, $limit );
+			}
+			// Otherwise use preg_replace() to avoid replacing text inside HTML tags.
+			else {
+				$old_text = preg_quote( $old_text, '~' );
+				$new_text = addcslashes( $new_text, '\\$' );
+
+				// If the string to be linked includes '&', consider '&amp;' and '&#038;' equivalents.
+				// Visual editor will convert the former, but users aren't aware of the conversion.
+				if ( false !== strpos( $old_text, '&' ) ) {
+					$old_text = str_replace( '&', '&(amp;|#038;)?', $old_text );
+				}
+
+				$regex = "(?!<.*?){$old_text}(?![^<>]*?>)";
+
+				// If the text to be replaced has multibyte character(s), use
+				// mb_ereg_replace() if possible.
+				if ( function_exists( 'mb_ereg_replace' ) && function_exists( 'mb_strlen' ) && ( strlen( $old_text ) != mb_strlen( $old_text ) ) ) {
+					// NOTE: mb_ereg_replace() does not support limiting the number of replacements.
+					$text = mb_ereg_replace( $regex, $new_text, $text, $preg_flags );
+				} else {
+					$text = preg_replace( "~{$regex}~{$preg_flags}", $new_text, $text, $limit );
+				}
 			}
 
+		}
+
+		// Restore original mb_regexp_encoding, if changed.
+		if ( $mb_regex_encoding ) {
+			mb_regex_encoding( $mb_regex_encoding );
 		}
 
 		return trim( $text );
