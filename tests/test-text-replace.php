@@ -114,8 +114,12 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertTrue( class_exists( 'c2c_TextReplace' ) );
 	}
 
+	function test_plugin_framework_class_name() {
+		$this->assertTrue( class_exists( 'C2C_Plugin_039' ) );
+	}
+
 	function test_version() {
-		$this->assertEquals( '3.6', c2c_TextReplace::get_instance()->version() );
+		$this->assertEquals( '3.6.1', c2c_TextReplace::get_instance()->version() );
 	}
 
 	function test_instance_object_is_returned() {

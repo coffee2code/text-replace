@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Text Replace
- * Version:     3.6
+ * Version:     3.6.1
  * Plugin URI:  http://coffee2code.com/wp-plugins/text-replace/
  * Author:      Scott Reilly
  * Author URI:  http://coffee2code.com/
@@ -19,7 +19,7 @@
  *
  * @package Text_Replace
  * @author Scott Reilly
- * @version 3.6
+ * @version 3.6.1
  */
 
 /*
@@ -50,7 +50,7 @@ defined( 'ABSPATH' ) or die();
 
 if ( ! class_exists( 'c2c_TextReplace' ) ) :
 
-require_once( __DIR__ . DIRECTORY_SEPARATOR . 'c2c-plugin.php' );
+require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'c2c-plugin.php' );
 
 final class c2c_TextReplace extends C2C_Plugin_039 {
 
@@ -78,7 +78,7 @@ final class c2c_TextReplace extends C2C_Plugin_039 {
 	 * Constructor.
 	 */
 	protected function __construct() {
-		parent::__construct( '3.6', 'text-replace', 'c2c', __FILE__, array() );
+		parent::__construct( '3.6.1', 'text-replace', 'c2c', __FILE__, array() );
 		register_activation_hook( __FILE__, array( __CLASS__, 'activation' ) );
 
 		return self::$instance = $this;

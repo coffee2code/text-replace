@@ -6,7 +6,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.6
 Tested up to: 4.1
-Stable tag: 3.6
+Stable tag: 3.6.1
 
 Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
 
@@ -208,6 +208,9 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 
 == Changelog ==
 
+= 3.6.1 (2015-02-19) =
+* Revert back to using `dirname(__FILE__)`; __DIR__ is only PHP 5.3+
+
 = 3.6 (2015-02-18) =
 * Improve support of '&' in text to be replaced by recognizing its encoded alternatives ('&amp;', '&#038;') as equivalents
 * Support replacing multibyte strings. NOTE: Multibyte strings don't honor limiting their replacement within a piece of text to once
@@ -389,6 +392,9 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 
 
 == Upgrade Notice ==
+
+= 3.6.1 =
+Bugfix release: revert use of __DIR__ constant since it isn't supported on older installations (PHP 5.2)
 
 = 3.6 =
 Recommended update: improved support of '&' in text to be replaced; added support for replacing multibyte text; updated plugin framework to version 039; noted compatibility through WP 4.1+; added plugin icon
