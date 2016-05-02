@@ -4,9 +4,9 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: text, replace, shortcut, shortcuts, post, post content, coffee2code
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Requires at least: 3.6
-Tested up to: 4.1
-Stable tag: 3.6.1
+Requires at least: 4.1
+Tested up to: 4.5
+Stable tag: 3.7
 
 Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
 
@@ -122,7 +122,13 @@ Arguments:
 
 Example:
 
-`// Enable text replacement for post/page titles
+`
+/**
+ * Enable text replacement for post/page titles.
+ *
+ * @param array $filters Filters handled by the Text Replace plugin.
+ * @return array
+ */
 function more_text_replacements( $filters ) {
 	$filters[] = 'the_title'; // Here you could put in the name of any filter you want
 	return $filters;
@@ -153,7 +159,13 @@ Arguments:
 
 Example:
 
-`// Add dynamic shortcuts
+`
+/**
+ * Add dynamic shortcuts.
+ *
+ * @param array $replacements Array of replacement terms and their replacement text.
+ * @return array
+ */
 function my_text_replacements( $replacements ) {
 	// Add replacement
 	$replacements[':matt:'] => 'Matt Mullenweg';
@@ -207,6 +219,28 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 
 
 == Changelog ==
+
+= 3.7 (2016-05-01) =
+* Change: Update plugin framework to 042:
+    * Fix error message when text replacement field has trailing blank line.
+    * Change class name to c2c_ObfuscateEmail_Plugin_041 to be plugin-specific.
+    * Set textdomain using a string instead of a variable.
+    * Don't load textdomain from file.
+    * Change admin page header from 'h2' to 'h1' tag.
+    * Add `c2c_plugin_version()`.
+    * Formatting improvements to inline docs.
+* Change: Add support for language packs:
+    * Set textdomain using a string instead of a variable.
+    * Remove .pot file and /lang subdirectory.
+    * Remove 'Domain Path' from plugin header.
+* Change: Add many more unit tests.
+* New: Add LICENSE file.
+* New: Add empty index.php to prevent files from being listed if web server has enabled directory listings.
+* Change: Minor code reformatting.
+* Change: Add proper docblocks to examples in readme.txt.
+* Change: Note compatibility through WP 4.5+.
+* Change: Dropped compatibility with version of WP older than 4.1.
+* Change: Update copyright date (2016).
 
 = 3.6.1 (2015-02-19) =
 * Revert back to using `dirname(__FILE__)`; __DIR__ is only PHP 5.3+
@@ -392,6 +426,9 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 
 
 == Upgrade Notice ==
+
+= 3.7 =
+Minor update: improved support for localization; updated plugin framework to 042; verified compatibility through WP 4.5; dropped compatibility with WP older than 4.1; updated copyright date (2016)
 
 = 3.6.1 =
 Bugfix release: revert use of __DIR__ constant since it isn't supported on older installations (PHP 5.2)

@@ -1,5 +1,7 @@
 <?php
 
+defined( 'ABSPATH' ) or die();
+
 class Text_Replace_Test extends WP_UnitTestCase {
 
 	protected static $text_to_link = array(
@@ -7,19 +9,22 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		":coffee2code:"  => "<a href='http://coffee2code.com' title='coffee2code'>coffee2code</a>",
 		'Matt Mullenweg' => '<span title="Founder of WordPress">Matt Mullenweg</span>',
 		'<strong>to be linked</strong>' => '<a href="http://example.org/link">to be linked</a>',
+		'comma, here'    => 'Yes, a comma',
+		'"quoted text"'  => 'quoted "text"',
 		'blank'          => '',
 		':WP:'           => "<a href='https://w.org'>WP</a> <!-- Replacement by <contact>person</contact> -->",
 		'example.com/wp-content/uploads' => 'example.org/wp-content/uploads',
 		':A&A:'          => 'Axis & Allies',
 		'は'             => 'Foo',
+		'@macnfoco'      => "Mac'N",
 	);
 
-	function setUp() {
+	public function setUp() {
 		parent::setUp();
 		$this->set_option();
 	}
 
-	function tearDown() {
+	public function tearDown() {
 		parent::tearDown();
 
 		remove_filter( 'c2c_text_replace',                array( $this, 'add_text_to_replace' ) );
@@ -57,14 +62,14 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	}
 
 
-	/*
-	 *
-	 * HELPER FUNCTIONS
-	 *
-	 */
+	//
+	//
+	// HELPER FUNCTIONS
+	//
+	//
 
 
-	function text_replacements( $term = '' ) {
+	protected function text_replacements( $term = '' ) {
 		$text_to_link = self::$text_to_link;
 
 		if ( ! empty( $term ) ) {
@@ -74,7 +79,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		return $text_to_link;
 	}
 
-	function set_option( $settings = array() ) {
+	protected function set_option( $settings = array() ) {
 		$defaults = array(
 			'text_to_replace' => $this->text_replacements(),
 			'case_sensitive'  => true,
@@ -83,50 +88,54 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		c2c_TextReplace::get_instance()->update_option( $settings, true );
 	}
 
-	function text_replace( $text ) {
+	protected function text_replace( $text ) {
 		return c2c_TextReplace::get_instance()->text_replace( $text );
 	}
 
-	function expected_text( $term ) {
+	protected function expected_text( $term ) {
 		return $this->text_replacements( $term );
 	}
 
-	function add_text_to_replace( $text_to_replace ) {
+	public function add_text_to_replace( $text_to_replace ) {
 		$text_to_replace = (array) $text_to_replace;
 		$text_to_replace['bbPress'] = '<a href="https://bbpress.org">bbPress - Forum Software</a>';
 		return $text_to_replace;
 	}
 
-	function add_custom_filter( $filters ) {
+	public function add_custom_filter( $filters ) {
 		$filters[] = 'custom_filter';
 		return $filters;
 	}
 
 
-	/*
-	 *
-	 * TESTS
-	 *
-	 */
+	//
+	//
+	// TESTS
+	//
+	//
 
 
-	function test_class_exists() {
+	public function test_class_exists() {
 		$this->assertTrue( class_exists( 'c2c_TextReplace' ) );
 	}
 
-	function test_plugin_framework_class_name() {
-		$this->assertTrue( class_exists( 'C2C_Plugin_039' ) );
+	public function test_plugin_framework_class_name() {
+		$this->assertTrue( class_exists( 'c2c_TextReplace_Plugin_042' ) );
 	}
 
-	function test_version() {
-		$this->assertEquals( '3.6.1', c2c_TextReplace::get_instance()->version() );
+	public function test_plugin_framework_version() {
+		$this->assertEquals( '042', c2c_TextReplace::get_instance()->c2c_plugin_version() );
 	}
 
-	function test_instance_object_is_returned() {
+	public function test_version() {
+		$this->assertEquals( '3.7', c2c_TextReplace::get_instance()->version() );
+	}
+
+	public function test_instance_object_is_returned() {
 		$this->assertTrue( is_a( c2c_TextReplace::get_instance(), 'c2c_TextReplace' ) );
 	}
 
-	function test_replaces_text() {
+	public function test_replaces_text() {
 		$expected = $this->expected_text( ':coffee2code:' );
 
 		$this->assertEquals( $expected, $this->text_replace( ':coffee2code:' ) );
@@ -140,36 +149,36 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	/**
 	 * @dataProvider get_text_to_link
 	 */
-	function test_replaces_text_as_defined_in_setting( $text ) {
+	public function test_replaces_text_as_defined_in_setting( $text ) {
 		$this->assertEquals( $this->expected_text( $text ), $this->text_replace( $text ) );
 	}
 
-	function test_replaces_text_with_html_encoded_amp_ampersand() {
+	public function test_replaces_text_with_html_encoded_amp_ampersand() {
 		$this->assertEquals( $this->expected_text( ':A&A:' ), $this->text_replace( ':A&amp;A:' ) );
 	}
 
-	function test_replaces_text_with_html_encoded_038_ampersand() {
+	public function test_replaces_text_with_html_encoded_038_ampersand() {
 		$this->assertEquals( $this->expected_text( ':A&A:' ), $this->text_replace( ':A&#038;A:' ) );
 	}
 
-	function test_replaces_multibyte_text() {
+	public function test_replaces_multibyte_text() {
 		$this->assertEquals( '漢字Fooユニコード', $this->text_replace( '漢字はユニコード' ) );
 	}
 
-	function test_replaces_single_term_multiple_times() {
+	public function test_replaces_single_term_multiple_times() {
 		$expected = $this->expected_text( ':coffee2code:' );
 
 		$this->assertEquals( "$expected $expected $expected", $this->text_replace( ':coffee2code: :coffee2code: :coffee2code:' ) );
 	}
 
-	function test_replaces_html_multiple_times() {
+	public function test_replaces_html_multiple_times() {
 		$orig = '<strong>to be linked</strong>';
 		$expected = $this->expected_text( $orig );
 
 		$this->assertEquals( "$expected $expected $expected", $this->text_replace( "$orig $orig $orig" ) );
 	}
 
-	function test_replaces_substrings() {
+	public function test_replaces_substrings() {
 		$expected = $this->expected_text( ':coffee2code:' );
 
 		$this->assertEquals( 'x' . $expected,       $this->text_replace( 'x:coffee2code:' ) );
@@ -177,21 +186,21 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( $expected . 'z',       $this->text_replace( ':coffee2code:z' ) );
 	}
 
-	function test_replaces_html() {
+	public function test_replaces_html() {
 		$this->assertEquals( $this->expected_text( '<strong>to be linked</strong>' ), $this->text_replace( '<strong>to be linked</strong>' ) );
 	}
 
-	function test_replace_with_html_comment() {
+	public function test_replace_with_html_comment() {
 		$expected = $this->expected_text( ':WP:' );
 
 		$this->assertEquals( $expected, $this->text_replace( ':WP:' ) );
 	}
 
-	function test_empty_replacement_removes_term() {
+	public function test_empty_replacement_removes_term() {
 		$this->assertEquals( '', $this->text_replace( 'blank' ) );
 	}
 
-	function test_does_not_replace_within_markup_attributes() {
+	public function test_does_not_replace_within_markup_attributes() {
 		$format = '<a href="http://%s/file.png">http://%s/file.png</a>';
 		$old    = 'example.com/wp-content/uploads';
 		$new    = $this->expected_text( $old );
@@ -210,7 +219,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		);
 	}
 
-	function test_replaces_with_case_sensitivity_by_default() {
+	public function test_replaces_with_case_sensitivity_by_default() {
 		$expected = $this->expected_text( ':coffee2code:' );
 
 		$this->assertEquals( $expected,       $this->text_replace( ':coffee2code:' ) );
@@ -218,7 +227,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( ':COFFEE2CODE:', $this->text_replace( ':COFFEE2CODE:' ) );
 	}
 
-	function test_replaces_once_via_setting() {
+	public function test_replaces_once_via_setting() {
 		$expected = $this->expected_text( ':coffee2code:' );
 		$this->test_replaces_single_term_multiple_times();
 		$this->set_option( array( 'replace_once' => true ) );
@@ -226,7 +235,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( "$expected :coffee2code: :coffee2code:", $this->text_replace( ':coffee2code: :coffee2code: :coffee2code:' ) );
 	}
 
-	function test_replaces_once_via_filter() {
+	public function test_replaces_once_via_filter() {
 		$expected = $this->expected_text( ':coffee2code:' );
 		$this->test_replaces_single_term_multiple_times();
 		add_filter( 'c2c_text_replace_once', '__return_true' );
@@ -234,7 +243,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( "$expected :coffee2code: :coffee2code:", $this->text_replace( ':coffee2code: :coffee2code: :coffee2code:' ) );
 	}
 
-	function test_replaces_html_once_when_replace_once_is_true() {
+	public function test_replaces_html_once_when_replace_once_is_true() {
 		$orig = '<strong>to be linked</strong>';
 		$expected = $this->expected_text( $orig );
 		$this->set_option( array( 'replace_once' => true ) );
@@ -242,7 +251,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( "$expected $orig $orig", $this->text_replace( "$orig $orig $orig" ) );
 	}
 
-	function test_replaces_with_case_insensitivity_via_setting() {
+	public function test_replaces_with_case_insensitivity_via_setting() {
 		$expected = $this->expected_text( ':coffee2code:' );
 		$this->test_replaces_with_case_sensitivity_by_default();
 		$this->set_option( array( 'case_sensitive' => false ) );
@@ -252,7 +261,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( $expected, $this->text_replace( ':COFFEE2CODE:' ) );
 	}
 
-	function test_replaces_with_case_insensitivity_via_filter() {
+	public function test_replaces_with_case_insensitivity_via_filter() {
 		$expected = $this->expected_text( ':coffee2code:' );
 		$this->test_replaces_with_case_sensitivity_by_default();
 		add_filter( 'c2c_text_replace_case_sensitive', '__return_false' );
@@ -262,7 +271,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( $expected, $this->text_replace( ':COFFEE2CODE:' ) );
 	}
 
-	function test_replaces_html_when_case_insensitive_is_true() {
+	public function test_replaces_html_when_case_insensitive_is_true() {
 		$expected = $this->expected_text( '<strong>to be linked</strong>' );
 		$this->set_option( array( 'case_sensitive' => false ) );
 
@@ -270,7 +279,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( $expected, $this->text_replace( '<strong>To Be Linked</strong>' ) );
 	}
 
-	function test_replaces_html_when_case_insensitive_and_replace_once_are_true() {
+	public function test_replaces_html_when_case_insensitive_and_replace_once_are_true() {
 		$expected = $this->expected_text( '<strong>to be linked</strong>' );
 		$this->set_option( array( 'case_sensitive' => false, 'replace_once' => true ) );
 
@@ -278,7 +287,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( "$expected $str", $this->text_replace( "$str $str" ) );
 	}
 
-	function test_replaces_term_added_via_filter() {
+	public function test_replaces_term_added_via_filter() {
 		$this->assertEquals( 'bbPress', $this->text_replace( 'bbPress' ) );
 		$expected = '<a href="https://bbpress.org">bbPress - Forum Software</a>';
 		add_filter( 'c2c_text_replace', array( $this, 'add_text_to_replace' ) );
@@ -286,12 +295,12 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( $expected, $this->text_replace( 'bbPress' ) );
 	}
 
-	function test_replace_does_not_apply_to_comments_by_default() {
+	public function test_replace_does_not_apply_to_comments_by_default() {
 		$this->assertEquals( ':coffee2code:', apply_filters( 'get_comment_text', ':coffee2code:' ) );
 		$this->assertEquals( ':coffee2code:', apply_filters( 'get_comment_excerpt', ':coffee2code:' ) );
 	}
 
-	function test_replace_applies_to_comments_via_setting() {
+	public function test_replace_applies_to_comments_via_setting() {
 		$expected = $this->expected_text( ':coffee2code:' );
 		$this->test_replace_does_not_apply_to_comments_by_default();
 		$this->set_option( array( 'text_replace_comments' => true ) );
@@ -300,7 +309,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( $expected, apply_filters( 'get_comment_excerpt', ':coffee2code:' ) );
 	}
 
-	function test_replace_applies_to_comments_via_filter() {
+	public function test_replace_applies_to_comments_via_filter() {
 		$expected = $this->expected_text( ':coffee2code:' );
 		$this->test_replace_does_not_apply_to_comments_by_default();
 
@@ -313,7 +322,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	/**
 	 * @dataProvider get_default_filters
 	 */
-	function test_replace_applies_to_default_filters( $filter ) {
+	public function test_replace_applies_to_default_filters( $filter ) {
 		$expected = $this->expected_text( ':coffee2code:' );
 
 		$this->assertNotFalse( has_filter( $filter, array( c2c_TextReplace::get_instance(), 'text_replace' ), 12 ) );
@@ -323,7 +332,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	/**
 	 * @dataProvider get_comment_filters
 	 */
-	function test_replace_applies_to_comment_filters( $filter ) {
+	public function test_replace_applies_to_comment_filters( $filter ) {
 		$expected = $this->expected_text( ':coffee2code:' );
 
 		add_filter( 'c2c_text_replace_comments', '__return_true' );
@@ -332,7 +341,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertGreaterThan( 0, strpos( apply_filters( $filter, 'a :coffee2code:' ), $expected ) );
 	}
 
-	function test_replace_applies_to_custom_filter_via_filter() {
+	public function test_replace_applies_to_custom_filter_via_filter() {
 		$this->assertEquals( ':coffee2code:', apply_filters( 'custom_filter', ':coffee2code:' ) );
 
 		add_filter( 'c2c_text_replace_filters', array( $this, 'add_custom_filter' ) );
@@ -342,4 +351,14 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( $this->expected_text( ':coffee2code:' ), apply_filters( 'custom_filter', ':coffee2code:' ) );
 	}
 
+	public function test_uninstall_deletes_option() {
+		$option = 'c2c_text_replace';
+		c2c_TextReplace::get_instance()->get_options();
+
+		$this->assertNotFalse( get_option( $option ) );
+
+		c2c_TextReplace::uninstall();
+
+		$this->assertFalse( get_option( $option ) );
+	}
 }

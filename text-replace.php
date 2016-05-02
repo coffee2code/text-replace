@@ -1,25 +1,24 @@
 <?php
 /**
  * Plugin Name: Text Replace
- * Version:     3.6.1
+ * Version:     3.7
  * Plugin URI:  http://coffee2code.com/wp-plugins/text-replace/
  * Author:      Scott Reilly
  * Author URI:  http://coffee2code.com/
  * License:     GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: text-replace
- * Domain Path: /lang/
  * Description: Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
  *
- * Compatible with WordPress 3.6+ through 4.1+.
+ * Compatible with WordPress 3.6+ through 4.5+.
  *
  * =>> Read the accompanying readme.txt file for instructions and documentation.
  * =>> Also, visit the plugin's homepage for additional information and updates.
  * =>> Or visit: https://wordpress.org/plugins/text-replace/
  *
  * @package Text_Replace
- * @author Scott Reilly
- * @version 3.6.1
+ * @author  Scott Reilly
+ * @version 3.7
  */
 
 /*
@@ -29,7 +28,7 @@
 */
 
 /*
-	Copyright (c) 2004-2015 by Scott Reilly (aka coffee2code)
+	Copyright (c) 2004-2016 by Scott Reilly (aka coffee2code)
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
@@ -52,7 +51,7 @@ if ( ! class_exists( 'c2c_TextReplace' ) ) :
 
 require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'c2c-plugin.php' );
 
-final class c2c_TextReplace extends C2C_Plugin_039 {
+final class c2c_TextReplace extends c2c_TextReplace_Plugin_042 {
 
 	/**
 	 * The one true instance.
@@ -78,7 +77,7 @@ final class c2c_TextReplace extends C2C_Plugin_039 {
 	 * Constructor.
 	 */
 	protected function __construct() {
-		parent::__construct( '3.6.1', 'text-replace', 'c2c', __FILE__, array() );
+		parent::__construct( '3.7', 'text-replace', 'c2c', __FILE__, array() );
 		register_activation_hook( __FILE__, array( __CLASS__, 'activation' ) );
 
 		return self::$instance = $this;
@@ -123,29 +122,42 @@ final class c2c_TextReplace extends C2C_Plugin_039 {
 	 * Initializes the plugin's configuration and localizable text variables.
 	 */
 	protected function load_config() {
-		$this->name      = __( 'Text Replace', $this->textdomain );
-		$this->menu_name = __( 'Text Replace', $this->textdomain );
+		$this->name      = __( 'Text Replace', 'text-replace' );
+		$this->menu_name = __( 'Text Replace', 'text-replace' );
 
 		$this->config = array(
-			'text_to_replace' => array( 'input' => 'textarea', 'datatype' => 'hash', 'default' => array(
-					":wp:" => "<a href='https://wordpress.org'>WordPress</a>",
-					":codex:" => "<a href='http://codex.wordpress.org'>WordPress Codex</a>",
+			'text_to_replace' => array(
+				'input'            => 'textarea',
+				'datatype'         => 'hash',
+				'default'          => array(
+					":wp:"          => "<a href='https://wordpress.org'>WordPress</a>",
+					":codex:"       => "<a href='http://codex.wordpress.org'>WordPress Codex</a>",
 					":coffee2code:" => "<a href='http://coffee2code.com' title='coffee2code'>coffee2code</a>"
-				), 'allow_html' => true, 'no_wrap' => true, 'input_attributes' => 'rows="15" cols="40"',
-				'label' => '', 'help' => ''
+				),
+				'allow_html'       => true,
+				'no_wrap'          => true,
+				'input_attributes' => 'rows="15" cols="40"',
+				'label'            => '',
+				'help'             => '',
 			),
-			'text_replace_comments' => array( 'input' => 'checkbox', 'default' => false,
-					'label' => __( 'Enable text replacement in comments?', $this->textdomain ),
-					'help'  => ''
+			'text_replace_comments' => array(
+				'input'            => 'checkbox',
+				'default'          => false,
+				'label'            => __( 'Enable text replacement in comments?', 'text-replace' ),
+				'help'             => '',
 			),
-			'replace_once' => array( 'input' => 'checkbox', 'default' => false,
-					'label' => __( 'Only text replace once per term per post?', $this->textdomain ),
-					'help'  => __( 'If checked, then each term will only be replaced the first time it appears in a post.', $this->textdomain )
+			'replace_once' => array(
+				'input'            => 'checkbox',
+				'default'          => false,
+				'label'            => __( 'Only text replace once per term per post?', 'text-replace' ),
+				'help'             => __( 'If checked, then each term will only be replaced the first time it appears in a post.', 'text-replace' ),
 			),
-			'case_sensitive' => array( 'input' => 'checkbox', 'default' => true,
-					'label' => __( 'Case sensitive text replacement?', $this->textdomain ),
-					'help'  => __( 'If unchecked, then a replacement for :wp: would also replace :WP:.', $this->textdomain )
-			)
+			'case_sensitive' => array(
+				'input'            => 'checkbox',
+				'default'          => true,
+				'label'            => __( 'Case sensitive text replacement?', 'text-replace' ),
+				'help'             => __( 'If unchecked, then a replacement for :wp: would also replace :WP:.', 'text-replace' ),
+			),
 		);
 	}
 
@@ -170,31 +182,31 @@ final class c2c_TextReplace extends C2C_Plugin_039 {
 	 * @param string $localized_heading_text Optional. Localized page heading text.
 	 */
 	public function options_page_description( $localized_heading_text = '' ) {
-		parent::options_page_description( __( 'Text Replace Settings', $this->textdomain ) );
+		parent::options_page_description( __( 'Text Replace Settings', 'text-replace' ) );
 
-		echo '<p>' . __( 'Text Replace is a plugin that allows you to replace text with other text in posts, etc. Very handy to create shortcuts to commonly-typed and/or lengthy text/HTML, or for smilies.', $this->textdomain ) . '</p>';
+		echo '<p>' . __( 'Text Replace is a plugin that allows you to replace text with other text in posts, etc. Very handy to create shortcuts to commonly-typed and/or lengthy text/HTML, or for smilies.', 'text-replace' ) . '</p>';
 		echo '<div class="c2c-hr">&nbsp;</div>';
-		echo '<h3>' . __( 'Shortcuts and text replacements', $this->textdomain ) . '</h3>';
-		echo '<p>' . __( 'Define shortcuts and text replacement expansions here. The format should be like this:', $this->textdomain ) . '</p>';
+		echo '<h3>' . __( 'Shortcuts and text replacements', 'text-replace' ) . '</h3>';
+		echo '<p>' . __( 'Define shortcuts and text replacement expansions here. The format should be like this:', 'text-replace' ) . '</p>';
 		echo "<blockquote><code>:wp: => &lt;a href='http://wordpress.org'>WordPress&lt;/a></code></blockquote>";
-		echo '<p>' . __( 'Where <code>:wp:</code> is the shortcut you intend to use in your posts and the <code>&lt;a href=\'http://wordpress.org\'>WordPress&lt;/a></code> would be what you want the shortcut to be replaced with when the post is shown on your site.', $this->textdomain ) . '</p>';
-		echo '<p>' . __( 'Other considerations:', $this->textdomain ) . '</p>';
+		echo '<p>' . __( 'Where <code>:wp:</code> is the shortcut you intend to use in your posts and the <code>&lt;a href=\'http://wordpress.org\'>WordPress&lt;/a></code> would be what you want the shortcut to be replaced with when the post is shown on your site.', 'text-replace' ) . '</p>';
+		echo '<p>' . __( 'Other considerations:', 'text-replace' ) . '</p>';
 		echo '<ul class="c2c-plugin-list"><li>';
-		echo __( 'List the more specific matches early, to avoid stomping on another of your shortcuts.  For example, if you have both <code>:p</code> and <code>:pout:</code> as shortcuts, put <code>:pout:</code> first; otherwise, the <code>:p</code> will match against all the <code>:pout:</code> in your text.', $this->textdomain );
+		echo __( 'List the more specific matches early, to avoid stomping on another of your shortcuts.  For example, if you have both <code>:p</code> and <code>:pout:</code> as shortcuts, put <code>:pout:</code> first; otherwise, the <code>:p</code> will match against all the <code>:pout:</code> in your text.', 'text-replace' );
 		echo '</li><li>';
-		echo __( 'Be careful not to define text that could match partially when you don\'t want it to:<br />i.e.  <code>Me => Scott</code> would also inadvertently change "Men" to be "Scottn"', $this->textdomain );
+		echo __( 'Be careful not to define text that could match partially when you don\'t want it to:<br />i.e.  <code>Me => Scott</code> would also inadvertently change "Men" to be "Scottn"', 'text-replace' );
 		echo '</li><li>';
-		echo __( 'If you intend to use this plugin to handle smilies, you should probably disable WordPress\'s default smilie handler.', $this->textdomain );
+		echo __( 'If you intend to use this plugin to handle smilies, you should probably disable WordPress\'s default smilie handler.', 'text-replace' );
 		echo '</li><li>';
-		echo __( 'Text inside of HTML tags (such as tag names and attributes) will not be matched. So, for example, you can\'t expect the :mycss: shortcut to work in: &lt;a href="" :mycss:&gt;text&lt;/a&gt;.', $this->textdomain );
+		echo __( 'Text inside of HTML tags (such as tag names and attributes) will not be matched. So, for example, you can\'t expect the :mycss: shortcut to work in: &lt;a href="" :mycss:&gt;text&lt;/a&gt;.', 'text-replace' );
 		echo '</li><li>';
-		echo __( 'HTML is allowed.', $this->textdomain );
+		echo __( 'HTML is allowed.', 'text-replace' );
 		echo '</li><li>';
-		echo __( 'Only use quotes it they are actual part of the original or replacement strings.', $this->textdomain );
+		echo __( 'Only use quotes it they are actual part of the original or replacement strings.', 'text-replace' );
 		echo '</li><li><strong><em>';
-		echo __( 'Define only one shortcut per line.', $this->textdomain );
+		echo __( 'Define only one shortcut per line.', 'text-replace' );
 		echo '</em></strong></li><li><strong><em>';
-		echo __( 'Shortcuts must not span multiple lines.', $this->textdomain );
+		echo __( 'Shortcuts must not span multiple lines.', 'text-replace' );
 		echo '</em></strong></li></ul>';
 	}
 
