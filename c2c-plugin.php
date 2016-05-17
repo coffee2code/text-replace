@@ -2,7 +2,7 @@
 /**
  * @package C2C_Plugins
  * @author  Scott Reilly
- * @version 042
+ * @version 043
  */
 /*
 Basis for other plugins.
@@ -31,9 +31,9 @@ Compatible with WordPress 3.6+ through 4.5+.
 
 defined( 'ABSPATH' ) or die();
 
-if ( ! class_exists( 'c2c_TextReplace_Plugin_042' ) ) :
+if ( ! class_exists( 'c2c_TextReplace_Plugin_043' ) ) :
 
-abstract class c2c_TextReplace_Plugin_042 {
+abstract class c2c_TextReplace_Plugin_043 {
 	protected $plugin_css_version = '009';
 	protected $options            = array();
 	protected $options_from_db    = '';
@@ -65,7 +65,7 @@ abstract class c2c_TextReplace_Plugin_042 {
 	 * @since 040
 	 */
 	public function c2c_plugin_version() {
-		return '042';
+		return '043';
 	}
 
 	/**
@@ -409,8 +409,14 @@ abstract class c2c_TextReplace_Plugin_042 {
 								if ( ! empty( $val ) && $input != 'select' && !is_array( $val ) ) {
 									$new_values = array();
 									foreach ( explode( "\n", $val ) AS $line ) {
+										// TODO: It's possible to allow multi-line replacement text, in which case
+										// instead of skipping invalid looking lines, simply append them to the
+										// previous line, joined with "\n".
+										if ( false === strpos( $line, '=>' ) ) {
+											continue;
+										}
 										list( $shortcut, $text ) = array_map( 'trim', explode( "=>", $line, 2 ) );
-										if ( ! empty( $shortcut ) ) {
+										if ( $shortcut && $text ) {
 											$new_values[str_replace( '\\', '', $shortcut )] = str_replace( '\\', '', $text );
 										}
 									}

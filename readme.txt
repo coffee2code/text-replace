@@ -221,9 +221,10 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 == Changelog ==
 
 = 3.7 (2016-05-01) =
-* Change: Update plugin framework to 042:
+* Change: Update plugin framework to 043:
     * Fix error message when text replacement field has trailing blank line.
-    * Change class name to c2c_ObfuscateEmail_Plugin_041 to be plugin-specific.
+    * Change class name to c2c_TextReplace_Plugin_043 to be plugin-specific.
+    * Disregard invalid lines supplied as part of hash option value.
     * Set textdomain using a string instead of a variable.
     * Don't load textdomain from file.
     * Change admin page header from 'h2' to 'h1' tag.
@@ -234,6 +235,7 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
     * Remove .pot file and /lang subdirectory.
     * Remove 'Domain Path' from plugin header.
 * Change: Add many more unit tests.
+* Change: Prevent web invocation of unit test bootstrap.php.
 * New: Add LICENSE file.
 * New: Add empty index.php to prevent files from being listed if web server has enabled directory listings.
 * Change: Minor code reformatting.

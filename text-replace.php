@@ -51,7 +51,7 @@ if ( ! class_exists( 'c2c_TextReplace' ) ) :
 
 require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'c2c-plugin.php' );
 
-final class c2c_TextReplace extends c2c_TextReplace_Plugin_042 {
+final class c2c_TextReplace extends c2c_TextReplace_Plugin_043 {
 
 	/**
 	 * The one true instance.
