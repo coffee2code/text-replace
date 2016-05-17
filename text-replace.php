@@ -25,6 +25,7 @@
  * TODO:
  * = Facilitate multi-line replacement strings
  * - Shortcode and template tag (and widget?) to display listing of all supported text replacements (filterable)
+ * - (3.8) As done in Linkify Text, make it so order is not as important so longer, more precise text matches first.
 */
 
 /*
