@@ -112,7 +112,7 @@ Yes.
 
 The plugin exposes five filters for hooking. Typically, the code to utilize these hooks would go inside your active theme's functions.php file. Bear in mind that all of the features controlled by these filters are configurable via the plugin's settings page. These filters are likely only of interest to advanced users able to code.
 
-= c2c_text_replace_filters (filter) =
+**c2c_text_replace_filters (filter)**
 
 The 'c2c_text_replace_filters' hook allows you to customize what hooks get text replacement applied to them.
 
@@ -136,20 +136,7 @@ function more_text_replacements( $filters ) {
 add_filter( 'c2c_text_replace_filters', 'more_text_replacements' );
 `
 
-= c2c_text_replace_comments (filter) =
-
-The 'c2c_text_replace_comments' hook allows you to customize or override the setting indicating if text replacement should be enabled in comments.
-
-Arguments:
-
-* $state (bool): Either true or false indicating if text replacement is enabled for comments. This will be the value set via the plugin's settings page.
-
-Example:
-
-`// Prevent text replacement from ever being enabled.
-add_filter( 'c2c_text_replace_comments', '__return_false' );`
-
-= c2c_text_replace (filter) =
+**c2c_text_replace (filter)**
 
 The 'c2c_text_replace' hook allows you to customize or override the setting defining all of the text replacement shortcuts and their replacements.
 
@@ -178,7 +165,7 @@ function my_text_replacements( $replacements ) {
 add_filter( 'c2c_text_replace', 'my_text_replacements' );
 `
 
-= c2c_text_replace_comments (filter) =
+**c2c_text_replace_comments (filter)**
 
 The 'c2c_text_replace_comments' hook allows you to customize or override the setting indicating if text replacement should be enabled in comments.
 
@@ -191,7 +178,7 @@ Example:
 `// Prevent text replacements from ever being enabled in comments.
 add_filter( 'c2c_text_replace_comments', '__return_false' );`
 
-= c2c_text_replace_case_sensitive (filter) =
+**c2c_text_replace_case_sensitive (filter)**
 
 The 'c2c_text_replace_case_sensitive' hook allows you to customize or override the setting indicating if text replacement should be case sensitive.
 
@@ -204,7 +191,7 @@ Example:
 `// Prevent text replacement from ever being case sensitive.
 add_filter( 'c2c_text_replace_case_sensitive', '__return_false' );`
 
-= c2c_text_replace_once (filter) =
+**c2c_text_replace_once (filter)**
 
 The 'c2c_text_replace_once' hook allows you to customize or override the setting indicating if text replacement should be limited to once per term per piece of text being processed regardless of how many times the term appears.
 
@@ -225,6 +212,7 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 * Change: Note compatibility through WP 4.9+
 * Change: Drop compatibility with version of WP older than 4.7.
 * Change: Rename readme.txt section from 'Filters' to 'Hooks'
+* Change: Modify formatting of hook name in readme to prevent being uppercased when shown in the Plugin Directory
 * Change: Update copyright date (2018)
 
 = 3.7 (2016-05-01) =
