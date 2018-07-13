@@ -232,6 +232,7 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 * Change: Cast return values of hooks to expected data types
 * New: Add README.md
 * New: Add GitHub link to readme
+* Change: Store setting name in constant
 * Unit tests:
     * Change: Default `WP_TESTS_DIR` to `/tmp/wordpress-tests-lib` rather than erroring out if not defined via environment variable
     * Change: Enable more error output for unit tests
