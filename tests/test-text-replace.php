@@ -17,6 +17,10 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		':A&A:'          => 'Axis & Allies',
 		'は'             => 'Foo',
 		'@macnfoco'      => "Mac'N",
+		'Apple iPhone 6' => 'http://example.com/apple1',
+		'iPhone 6'       => 'http://example.com/aople2',
+		'test'           => 'http://example.com/txst1',
+		'test place'     => 'http://example.com/txst2',
 	);
 
 	public static function setUpBeforeClass() {
@@ -233,6 +237,30 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( $expected,       $this->text_replace( ':coffee2code:' ) );
 		$this->assertEquals( ':Coffee2code:', $this->text_replace( ':Coffee2code:' ) );
 		$this->assertEquals( ':COFFEE2CODE:', $this->text_replace( ':COFFEE2CODE:' ) );
+	}
+
+	/*
+	 * With 'Apple iPhone 6' followed by 'iPhone 6' as link defines, the string
+	 * 'Apple iPhone 6' should not have the 'iPhone 6' linkification applied to it.
+	 */
+	public function test_does_not_linkify_a_general_term_that_is_included_in_earlier_listed_term() {
+		$string = 'Apple iPhone 6';
+
+		$this->assertEquals( $this->expected_text( $string ), $this->text_replace( $string ) );
+	}
+
+	/**
+	 * Ensure a more specific string matches with priority over a less specific
+	 * string, regardless of what order they were defined.
+	 *
+	 *  MAYBE! Not sure if this is desired. But the theory is if both
+	 * "test" and "test place" are defined, then the text "test place" should get
+	 * linked, even though "test" was defined first.
+	 */
+	public function test_does_not_replace_a_more_general_term_when_general_is_first() {
+		$expected = $this->expected_text( 'test place' );
+
+		$this->assertEquals( "This $expected is true", $this->text_replace( 'This test place is true' ) );
 	}
 
 	public function test_replaces_once_via_setting() {

@@ -25,7 +25,6 @@
  * TODO:
  * = Facilitate multi-line replacement strings
  * - Shortcode and template tag (and widget?) to display listing of all supported text replacements (filterable)
- * - (3.8) As done in Linkify Text, make it so order is not as important so longer, more precise text matches first.
 */
 
 /*
@@ -253,10 +252,23 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_048 {
 
 		$text = ' ' . $text . ' ';
 
+		$can_do_mb = function_exists( 'mb_regex_encoding' ) && function_exists( 'mb_ereg_replace' ) && function_exists( 'mb_strlen' );
+
 		// Store original mb_regex_encoding and then set it to UTF-8.
-		if ( function_exists( 'mb_regex_encoding' ) ) {
+		if ( $can_do_mb ) {
 			$mb_regex_encoding = mb_regex_encoding();
 			mb_regex_encoding( 'UTF-8' );
+		}
+
+		if ( $text_to_replace ) {
+			// Sort array descending by key length. This way longer, more precise
+			// strings take precedence over shorter strings, preventing premature
+			// partial replacements.
+			// E.g. if "abc" and "abc def" are both defined for linking and in that
+			// order, the string "abc def ghi" would match on "abc def", the longer
+			// string rather than the shorter, less precise "abc".
+			$keys = array_map( $can_do_mb ? 'mb_strlen' : 'strlen', array_keys( $text_to_replace ) );
+			array_multisort( $keys, SORT_DESC, $text_to_replace );
 		}
 
 		foreach ( $text_to_replace as $old_text => $new_text ) {
