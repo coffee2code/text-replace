@@ -209,6 +209,8 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 
 = () =
 * New: Add GitHub link to readme
+* Unit tests:
+    * Change: Default `WP_TESTS_DIR` to `/tmp/wordpress-tests-lib` rather than erroring out if not defined via environment variable
 * Change: Note compatibility through WP 4.9+
 * Change: Drop compatibility with version of WP older than 4.7.
 * Change: Rename readme.txt section from 'Filters' to 'Hooks'
