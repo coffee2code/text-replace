@@ -19,13 +19,21 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		'@macnfoco'      => "Mac'N",
 	);
 
+	public static function setUpBeforeClass() {
+		c2c_TextReplace::get_instance()->install();
+	}
+
 	public function setUp() {
 		parent::setUp();
+		c2c_TextReplace::get_instance()->reset_options();
 		$this->set_option();
 	}
 
 	public function tearDown() {
 		parent::tearDown();
+
+		// Reset options
+		c2c_TextReplace::get_instance()->reset_options();
 
 		remove_filter( 'c2c_text_replace',                array( $this, 'add_text_to_replace' ) );
 		remove_filter( 'c2c_text_replace_once',           '__return_true' );
