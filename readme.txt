@@ -217,6 +217,7 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 * Change: Rename readme.txt section from 'Filters' to 'Hooks'
 * Change: Modify formatting of hook name in readme to prevent being uppercased when shown in the Plugin Directory
 * Change: Update installation instruction to prefer built-in installer over .zip file
+* Change: Update URLs used in examples and docs to be HTTPS where appropriate
 * Change: Update copyright date (2018)
 
 = 3.7 (2016-05-01) =

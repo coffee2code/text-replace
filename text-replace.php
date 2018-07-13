@@ -132,7 +132,7 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_043 {
 				'datatype'         => 'hash',
 				'default'          => array(
 					":wp:"          => "<a href='https://wordpress.org'>WordPress</a>",
-					":codex:"       => "<a href='http://codex.wordpress.org'>WordPress Codex</a>",
+					":codex:"       => "<a href='https://codex.wordpress.org'>WordPress Codex</a>",
 					":coffee2code:" => "<a href='http://coffee2code.com' title='coffee2code'>coffee2code</a>"
 				),
 				'allow_html'       => true,
@@ -189,8 +189,8 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_043 {
 		echo '<div class="c2c-hr">&nbsp;</div>';
 		echo '<h3>' . __( 'Shortcuts and text replacements', 'text-replace' ) . '</h3>';
 		echo '<p>' . __( 'Define shortcuts and text replacement expansions here. The format should be like this:', 'text-replace' ) . '</p>';
-		echo "<blockquote><code>:wp: => &lt;a href='http://wordpress.org'>WordPress&lt;/a></code></blockquote>";
-		echo '<p>' . __( 'Where <code>:wp:</code> is the shortcut you intend to use in your posts and the <code>&lt;a href=\'http://wordpress.org\'>WordPress&lt;/a></code> would be what you want the shortcut to be replaced with when the post is shown on your site.', 'text-replace' ) . '</p>';
+		echo "<blockquote><code>:wp: => &lt;a href='https://wordpress.org'>WordPress&lt;/a></code></blockquote>";
+		echo '<p>' . __( 'Where <code>:wp:</code> is the shortcut you intend to use in your posts and the <code>&lt;a href=\'https://wordpress.org\'>WordPress&lt;/a></code> would be what you want the shortcut to be replaced with when the post is shown on your site.', 'text-replace' ) . '</p>';
 		echo '<p>' . __( 'Other considerations:', 'text-replace' ) . '</p>';
 		echo '<ul class="c2c-plugin-list"><li>';
 		echo __( 'List the more specific matches early, to avoid stomping on another of your shortcuts.  For example, if you have both <code>:p</code> and <code>:pout:</code> as shortcuts, put <code>:pout:</code> first; otherwise, the <code>:p</code> will match against all the <code>:pout:</code> in your text.', 'text-replace' );
