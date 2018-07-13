@@ -209,6 +209,7 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 
 = () =
 * New: Ensure longer, more precise link strings match before shorter strings that might also match, regardless of order defined
+* Fix: Honor setting to limit text replacements to just once a post for multibyte strings
 * Change: Update plugin framework to 048
     * 048:
     * When resetting options, delete the option rather than setting it with default values

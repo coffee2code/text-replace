@@ -17,6 +17,8 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		':A&A:'          => 'Axis & Allies',
 		'は'             => 'Foo',
 		'@macnfoco'      => "Mac'N",
+		'Cocktail glacé' => 'http://www.domain.com/cocktail-glace.html',
+		'ユニコード漢字'   => 'http://php.net/manual/en/ref.mbstring.php',
 		'Apple iPhone 6' => 'http://example.com/apple1',
 		'iPhone 6'       => 'http://example.com/aople2',
 		'test'           => 'http://example.com/txst1',
@@ -261,6 +263,23 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$expected = $this->expected_text( 'test place' );
 
 		$this->assertEquals( "This $expected is true", $this->text_replace( 'This test place is true' ) );
+	}
+
+	public function test_linkifies_multibyte_text_once_via_setting() {
+		$linked = $this->expected_text( 'Cocktail glacé' );
+
+		$this->set_option( array( 'replace_once' => true ) );
+
+		$expected = array(
+			"$linked Cocktail glacé Cocktail glacé"
+				=> $this->text_replace( 'Cocktail glacé Cocktail glacé Cocktail glacé' ),
+			'dock ' . $this->expected_text( 'ユニコード漢字' ) . ' cart ユニコード漢字'
+				=> $this->text_replace( 'dock ユニコード漢字 cart ユニコード漢字' ),
+		);
+
+		foreach ( $expected as $expect => $actual ) {
+			$this->assertEquals( $expect, $actual );
+		}
 	}
 
 	public function test_replaces_once_via_setting() {

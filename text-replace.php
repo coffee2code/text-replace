@@ -306,8 +306,23 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_048 {
 				// If the text to be replaced has multibyte character(s), use
 				// mb_ereg_replace() if possible.
 				if ( function_exists( 'mb_ereg_replace' ) && function_exists( 'mb_strlen' ) && ( strlen( $old_text ) != mb_strlen( $old_text ) ) ) {
-					// NOTE: mb_ereg_replace() does not support limiting the number of replacements.
-					$text = mb_ereg_replace( $regex, $new_text, $text, $preg_flags );
+					// NOTE: mb_ereg_replace() does not support limiting the number of
+					// replacements, hence the different handling if replacing once.
+					if ( 1 === $limit ) {
+						// Find first occurrence of the search string.
+						mb_ereg_search_init( $text, $old_text, $preg_flags );
+						$pos = mb_ereg_search_pos();
+
+						// Only do the replacement if the search string was found.
+						if ( false !== $pos ) {
+							$match = mb_ereg_search_getregs();
+							$text  = mb_substr( $text, 0, $pos[0] )
+								. $new_text
+								. mb_substr( $text, $pos[0] + mb_strlen( $match[0] ) );
+						}
+					} else {
+						$text = mb_ereg_replace( $regex, $new_text, $text, $preg_flags );
+					}
 				} else {
 					$text = preg_replace( "~{$regex}~{$preg_flags}", $new_text, $text, $limit );
 				}
