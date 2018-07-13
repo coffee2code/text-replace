@@ -55,7 +55,7 @@ Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/text-replace/) | [Plu
 == Installation ==
 
 1. Whether installing or updating, whether this plugin or any other, it is always advisable to back-up your data before starting
-1. Unzip `text-replace.zip` inside the `/wp-content/plugins/` directory (or install via the built-in WordPress plugin installer)
+1. Install via the built-in WordPress plugin installer. Or download and unzip `text-replace.zip` inside the plugins directory for your site (typically `wp-content/plugins/`)
 1. Activate the plugin through the 'Plugins' admin menu in WordPress
 1. (optional) Go to the `Settings` -> `Text Replace` admin options page and customize the options (notably to define the shortcuts and their replacements).
 
@@ -213,6 +213,7 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 * Change: Drop compatibility with version of WP older than 4.7.
 * Change: Rename readme.txt section from 'Filters' to 'Hooks'
 * Change: Modify formatting of hook name in readme to prevent being uppercased when shown in the Plugin Directory
+* Change: Update installation instruction to prefer built-in installer over .zip file
 * Change: Update copyright date (2018)
 
 = 3.7 (2016-05-01) =
