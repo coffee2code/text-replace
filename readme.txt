@@ -108,7 +108,7 @@ Yes.
 1. A screenshot of the admin options page for the plugin, where you define the terms/phrases/shortcuts and their related replacement text
 
 
-== Filters ==
+== Hooks ==
 
 The plugin exposes five filters for hooking. Typically, the code to utilize these hooks would go inside your active theme's functions.php file. Bear in mind that all of the features controlled by these filters are configurable via the plugin's settings page. These filters are likely only of interest to advanced users able to code.
 
@@ -224,6 +224,7 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 * New: Add GitHub link to readme
 * Change: Note compatibility through WP 4.9+
 * Change: Drop compatibility with version of WP older than 4.7.
+* Change: Rename readme.txt section from 'Filters' to 'Hooks'
 * Change: Update copyright date (2018)
 
 = 3.7 (2016-05-01) =
