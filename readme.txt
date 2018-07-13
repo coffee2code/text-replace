@@ -4,8 +4,8 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: text, replace, shortcut, shortcuts, post, post content, coffee2code
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Requires at least: 4.1
-Tested up to: 4.5
+Requires at least: 4.7
+Tested up to: 4.9
 Stable tag: 3.7
 
 Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
@@ -221,6 +221,8 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 == Changelog ==
 
 = () =
+* Change: Note compatibility through WP 4.9+
+* Change: Drop compatibility with version of WP older than 4.7.
 * Change: Update copyright date (2018)
 
 = 3.7 (2016-05-01) =
