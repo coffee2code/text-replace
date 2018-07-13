@@ -52,7 +52,7 @@ if ( ! class_exists( 'c2c_TextReplace' ) ) :
 
 require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'c2c-plugin.php' );
 
-final class c2c_TextReplace extends c2c_TextReplace_Plugin_043 {
+final class c2c_TextReplace extends c2c_TextReplace_Plugin_048 {
 
 	/**
 	 * The one true instance.
@@ -166,8 +166,8 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_043 {
 	 * Override the plugin framework's register_filters() to actually register actions against filters.
 	 */
 	public function register_filters() {
-		$filters = apply_filters( 'c2c_text_replace_filters', array( 'the_content', 'the_excerpt', 'widget_text' ) );
-		foreach ( (array) $filters as $filter ) {
+		$filters = (array) apply_filters( 'c2c_text_replace_filters', array( 'the_content', 'the_excerpt', 'widget_text' ) );
+		foreach ( $filters as $filter ) {
 			add_filter( $filter, array( $this, 'text_replace' ), 2 );
 		}
 
@@ -222,7 +222,7 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_043 {
 	public function text_replace_comment_text( $text ) {
 		$options = $this->get_options();
 
-		if ( apply_filters( 'c2c_text_replace_comments', $options['text_replace_comments'] ) ) {
+		if ( (bool) apply_filters( 'c2c_text_replace_comments', $options['text_replace_comments'] ) ) {
 			$text = $this->text_replace( $text );
 		}
 
@@ -237,9 +237,9 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_043 {
 	 */
 	public function text_replace( $text ) {
 		$options         = $this->get_options();
-		$text_to_replace = apply_filters( 'c2c_text_replace',                $options['text_to_replace'] );
-		$case_sensitive  = apply_filters( 'c2c_text_replace_case_sensitive', $options['case_sensitive'] );
-		$limit           = apply_filters( 'c2c_text_replace_once',           $options['replace_once'] ) ? 1 : -1;
+		$text_to_replace = (array) apply_filters( 'c2c_text_replace',                $options['text_to_replace'] );
+		$case_sensitive  = (bool)  apply_filters( 'c2c_text_replace_case_sensitive', $options['case_sensitive'] );
+		$limit           = (bool)  apply_filters( 'c2c_text_replace_once',           $options['replace_once'] ) ? 1 : -1;
 		$preg_flags      = $case_sensitive ? 's' : 'si';
 		$mb_regex_encoding = null;
 
@@ -251,7 +251,7 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_043 {
 			mb_regex_encoding( 'UTF-8' );
 		}
 
-		foreach ( (array) $text_to_replace as $old_text => $new_text ) {
+		foreach ( $text_to_replace as $old_text => $new_text ) {
 
 			// If the text to be replaced includes a '<' or '>', do direct string replacement.
 			if ( strpos( $old_text, '<' ) !== false || strpos( $old_text, '>' ) !== false ) {

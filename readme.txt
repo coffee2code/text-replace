@@ -208,6 +208,29 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 == Changelog ==
 
 = () =
+* Change: Update plugin framework to 048
+    * 048:
+    * When resetting options, delete the option rather than setting it with default values
+    * Prevent double "Settings reset" admin notice upon settings reset
+    * 047:
+    * Don't save default setting values to database on install
+    * Change "Cheatin', huh?" error messages to "Something went wrong.", consistent with WP core
+    * Note compatibility through WP 4.9+
+    * Drop compatibility with version of WP older than 4.7
+    * 046:
+    * Fix `reset_options()` to reference instance variable `$options`
+    * Note compatibility through WP 4.7+
+    * Update copyright date (2017)
+    * 045:
+    * Ensure `reset_options()` resets values saved in the database
+    * 044:
+    * Add `reset_caches()` to clear caches and memoized data. Use it in `reset_options()` and `verify_config()`
+    * Add `verify_options()` with logic extracted from `verify_config()` for initializing default option attributes
+    * Add  `add_option()` to add a new option to the plugin's configuration
+    * Add filter 'sanitized_option_names' to allow modifying the list of whitelisted option names
+    * Change: Refactor `get_option_names()`
+* Change: Cast return values of hooks to expected data types
+* New: Add README.md
 * New: Add GitHub link to readme
 * Unit tests:
     * Change: Default `WP_TESTS_DIR` to `/tmp/wordpress-tests-lib` rather than erroring out if not defined via environment variable
