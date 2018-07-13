@@ -290,6 +290,14 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( "$expected :coffee2code: :coffee2code:", $this->text_replace( ':coffee2code: :coffee2code: :coffee2code:' ) );
 	}
 
+	public function test_replaces_once_via_trueish_setting_value() {
+		$expected = $this->expected_text( ':coffee2code:' );
+		$this->test_replaces_single_term_multiple_times();
+		$this->set_option( array( 'replace_once' => '1' ) );
+
+		$this->assertEquals( "$expected :coffee2code: :coffee2code:", $this->text_replace( ':coffee2code: :coffee2code: :coffee2code:' ) );
+	}
+
 	public function test_replaces_once_via_filter() {
 		$expected = $this->expected_text( ':coffee2code:' );
 		$this->test_replaces_single_term_multiple_times();
