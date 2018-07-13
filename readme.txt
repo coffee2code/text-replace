@@ -220,6 +220,9 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 
 == Changelog ==
 
+= () =
+* Change: Update copyright date (2018)
+
 = 3.7 (2016-05-01) =
 * Change: Update plugin framework to 043:
     * Fix error message when text replacement field has trailing blank line.
