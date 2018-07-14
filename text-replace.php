@@ -247,7 +247,7 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_048 {
 		$text_to_replace = (array) apply_filters( 'c2c_text_replace',                $options['text_to_replace'] );
 		$case_sensitive  = (bool)  apply_filters( 'c2c_text_replace_case_sensitive', $options['case_sensitive'] );
 		$limit           = (bool)  apply_filters( 'c2c_text_replace_once',           $options['replace_once'] ) ? 1 : -1;
-		$preg_flags      = $case_sensitive ? 's' : 'si';
+		$preg_flags      = $case_sensitive ? 'ms' : 'msi';
 		$mb_regex_encoding = null;
 
 		$text = ' ' . $text . ' ';
@@ -300,6 +300,9 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_048 {
 				if ( false !== strpos( $old_text, '&' ) ) {
 					$old_text = str_replace( '&', '&(amp;|#038;)?', $old_text );
 				}
+
+				// Allow spaces in linkable text to represent any number of whitespace chars.
+				$old_text = preg_replace( '/\s+/', '\s+', $old_text );
 
 				$regex = "(?!<.*?){$old_text}(?![^<>]*?>)";
 

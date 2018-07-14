@@ -19,6 +19,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		'@macnfoco'      => "Mac'N",
 		'Cocktail glacé' => 'http://www.domain.com/cocktail-glace.html',
 		'ユニコード漢字'   => 'http://php.net/manual/en/ref.mbstring.php',
+		'ユニコード漢字 は' => 'replacment text',
 		'Apple iPhone 6' => 'http://example.com/apple1',
 		'iPhone 6'       => 'http://example.com/aople2',
 		'test'           => 'http://example.com/txst1',
@@ -263,6 +264,25 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$expected = $this->expected_text( 'test place' );
 
 		$this->assertEquals( "This $expected is true", $this->text_replace( 'This test place is true' ) );
+	}
+
+	public function tests_linkifies_term_split_across_multiple_lines() {
+		$expected = array(
+			"See my " . $this->expected_text( 'test place' ) . " site to read."
+				=> $this->text_replace( "See my test\nplace site to read." ),
+			"See my " . $this->expected_text( 'test place' ) . " site to read."
+				=> $this->text_replace( "See my test   place site to read." ),
+			"These are " . $this->expected_text( 'Cocktail glacé' ) . " to read"
+				=> $this->text_replace( "These are Cocktail\n\tglacé to read" ),
+			"This is interesting " . $this->expected_text( "ユニコード漢字 は" ) . " if I do say so"
+				=> $this->text_replace( "This is interesting ユニコード漢字\nは if I do say so" ),
+			"This is interesting " . $this->expected_text( "ユニコード漢字 は" ) . " if I do say so"
+				=> $this->text_replace( "This is interesting ユニコード漢字\t  は if I do say so" ),
+		);
+
+		foreach ( $expected as $expect => $actual ) {
+			$this->assertEquals( $expect, $actual );
+		}
 	}
 
 	public function test_linkifies_multibyte_text_once_via_setting() {
