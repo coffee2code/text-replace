@@ -308,7 +308,7 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_048 {
 
 				// If the text to be replaced has multibyte character(s), use
 				// mb_ereg_replace() if possible.
-				if ( function_exists( 'mb_ereg_replace' ) && function_exists( 'mb_strlen' ) && ( strlen( $old_text ) != mb_strlen( $old_text ) ) ) {
+				if ( $can_do_mb && ( strlen( $old_text ) != mb_strlen( $old_text ) ) ) {
 					// NOTE: mb_ereg_replace() does not support limiting the number of
 					// replacements, hence the different handling if replacing once.
 					if ( 1 === $limit ) {
