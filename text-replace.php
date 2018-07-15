@@ -24,7 +24,11 @@
 /*
  * TODO:
  * = Facilitate multi-line replacement strings
- * - Shortcode and template tag (and widget?) to display listing of all supported text replacements (filterable)
+ * - Shortcode and template tag (and widget?) to display listing of all
+ *   supported text replacements (filterable)
+ * - Prevent replacement text from getting replacements. "e.g. given
+ *   ['test this' => 'good test', 'test' => 'cat'], the text 'test this' should
+ *   become 'good test' and not 'good cat'
 */
 
 /*
