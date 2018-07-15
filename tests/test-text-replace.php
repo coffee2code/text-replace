@@ -143,7 +143,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	}
 
 	public function test_version() {
-		$this->assertEquals( '3.7', c2c_TextReplace::get_instance()->version() );
+		$this->assertEquals( '3.8', c2c_TextReplace::get_instance()->version() );
 	}
 
 	public function test_instance_object_is_returned() {

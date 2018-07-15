@@ -6,7 +6,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 3.7
+Stable tag: 3.8
 
 Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
 
@@ -207,7 +207,12 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 
 == Changelog ==
 
-= () =
+= 3.8 (2018-07-14) =
+Highlights:
+
+* This release adds a setting for links to open in a new window, adds support for linkable text spanning multiple lines in your post, adds a filter for customizing link attributes, improves performance, and makes numerous behind-the-scenes improvements and changes.
+
+Details:
 * New: Ensure longer, more precise link strings match before shorter strings that might also match, regardless of order defined
 * Fix: Honor setting to limit text replacements to just once a post for multibyte strings
 * New: Add support for finding text to replace that may span more than one line or whose internal spaces vary in number and type
@@ -229,7 +234,7 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
     * 044:
     * Add `reset_caches()` to clear caches and memoized data. Use it in `reset_options()` and `verify_config()`
     * Add `verify_options()` with logic extracted from `verify_config()` for initializing default option attributes
-    * Add  `add_option()` to add a new option to the plugin's configuration
+    * Add `add_option()` to add a new option to the plugin's configuration
     * Add filter 'sanitized_option_names' to allow modifying the list of whitelisted option names
     * Change: Refactor `get_option_names()`
 * Change: Cast return values of hooks to expected data types
@@ -242,6 +247,7 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
     * Change: Default `WP_TESTS_DIR` to `/tmp/wordpress-tests-lib` rather than erroring out if not defined via environment variable
     * Change: Enable more error output for unit tests
     * New: Add more tests
+    * New: Add header comments to bootstrap
 * Change: Note compatibility through WP 4.9+
 * Change: Drop compatibility with version of WP older than 4.7.
 * Change: Rename readme.txt section from 'Filters' to 'Hooks'
@@ -458,6 +464,9 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 
 
 == Upgrade Notice ==
+
+= 3.8 =
+Recommended update: fixed to honor 'replace once' setting, including for multibyte strings; allow for whitespace in text to replace to represent any number of whitespace; updated plugin framework to v048; compatibility is now WP 4.7-4.9; added README.md; more.
 
 = 3.7 =
 Minor update: improved support for localization; updated plugin framework to 042; verified compatibility through WP 4.5; dropped compatibility with WP older than 4.1; updated copyright date (2016)

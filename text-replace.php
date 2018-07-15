@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Text Replace
- * Version:     3.7
+ * Version:     3.8
  * Plugin URI:  http://coffee2code.com/wp-plugins/text-replace/
  * Author:      Scott Reilly
  * Author URI:  http://coffee2code.com/
@@ -18,7 +18,7 @@
  *
  * @package Text_Replace
  * @author  Scott Reilly
- * @version 3.7
+ * @version 3.8
  */
 
 /*
@@ -89,7 +89,7 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_048 {
 	 * Constructor.
 	 */
 	protected function __construct() {
-		parent::__construct( '3.7', 'text-replace', 'c2c', __FILE__, array() );
+		parent::__construct( '3.8', 'text-replace', 'c2c', __FILE__, array() );
 		register_activation_hook( __FILE__, array( __CLASS__, 'activation' ) );
 
 		return self::$instance = $this;
