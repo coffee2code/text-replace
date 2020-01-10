@@ -2,6 +2,8 @@
 
 ## _(in-progress)_
 * New: Add CHANGELOG.md and move all but most recent changelog entries into it
+* Change: Note compatibility through WP 5.3+
+* Change: Drop compatibility with version of WP older than 4.9
 
 ## 3.8 _(2018-07-14)_
 
