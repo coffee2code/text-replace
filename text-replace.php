@@ -6,7 +6,7 @@
  * Author:      Scott Reilly
  * Author URI:  http://coffee2code.com/
  * License:     GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: text-replace
  * Description: Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
  *
