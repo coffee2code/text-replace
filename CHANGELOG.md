@@ -10,6 +10,7 @@
 * Change: Update copyright date (2020)
 * Change: Update License URI to be HTTPS
 * Change: Split paragraph in README.md's "Support" section into two
+* Fix: Correct typo in GitHub URL
 
 ## 3.8 _(2018-07-14)_
 
