@@ -5,6 +5,7 @@
 * Change: Note compatibility through WP 5.3+
 * Change: Drop compatibility with version of WP older than 4.9
 * Change: Update copyright date (2020)
+* Change: Split paragraph in README.md's "Support" section into two
 
 ## 3.8 _(2018-07-14)_
 
