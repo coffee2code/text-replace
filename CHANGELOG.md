@@ -4,6 +4,7 @@
 * New: Add CHANGELOG.md and move all but most recent changelog entries into it
 * Unit tests:
     * Change: Update unit test install script and bootstrap to use latest WP unit test repo
+    * Change: Update some inline docs and function names to reflect their relevance to this plugin (and not to the plugin they were copied from)
 * Change: Note compatibility through WP 5.3+
 * Change: Drop compatibility with version of WP older than 4.9
 * Change: Update copyright date (2020)

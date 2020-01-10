@@ -243,10 +243,10 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	}
 
 	/*
-	 * With 'Apple iPhone 6' followed by 'iPhone 6' as link defines, the string
-	 * 'Apple iPhone 6' should not have the 'iPhone 6' linkification applied to it.
+	 * With 'Apple iPhone 6' followed by 'iPhone 6' as replacement defines, the string
+	 * 'Apple iPhone 6' should not have the 'iPhone 6' replacement applied to it.
 	 */
-	public function test_does_not_linkify_a_general_term_that_is_included_in_earlier_listed_term() {
+	public function test_does_not_replace_a_general_term_that_is_included_in_earlier_listed_term() {
 		$string = 'Apple iPhone 6';
 
 		$this->assertEquals( $this->expected_text( $string ), $this->text_replace( $string ) );
@@ -258,7 +258,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	 *
 	 *  MAYBE! Not sure if this is desired. But the theory is if both
 	 * "test" and "test place" are defined, then the text "test place" should get
-	 * linked, even though "test" was defined first.
+	 * replaced, even though "test" was defined first.
 	 */
 	public function test_does_not_replace_a_more_general_term_when_general_is_first() {
 		$expected = $this->expected_text( 'test place' );
@@ -266,7 +266,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( "This $expected is true", $this->text_replace( 'This test place is true' ) );
 	}
 
-	public function tests_linkifies_term_split_across_multiple_lines() {
+	public function tests_replaces_term_split_across_multiple_lines() {
 		$expected = array(
 			"See my " . $this->expected_text( 'test place' ) . " site to read."
 				=> $this->text_replace( "See my test\nplace site to read." ),
@@ -285,7 +285,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		}
 	}
 
-	public function test_linkifies_multibyte_text_once_via_setting() {
+	public function test_replaces_multibyte_text_once_via_setting() {
 		$linked = $this->expected_text( 'Cocktail glacé' );
 
 		$this->set_option( array( 'replace_once' => true ) );
