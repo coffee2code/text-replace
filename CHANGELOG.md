@@ -1,6 +1,7 @@
 # Changelog
 
 ## _(in-progress)_
+* Change: Alter handling of `replace_once` value to ensure a valid value is used as arg for `preg_replace()`
 * Change: Initialize plugin on `plugins_loaded` action instead of on load
 * Change: Update plugin framework to 049
     * 049:

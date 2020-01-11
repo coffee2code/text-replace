@@ -250,7 +250,7 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_049 {
 		$options         = $this->get_options();
 		$text_to_replace = (array) apply_filters( 'c2c_text_replace',                $options['text_to_replace'] );
 		$case_sensitive  = (bool)  apply_filters( 'c2c_text_replace_case_sensitive', $options['case_sensitive'] );
-		$limit           = (bool)  apply_filters( 'c2c_text_replace_once',           $options['replace_once'] ) ? 1 : -1;
+		$limit           = (bool)  apply_filters( 'c2c_text_replace_once',           $options['replace_once'] );
 		$preg_flags      = $case_sensitive ? 'ms' : 'msi';
 		$mb_regex_encoding = null;
 
@@ -281,7 +281,7 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_049 {
 			if ( strpos( $old_text, '<' ) !== false || strpos( $old_text, '>' ) !== false ) {
 				// If only doing one replacement, need to handle specially since there is
 				// no built-in, non-preg_replace method to do a single replacement.
-				if ( 1 === $limit ) {
+				if ( $limit ) {
 					$pos = $case_sensitive ? strpos( $text, $old_text ) : stripos( $text, $old_text );
 					if ( $pos !== false ) {
 						$text = substr_replace( $text, $new_text, $pos, strlen( $old_text ) );
@@ -315,7 +315,7 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_049 {
 				if ( $can_do_mb && ( strlen( $old_text ) != mb_strlen( $old_text ) ) ) {
 					// NOTE: mb_ereg_replace() does not support limiting the number of
 					// replacements, hence the different handling if replacing once.
-					if ( 1 === $limit ) {
+					if ( $limit ) {
 						// Find first occurrence of the search string.
 						mb_ereg_search_init( $text, $old_text, $preg_flags );
 						$pos = mb_ereg_search_pos();
@@ -331,7 +331,7 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_049 {
 						$text = mb_ereg_replace( $regex, $new_text, $text, $preg_flags );
 					}
 				} else {
-					$text = preg_replace( "~{$regex}~{$preg_flags}", $new_text, $text, $limit );
+					$text = preg_replace( "~{$regex}~{$preg_flags}", $new_text, $text, ( $limit ? 1 : -1 ) );
 				}
 			}
 
