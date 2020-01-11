@@ -347,6 +347,6 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_049 {
 
 } // end c2c_TextReplace
 
-c2c_TextReplace::get_instance();
+add_action( 'plugins_loaded', array( 'c2c_TextReplace', 'get_instance' ) );
 
 endif; // end if !class_exists()

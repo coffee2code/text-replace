@@ -158,6 +158,10 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertTrue( is_a( c2c_TextReplace::get_instance(), 'c2c_TextReplace' ) );
 	}
 
+	public function test_hooks_plugins_loaded() {
+		$this->assertEquals( 10, has_action( 'plugins_loaded', array( 'c2c_TextReplace', 'get_instance' ) ) );
+	}
+
 	public function test_replaces_text() {
 		$expected = $this->expected_text( ':coffee2code:' );
 
