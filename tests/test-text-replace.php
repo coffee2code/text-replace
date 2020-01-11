@@ -420,7 +420,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	public function test_replace_applies_to_default_filters( $filter ) {
 		$expected = $this->expected_text( ':coffee2code:' );
 
-		$this->assertNotFalse( has_filter( $filter, array( c2c_TextReplace::get_instance(), 'text_replace' ), 12 ) );
+		$this->assertEquals( 2, has_filter( $filter, array( c2c_TextReplace::get_instance(), 'text_replace' ) ) );
 		$this->assertGreaterThan( 0, strpos( apply_filters( $filter, 'a :coffee2code:' ), $expected ) );
 	}
 
@@ -432,7 +432,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 
 		add_filter( 'c2c_text_replace_comments', '__return_true' );
 
-		$this->assertNotFalse( has_filter( $filter, array( c2c_TextReplace::get_instance(), 'text_replace_comment_text' ), 11 ) );
+		$this->assertEquals( 11, has_filter( $filter, array( c2c_TextReplace::get_instance(), 'text_replace_comment_text' ) ) );
 		$this->assertGreaterThan( 0, strpos( apply_filters( $filter, 'a :coffee2code:' ), $expected ) );
 	}
 
