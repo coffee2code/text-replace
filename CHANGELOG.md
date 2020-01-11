@@ -3,6 +3,7 @@
 ## _(in-progress)_
 * New: Add CHANGELOG.md and move all but most recent changelog entries into it
 * Unit tests:
+    * New: Add `capture_filter_value()` as a method for capturing default values provided for a filter
     * Change: Update unit test install script and bootstrap to use latest WP unit test repo
     * Change: Update some inline docs and function names to reflect their relevance to this plugin (and not to the plugin they were copied from)
 * Change: Note compatibility through WP 5.3+

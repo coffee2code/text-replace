@@ -4,6 +4,8 @@ defined( 'ABSPATH' ) or die();
 
 class Text_Replace_Test extends WP_UnitTestCase {
 
+	protected $captured_filter_value = array();
+
 	protected static $text_to_link = array(
 		':wp:'           => 'WordPress',
 		":coffee2code:"  => "<a href='http://coffee2code.com' title='coffee2code'>coffee2code</a>",
@@ -38,6 +40,8 @@ class Text_Replace_Test extends WP_UnitTestCase {
 
 	public function tearDown() {
 		parent::tearDown();
+
+		$this->captured_filter_value = array();
 
 		// Reset options
 		c2c_TextReplace::get_instance()->reset_options();
@@ -120,6 +124,10 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	public function add_custom_filter( $filters ) {
 		$filters[] = 'custom_filter';
 		return $filters;
+	}
+
+	public function capture_filter_value( $value ) {
+		return $this->captured_filter_value[ current_filter() ] = $value;
 	}
 
 
