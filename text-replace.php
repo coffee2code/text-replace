@@ -306,6 +306,11 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_049 {
 		$preg_flags      = $case_sensitive ? 'ms' : 'msi';
 		$mb_regex_encoding = null;
 
+		// Bail early if there are no replacements defined.
+		if ( ! $text_to_replace || ( isset( $text_to_replace[0] ) && ! $text_to_replace[0] ) ) {
+			return $text;
+		}
+
 		$text = ' ' . $text . ' ';
 
 		$can_do_mb = function_exists( 'mb_regex_encoding' ) && function_exists( 'mb_ereg_replace' ) && function_exists( 'mb_strlen' );

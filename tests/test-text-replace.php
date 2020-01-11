@@ -162,6 +162,16 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( 10, has_action( 'plugins_loaded', array( 'c2c_TextReplace', 'get_instance' ) ) );
 	}
 
+	public function test_no_text_change_when_no_replacements_defined() {
+		$text = 'This is a 2019 test.';
+
+		$this->set_option( array( 'text_to_replace' => '' ) );
+
+		$this->assertEquals( $text, $this->text_replace( $text ) );
+
+		$this->set_option( array( 'text_to_replace' => $this->text_replacements() ) );
+	}
+
 	public function test_replaces_text() {
 		$expected = $this->expected_text( ':coffee2code:' );
 
