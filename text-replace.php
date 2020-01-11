@@ -177,6 +177,15 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_049 {
 	 * Override the plugin framework's register_filters() to actually register actions against filters.
 	 */
 	public function register_filters() {
+		/**
+		 * Filters the hooks that get processed for hover text.
+		 *
+		 * @since 3.0
+		 *
+		 * @param array $filters The filters that get processed for text.
+		 *                       replacement Default ['the_content',
+		 *                       'get_the_excerpt', 'widget_text'].
+		 */
 		$filters = (array) apply_filters( 'c2c_text_replace_filters', array( 'the_content', 'the_excerpt', 'widget_text' ) );
 		foreach ( $filters as $filter ) {
 			add_filter( $filter, array( $this, 'text_replace' ), 2 );
@@ -233,6 +242,16 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_049 {
 	public function text_replace_comment_text( $text ) {
 		$options = $this->get_options();
 
+		/**
+		 * Filters if comments should be processed for text replacement.
+		 *
+		 * @since 3.0
+		 *
+		 * @param bool $include_comments Should comments be processed for text
+		 *                               replacement? Default is value set in
+		 *                               plugin settings, which is initially
+		 *                               false.
+		 */
 		if ( (bool) apply_filters( 'c2c_text_replace_comments', $options['text_replace_comments'] ) ) {
 			$text = $this->text_replace( $text );
 		}
@@ -248,9 +267,42 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_049 {
 	 */
 	public function text_replace( $text ) {
 		$options         = $this->get_options();
+
+		/**
+		 * Filters the list of text that will get replaced.
+		 *
+		 * @since 3.0
+		 *
+		 * @param array $text_to_replace Associative array of text to replace
+		 *                               and respective replacement text. Default
+		 *                               is value set in plugin settings.
+		 */
 		$text_to_replace = (array) apply_filters( 'c2c_text_replace',                $options['text_to_replace'] );
+
+		/**
+		 * Filters if text matching for text replacement should be case sensitive.
+		 *
+		 * @since 3.0
+		 *
+		 * @param bool $case_sensitive Should text matching for text replacement
+		 *                             be case sensitive? Default is value set in
+		 *                             plugin settings, which is initially true.
+		 */
 		$case_sensitive  = (bool)  apply_filters( 'c2c_text_replace_case_sensitive', $options['case_sensitive'] );
+
+		/**
+		 * Filters if text replacement should be limited to once per phrase per
+		 * piece of text being processed regardless of how many times the phrase
+		 * appears.
+		 *
+		 * @since 3.5
+		 *
+		 * @param bool $replace_once Should text hovering be limited to once
+		 *                           per term per post? Default is value set in
+		 *                           plugin settings, which is initially false.
+		 */
 		$limit           = (bool)  apply_filters( 'c2c_text_replace_once',           $options['replace_once'] );
+
 		$preg_flags      = $case_sensitive ? 'ms' : 'msi';
 		$mb_regex_encoding = null;
 

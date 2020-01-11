@@ -12,6 +12,7 @@
     * Note compatibility through WP 5.1+
     * Update copyright date (2019)
 * New: Add CHANGELOG.md and move all but most recent changelog entries into it
+* New: Add inline documentation for hooks
 * Unit tests:
     * New: Add `capture_filter_value()` as a method for capturing default values provided for a filter
     * Change: Update unit test install script and bootstrap to use latest WP unit test repo
