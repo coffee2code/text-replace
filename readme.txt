@@ -72,7 +72,7 @@ Yes, if they include strings that you've now defined as shortcuts.
 
 = What post fields get handled by this plugin? =
 
-By default, the plugin filters the post content, post excerpt fields, widget text, and optionally comments and comment excerpts. You can use the 'c2c_text_replace_filters' filter to modify that behavior (see Filters section).
+By default, the plugin filters the post content, post excerpt fields, widget text, and optionally comments and comment excerpts. You can use the 'c2c_text_replace_filters' filter to modify that behavior (see Hooks section).
 
 = How can I get text replacements to apply for post titles (or something not text-replaced by default)? =
 
@@ -88,7 +88,7 @@ add_filter( 'c2c_text_replace_filters', 'more_text_replacements' );
 
 = Is the plugin case sensitive? =
 
-By default, yes. There is a setting you can change to make it case insensitive. Or you can use the 'c2c_text_replace_case_sensitive' filter (see Filters section).
+By default, yes. There is a setting you can change to make it case insensitive. Or you can use the 'c2c_text_replace_case_sensitive' filter (see Hooks section).
 
 = I use :wp: all the time as a shortcut for WordPress, but when I search posts for the term "WordPress", I don't see posts where I used the shortcut; why not? =
 
@@ -96,7 +96,7 @@ Rest assured search engines will see those posts since they only ever see the po
 
 = Will all instances of a given term be replaced in a single post? =
 
-By default, yes. There is a setting you can change so that only the first occurrence of the term in the post gets replaced. Or if you are a coder, you can use the 'c2c_text_replace_once' filter (see Filters section).
+By default, yes. There is a setting you can change so that only the first occurrence of the term in the post gets replaced. Or if you are a coder, you can use the 'c2c_text_replace_once' filter (see Hooks section).
 
 = Does this plugin include unit tests? =
 
@@ -110,7 +110,7 @@ Yes.
 
 == Hooks ==
 
-The plugin exposes five filters for hooking. Typically, the code to utilize these hooks would go inside your active theme's functions.php file. Bear in mind that all of the features controlled by these filters are configurable via the plugin's settings page. These filters are likely only of interest to advanced users able to code.
+The plugin exposes a number of filters for hooking. Typically, the code to utilize these hooks would go inside your active theme's functions.php file. Bear in mind that all of the features controlled by these filters are configurable via the plugin's settings page. These filters are likely only of interest to advanced users able to code.
 
 **c2c_text_replace_filters (filter)**
 
