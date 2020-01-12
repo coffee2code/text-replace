@@ -178,15 +178,53 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_049 {
 	 */
 	public function register_filters() {
 		/**
+		 * Filters third party plugin/theme hooks that get processed for hover text.
+		 *
+		 * Use this to amend or remove support for hooks present in third party
+		 * plugins and themes.
+		 *
+		 * Currently supported plugins:
+		 * - Advanced Custom Fields
+		 *    'acf/format_value/type=text',
+		 *    'acf/format_value/type=textarea',
+		 *    'acf/format_value/type=url',
+		 *    'acf_the_content',
+		 * - Elementor
+		 *    'elementor/frontend/the_content',
+		 *    'elementor/widget/render_content',
+		 *
+		 * @since 3.9
+		 *
+		 * @param array $filters The third party filters that get processed for
+		 *                       hover text. See filter inline docs for defaults.
+		 */
+		$filters = (array) apply_filters( 'c2c_text_replace_third_party_filters', array(
+			// Support for Advanced Custom Fields plugin.
+			'acf/format_value/type=text',
+			'acf/format_value/type=textarea',
+			'acf/format_value/type=url',
+			'acf_the_content',
+			// Support for Elementor plugin.
+			'elementor/frontend/the_content',
+			'elementor/widget/render_content',
+		) );
+
+		// Add in relevant stock WP filters.
+		$filters = array_merge( $filters, array( 'the_content', 'the_excerpt', 'widget_text' ) );
+
+		/**
 		 * Filters the hooks that get processed for hover text.
 		 *
 		 * @since 3.0
 		 *
 		 * @param array $filters The filters that get processed for text.
 		 *                       replacement Default ['the_content',
-		 *                       'get_the_excerpt', 'widget_text'].
+		 *                       'the_excerpt', 'widget_text'] plus third-party
+		 *                       filters defined via the
+		 *                       `c2c_text_replace_third_party_filters` filter.
 		 */
-		$filters = (array) apply_filters( 'c2c_text_replace_filters', array( 'the_content', 'the_excerpt', 'widget_text' ) );
+		$filters = (array) apply_filters( 'c2c_text_replace_filters', $filters );
+
 		foreach ( $filters as $filter ) {
 			add_filter( $filter, array( $this, 'text_replace' ), 2 );
 		}

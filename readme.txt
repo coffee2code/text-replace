@@ -98,6 +98,10 @@ Rest assured search engines will see those posts since they only ever see the po
 
 By default, yes. There is a setting you can change so that only the first occurrence of the term in the post gets replaced. Or if you are a coder, you can use the 'c2c_text_replace_once' filter (see Hooks section).
 
+= Does this plugin explicitly support any third-party plugins? =
+
+Yes. While this plugin is compatible with many other plugins that modify post and widget text, this plugin has explicit built-in support for Advanced Custom Fields and Elementor, which provide additional content areas. This plugin provides hooks that can be used to enable compatibility with other plugins and themes.
+
 = Does this plugin include unit tests? =
 
 Yes.
@@ -134,6 +138,33 @@ function more_text_replacements( $filters ) {
 	return $filters;
 }
 add_filter( 'c2c_text_replace_filters', 'more_text_replacements' );
+`
+
+**c2c_text_replace_third_party_filters (filter)**
+
+The 'c2c_text_replace_third_party_filters' hook allows you to customize what third-party hooks get text replacement applied to them. Note: the results of this filter are then passed through the `c2c_text_replace_filters` filter, so third-party filters can be modified using either hook.
+
+Arguments:
+
+* $filters (array): The third-party filters whose text should have text replacement applied. Default `array( 'acf/format_value/type=text', 'acf/format_value/type=textarea', 'acf/format_value/type=url', 'acf_the_content', 'elementor/frontend/the_content', 'elementor/widget/render_content' )`.
+
+Example:
+
+`
+/**
+ * Stop text replacements for ACF text fields and add text replacements for a custom filter.
+ *
+ * @param array $filters
+ * @return array
+ */
+function my_c2c_text_replace_third_party_filters( $filters ) {
+	// Remove a filter already in the list.
+	unset( $filters[ 'acf/format_value/type=text' ] );
+	// Add a filter to the list.
+	$filters[] = 'my_plugin_filter';
+	return $filters;
+}
+add_filter( 'c2c_text_replace_third_party_filters', 'my_c2c_text_replace_third_party_filters' );
 `
 
 **c2c_text_replace (filter)**

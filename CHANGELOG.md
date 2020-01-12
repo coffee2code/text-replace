@@ -2,6 +2,8 @@
 
 ## _(in-progress)_
 * Fix: Ensure the lack of any defined replacements doesn't remove zeroes from text
+* New: Add support for third-party plugins: Advanced Custom Fields, Elementor
+* New: Add filter `c2c_text_replace_third_party_filters` for filtering third party filters
 * Change: Alter handling of `replace_once` value to ensure a valid value is used as arg for `preg_replace()`
 * Change: Initialize plugin on `plugins_loaded` action instead of on load
 * Change: Update plugin framework to 049
