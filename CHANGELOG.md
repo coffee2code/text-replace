@@ -20,6 +20,7 @@
 * Unit tests:
     * New: Add `capture_filter_value()` as a method for capturing default values provided for a filter
     * New: Add `get_filter_names()` as a helper method for getting the default and third-party filter names
+    * New: Add tests for setting defaults
     * Change: Update unit test install script and bootstrap to use latest WP unit test repo
     * Change: Explicitly check hook priority when checking that hook is registered
     * Change: Update some inline docs and function names to reflect their relevance to this plugin (and not to the plugin they were copied from)

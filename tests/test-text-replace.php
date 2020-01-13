@@ -538,6 +538,44 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	}
 
 	/*
+	 * Setting defaults.
+	 */
+
+	public function test_default_value_of_text_to_replace() {
+		c2c_TextReplace::get_instance()->reset_options();
+		$options = c2c_TextReplace::get_instance()->get_options();
+
+		$expected = array(
+			':wp:'          => "<a href='https://wordpress.org'>WordPress</a>",
+			':codex:'       => "<a href='https://codex.wordpress.org'>WordPress Codex</a>",
+			':coffee2code:' => "<a href='http://coffee2code.com' title='coffee2code'>coffee2code</a>",
+		);
+
+		$this->assertEquals( $expected, $options['text_to_replace'] );
+	}
+
+	public function test_default_value_of_text_replace_comments() {
+		c2c_TextReplace::get_instance()->reset_options();
+		$options = c2c_TextReplace::get_instance()->get_options();
+
+		$this->assertFalse( $options['text_replace_comments'] );
+	}
+
+	public function test_default_value_of_replace_once() {
+		c2c_TextReplace::get_instance()->reset_options();
+		$options = c2c_TextReplace::get_instance()->get_options();
+
+		$this->assertFalse( $options['replace_once'] );
+	}
+
+	public function test_default_value_of_case_sensitive() {
+		c2c_TextReplace::get_instance()->reset_options();
+		$options = c2c_TextReplace::get_instance()->get_options();
+
+		$this->assertTrue( $options['case_sensitive'] );
+	}
+
+	/*
 	 * Setting handling
 	 */
 
