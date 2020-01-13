@@ -158,7 +158,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	}
 
 	public function c2c_text_replace_filter_priority( $priority, $filter = '' ) {
-		return ( 'filter_20' === $filter ) ? 20 : 1000;
+		return ( 'filter_20' === $filter ) ? 20 : 11;
 	}
 
 	public function capture_filter_value( $value ) {
@@ -583,7 +583,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 
 		c2c_TextReplace::get_instance()->register_filters(); // Plugins would typically register their filter before this originally fires
 
-		$priority = 1000;
+		$priority = 11;
 
 		foreach ( $filters as $filter ) {
 			$this->test_replace_applies_to_default_filters( $filter, $priority );
