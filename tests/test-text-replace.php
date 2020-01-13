@@ -482,6 +482,8 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		c2c_TextReplace::get_instance()->register_filters(); // Plugins would typically register their filter before this originally fires
 
 		$this->assertSame( $filters, $this->captured_filter_value[ 'c2c_text_replace_filters' ] );
+
+		remove_filter( 'c2c_text_replace_filters', array( $this, 'capture_filter_value' ) );
 	}
 
 	public function test_replace_applies_to_custom_filter_via_filter() {
