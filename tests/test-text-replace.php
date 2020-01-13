@@ -314,7 +314,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( "This $expected is true", $this->text_replace( 'This test place is true' ) );
 	}
 
-	public function tests_replaces_term_split_across_multiple_lines() {
+	public function test_replaces_term_split_across_multiple_lines() {
 		$expected = array(
 			"See my " . $this->expected_text( 'test place' ) . " site to read."
 				=> $this->text_replace( "See my test\nplace site to read." ),

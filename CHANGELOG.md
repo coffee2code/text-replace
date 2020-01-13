@@ -23,6 +23,7 @@
     * Change: Update unit test install script and bootstrap to use latest WP unit test repo
     * Change: Explicitly check hook priority when checking that hook is registered
     * Change: Update some inline docs and function names to reflect their relevance to this plugin (and not to the plugin they were copied from)
+    * Fix: Fix unit test function name so that it is treated as a unit test
 * Change: Note compatibility through WP 5.3+
 * Change: Drop compatibility with version of WP older than 4.9
 * Change: Tweak some documentation in readme.txt
