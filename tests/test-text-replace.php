@@ -137,6 +137,15 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		);
 	}
 
+	public function unhook_default_filters( $priority = 2 ) {
+		$filters = $this->get_filter_names();
+
+		// Unhook filters.
+		foreach ( $filters as $filter ) {
+			remove_filter( $filter, array( c2c_TextReplace::get_instance(), 'text_replace' ), $priority );
+		}
+	}
+
 	public function add_text_to_replace( $text_to_replace ) {
 		$text_to_replace = (array) $text_to_replace;
 		$text_to_replace['bbPress'] = '<a href="https://bbpress.org">bbPress - Forum Software</a>';
@@ -561,12 +570,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	 */
 
 	public function test_changing_priority_via_c2c_text_replace_filter_priority() {
-		$filters = $this->get_filter_names();
-
-		// Unhook filters.
-		foreach ( $filters as $filter ) {
-			remove_filter( $filter, array( c2c_TextReplace::get_instance(), 'text_replace' ), 2 );
-		}
+		$this->unhook_default_filters();
 
 		add_filter( 'c2c_text_replace_filter_priority', array( $this, 'c2c_text_replace_filter_priority' ) );
 
