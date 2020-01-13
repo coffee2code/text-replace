@@ -170,6 +170,13 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_049 {
 				'label'            => __( 'Case sensitive text replacement?', 'text-replace' ),
 				'help'             => __( 'If unchecked, then a replacement for :wp: would also replace :WP:.', 'text-replace' ),
 			),
+			'when' => array(
+				'input'            => 'select',
+				'default'          => 'early',
+				'options'          => array( 'early', 'late' ),
+				'label'            => __( 'When to process text?', 'text-replace' ),
+				'help'             => sprintf( __( "Text replacements can happen 'early' (before most other text processing for posts) or 'late' (after most other text processing for posts). By default the plugin handles text early, but depending on the replacements you've defined and the plugins you're using, you can eliminate certain conflicts by switching to 'late'. Finer-grained control can be achieved via the <code>%s</code> filter.", 'text-replace' ), 'c2c_text_replace_filter_priority' ),
+			),
 		);
 	}
 
@@ -177,6 +184,8 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_049 {
 	 * Override the plugin framework's register_filters() to actually register actions against filters.
 	 */
 	public function register_filters() {
+		$options = $this->get_options();
+
 		/**
 		 * Filters third party plugin/theme hooks that get processed for hover text.
 		 *
@@ -225,6 +234,8 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_049 {
 		 */
 		$filters = (array) apply_filters( 'c2c_text_replace_filters', $filters );
 
+		$default_priority = ( 'late' === $options[ 'when'] ) ? 1000 : 2;
+
 		foreach ( $filters as $filter ) {
 			/**
 			 * Filters the priority for attaching the text replacement handler to
@@ -233,10 +244,11 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_049 {
 			 * @since 3.9
 			 *
 			 * @param int    $priority The priority for the 'c2c_text_replace'
-			 *                         filter. Default 2.
+			 *                         filter. Default 2 if 'when' setting
+			 *                         value is 'early', else 1000.
 			 * @param string $filter   The filter name.
 			 */
-			$priority = (int) apply_filters( 'c2c_text_replace_filter_priority', 2, $filter );
+			$priority = (int) apply_filters( 'c2c_text_replace_filter_priority', $default_priority, $filter );
 
 			add_filter( $filter, array( $this, 'text_replace' ), $priority );
 		}
@@ -415,6 +427,7 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_049 {
 				// Allow spaces in linkable text to represent any number of whitespace chars.
 				$old_text = preg_replace( '/\s+/', '\s+', $old_text );
 
+				// WILL match string within string, but WON'T match within tags.
 				$regex = "(?!<.*?){$old_text}(?![^<>]*?>)";
 
 				// If the text to be replaced has multibyte character(s), use

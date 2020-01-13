@@ -235,6 +235,13 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertTrue( $options['case_sensitive'] );
 	}
 
+	public function test_default_value_of_when() {
+		c2c_TextReplace::get_instance()->reset_options();
+		$options = c2c_TextReplace::get_instance()->get_options();
+
+		$this->assertEquals( 'early', $options['when'] );
+	}
+
 	/*
 	 * Text replacements
 	 */
@@ -581,6 +588,24 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		foreach ( $filters as $filter ) {
 			$this->test_replace_applies_to_default_filters( $filter, $priority );
 		}
+	}
+
+	public function test_default_priority_for_filter_c2c_text_replace_filter_priority_is_based_on_when_setting() {
+		$this->unhook_default_filters();
+
+		add_filter( 'c2c_text_replace_filter_priority', array( $this, 'capture_filter_value' ) );
+
+		c2c_TextReplace::get_instance()->register_filters(); // Plugins would typically register their filter before this originally fires
+
+		$this->assertEquals( 2, $this->captured_filter_value[ 'c2c_text_replace_filter_priority' ] );
+
+		$this->unhook_default_filters();
+		$this->set_option( array( 'when' => 'late' ) );
+		c2c_TextReplace::get_instance()->register_filters(); // Plugins would typically register their filter before this originally fires
+
+		$this->assertEquals( 1000, $this->captured_filter_value[ 'c2c_text_replace_filter_priority' ] );
+
+		$this->unhook_default_filters( 1000 );
 	}
 
 	/*
