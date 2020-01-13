@@ -167,6 +167,30 @@ function my_c2c_text_replace_third_party_filters( $filters ) {
 add_filter( 'c2c_text_replace_third_party_filters', 'my_c2c_text_replace_third_party_filters' );
 `
 
+**c2c_text_replace_filter_priority (filter)**
+
+The 'c2c_text_replace_filter_priority' hook allows you to override the default priority for the 'c2c_text_replace' filter.
+
+Arguments:
+
+* $priority (int): The priority for the 'c2c_text_replace' filter. The default value is 2.
+* $filter (string): The filter name.
+
+Example:
+
+`
+/**
+ * Change the default priority of the 'c2c_text_replace' filter to run after most other plugins.
+ *
+ * @param int $priority The priority for the 'c2c_text_replace' filter.
+ * @return int
+ */
+function my_change_priority_for_c2c_text_replace( $priority, $filter ) {
+	return 1000;
+}
+add_filter( 'c2c_text_replace_filter_priority', 'my_change_priority_for_c2c_text_replace', 10, 2 );
+`
+
 **c2c_text_replace (filter)**
 
 The 'c2c_text_replace' hook allows you to customize or override the setting defining all of the text replacement shortcuts and their replacements.

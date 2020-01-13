@@ -148,6 +148,10 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		return $filters;
 	}
 
+	public function c2c_text_replace_filter_priority( $priority, $filter = '' ) {
+		return ( 'filter_20' === $filter ) ? 20 : 1000;
+	}
+
 	public function capture_filter_value( $value ) {
 		return $this->captured_filter_value[ current_filter() ] = $value;
 	}
@@ -449,10 +453,10 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	/**
 	 * @dataProvider get_default_filters
 	 */
-	public function test_replace_applies_to_default_filters( $filter ) {
+	public function test_replace_applies_to_default_filters( $filter, $priority = 2 ) {
 		$expected = $this->expected_text( ':coffee2code:' );
 
-		$this->assertEquals( 2, has_filter( $filter, array( c2c_TextReplace::get_instance(), 'text_replace' ) ) );
+		$this->assertEquals( $priority, has_filter( $filter, array( c2c_TextReplace::get_instance(), 'text_replace' ) ) );
 		$this->assertGreaterThan( 0, strpos( apply_filters( $filter, 'a :coffee2code:' ), $expected ) );
 	}
 
@@ -508,6 +512,29 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		c2c_TextReplace::get_instance()->register_filters(); // Plugins would typically register their filter before this originally fires
 
 		$this->assertEquals( $this->expected_text( ':coffee2code:' ), apply_filters( 'custom_filter', ':coffee2code:' ) );
+	}
+
+	/*
+	 * filter: c2c_text_replace_filter_priority
+	 */
+
+	public function test_changing_priority_via_c2c_text_replace_filter_priority() {
+		$filters = $this->get_filter_names();
+
+		// Unhook filters.
+		foreach ( $filters as $filter ) {
+			remove_filter( $filter, array( c2c_TextReplace::get_instance(), 'text_replace' ), 2 );
+		}
+
+		add_filter( 'c2c_text_replace_filter_priority', array( $this, 'c2c_text_replace_filter_priority' ) );
+
+		c2c_TextReplace::get_instance()->register_filters(); // Plugins would typically register their filter before this originally fires
+
+		$priority = 1000;
+
+		foreach ( $filters as $filter ) {
+			$this->test_replace_applies_to_default_filters( $filter, $priority );
+		}
 	}
 
 	/*

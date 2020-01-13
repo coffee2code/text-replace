@@ -1,6 +1,7 @@
 # Changelog
 
 ## _(in-progress)_
+* New: Add filter `c2c_text_replace_filter_priority` for filtering hook priority for text replacement handler
 * Fix: Ensure the lack of any defined replacements doesn't remove zeroes from text
 * New: Add support for third-party plugins: Advanced Custom Fields, Elementor
 * New: Add filter `c2c_text_replace_third_party_filters` for filtering third party filters

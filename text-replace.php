@@ -226,7 +226,19 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_049 {
 		$filters = (array) apply_filters( 'c2c_text_replace_filters', $filters );
 
 		foreach ( $filters as $filter ) {
-			add_filter( $filter, array( $this, 'text_replace' ), 2 );
+			/**
+			 * Filters the priority for attaching the text replacement handler to
+			 * a hook.
+			 *
+			 * @since 3.9
+			 *
+			 * @param int    $priority The priority for the 'c2c_text_replace'
+			 *                         filter. Default 2.
+			 * @param string $filter   The filter name.
+			 */
+			$priority = (int) apply_filters( 'c2c_text_replace_filter_priority', 2, $filter );
+
+			add_filter( $filter, array( $this, 'text_replace' ), $priority );
 		}
 
 		// Note that the priority must be set high enough to avoid <img> tags inserted by the text replace process from
