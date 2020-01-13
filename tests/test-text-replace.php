@@ -127,6 +127,16 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		return $this->text_replacements( $term );
 	}
 
+	protected function get_filter_names() {
+		return array_map(
+			function ( $x ) { return reset( $x ); },
+			array_merge(
+				$this->get_third_party_filters(),
+				$this->get_default_filters()
+			)
+		);
+	}
+
 	public function add_text_to_replace( $text_to_replace ) {
 		$text_to_replace = (array) $text_to_replace;
 		$text_to_replace['bbPress'] = '<a href="https://bbpress.org">bbPress - Forum Software</a>';
@@ -469,13 +479,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	}
 
 	public function test_third_party_filters_are_part_of_c2c_text_replace_filters() {
-		$filters = array_map(
-			function ( $x ) { return reset( $x ); },
-			array_merge(
-				$this->get_third_party_filters(),
-				$this->get_default_filters()
-			)
-		 );
+		$filters = $this->get_filter_names();
 
 		add_filter( 'c2c_text_replace_filters', array( $this, 'capture_filter_value' ) );
 
