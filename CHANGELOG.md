@@ -8,6 +8,7 @@
 * Fix: Ensure the lack of any defined replacements doesn't remove zeroes from text
 * Change: Alter handling of `replace_once` value to ensure a valid value is used as arg for `preg_replace()`
 * Change: Initialize plugin on `plugins_loaded` action instead of on load
+* Change: Remove plugin setting page help text indicating order matters (it hasn't since v3.8)
 * Change: Update plugin framework to 049
     * 049:
     * Correct last arg in call to `add_settings_field()` to be an array

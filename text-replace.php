@@ -275,8 +275,6 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_049 {
 		echo '<p>' . __( 'Where <code>:wp:</code> is the shortcut you intend to use in your posts and the <code>&lt;a href=\'https://wordpress.org\'>WordPress&lt;/a></code> would be what you want the shortcut to be replaced with when the post is shown on your site.', 'text-replace' ) . '</p>';
 		echo '<p>' . __( 'Other considerations:', 'text-replace' ) . '</p>';
 		echo '<ul class="c2c-plugin-list"><li>';
-		echo __( 'List the more specific matches early, to avoid stomping on another of your shortcuts.  For example, if you have both <code>:p</code> and <code>:pout:</code> as shortcuts, put <code>:pout:</code> first; otherwise, the <code>:p</code> will match against all the <code>:pout:</code> in your text.', 'text-replace' );
-		echo '</li><li>';
 		echo __( 'Be careful not to define text that could match partially when you don\'t want it to:<br />i.e.  <code>Me => Scott</code> would also inadvertently change "Men" to be "Scottn"', 'text-replace' );
 		echo '</li><li>';
 		echo __( 'If you intend to use this plugin to handle smilies, you should probably disable WordPress\'s default smilie handler.', 'text-replace' );
