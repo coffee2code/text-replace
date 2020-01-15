@@ -9,7 +9,13 @@
 * Change: Alter handling of `replace_once` value to ensure a valid value is used as arg for `preg_replace()`
 * Change: Initialize plugin on `plugins_loaded` action instead of on load
 * Change: Remove plugin setting page help text indicating order matters (it hasn't since v3.8)
-* Change: Update plugin framework to 049
+* Change: Update plugin framework to 050
+    * 050:
+    * Allow a hash entry to literally have '0' as a value without being entirely omitted when saved
+    * Output donation markup using `printf()` rather than using string concatenation
+    * Update copyright date (2020)
+    * Note compatibility through WP 5.3+
+    * Drop compatibility with version of WP older than 4.9
     * 049:
     * Correct last arg in call to `add_settings_field()` to be an array
     * Wrap help text for settings in `label` instead of `p`
