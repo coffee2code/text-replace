@@ -33,6 +33,7 @@
     * New: Add tests for setting defaults
     * New: Add text_to_replace example values to verify replacement to 0 and an empty string are valid
     * New: Add failing tests for replacements affecting shortcode tags and shortcode attributes (though current behavior may be desired)
+    * New: Add failing test for replacement text itself getting a replacement (though current behavior may be desired)
     * New: Add new `test_does_not_replace_within_markup_attributes()`
     * Change: Rename old `test_does_not_replace_within_markup_attributes()` to `test_does_not_replace_within_markup_attributes_but_does_between_tags()`
     * Change: Update unit test install script and bootstrap to use latest WP unit test repo

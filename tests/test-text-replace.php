@@ -399,6 +399,22 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		}
 	}
 
+	// Note: This KNOWN FAILURE test presumes that replacement text should not
+	// be at risk of seeing a replacement itself. This may not be a valid
+	// presumption though.
+	public function test_does_not_replace_a_previous_replacement_KNOWN_FAILURE() {
+		$expected = 'this KNOWN FAILURE may not actually be considered a valid test';
+
+		$this->set_option( array(
+			'text_to_replace' => array(
+				'test'       => 'http://example.com/txst1',
+				'test thing' => $expected,
+			)
+		) );
+
+		$this->assertEquals( $expected, $this->text_replace( 'test thing' ) );
+	}
+
 	// Note: This KNOWN FAILURE test presumes that shortcode attributes should
 	// not be at risk of seeing a replacement itself. This may not be a valid
 	// presumption though.
