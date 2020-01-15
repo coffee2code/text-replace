@@ -322,6 +322,12 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	}
 
 	public function test_does_not_replace_within_markup_attributes() {
+		$expected = '<a href="http://test.com" title="A test site">gibberish</a>';
+
+		$this->assertEquals( $expected, $this->text_replace( $expected ) );
+	}
+
+	public function test_does_not_replace_within_markup_attributes_but_does_between_tags() {
 		$format = '<a href="http://%s/file.png">http://%s/file.png</a>';
 		$old    = 'example.com/wp-content/uploads';
 		$new    = $this->expected_text( $old );

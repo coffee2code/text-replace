@@ -24,6 +24,8 @@
     * New: Add `get_filter_names()` as a helper method for getting the default and third-party filter names
     * New: Add `unhook_default_filters()` as a helper method to unhook plugin's default filters hooked to `text_replace()`
     * New: Add tests for setting defaults
+    * New: Add new `test_does_not_replace_within_markup_attributes()`
+    * Change: Rename old `test_does_not_replace_within_markup_attributes()` to `test_does_not_replace_within_markup_attributes_but_does_between_tags()`
     * Change: Update unit test install script and bootstrap to use latest WP unit test repo
     * Change: Explicitly check hook priority when checking that hook is registered
     * Change: Update some inline docs and function names to reflect their relevance to this plugin (and not to the plugin they were copied from)
