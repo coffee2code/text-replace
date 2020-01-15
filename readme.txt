@@ -36,9 +36,6 @@ Otherwise, you risk proper but undesired replacements:
 
 Would have the effect of changing "His majesty" to "Hellos majesty".
 
-* List the more specific matches early, to avoid stomping on another of your shortcuts. For example, if you have both
-`:p` and `:pout:` as shortcuts, put `:pout:` first, otherwise, the `:p` will match against all the `:pout:` in your text.
-
 * If you intend to use this plugin to handle smilies, you should probably disable WordPress's default smilie handler.
 
 * This plugin is set to filter the_content, the_excerpt, widget_text, and optionally, get_comment_text and get_comment_excerpt. The filter 'c2c_text_replace_filters' can be used to add or modify the list of filters affected.
