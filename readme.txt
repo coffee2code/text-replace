@@ -6,7 +6,7 @@ License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 4.9
 Tested up to: 5.3
-Stable tag: 3.8
+Stable tag: 3.9
 
 Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
 
@@ -259,6 +259,58 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 
 == Changelog ==
 
+= 3.9 (2020-01-15) =
+Highlights:
+* This feature release adds support for Advanced Custom Fields and Elementor, adds a new setting that can allow the plugin to run later to avoid potential conflicts with other plugins, adds a number of filters, updates compatibility to be WP 4.9-5.3+, and more.
+
+Details:
+* New: Add support for third-party plugins: Advanced Custom Fields, Elementor
+* New: Add filter `c2c_text_replace_third_party_filters` for filtering third party filters
+* New: Add new setting to allow control over when text replacements are handled early or late in text processing process
+* New: Add filter `c2c_text_replace_filter_priority` for filtering hook priority for text replacement handler
+* Fix: Ensure the lack of any defined replacements doesn't remove zeroes from text
+* Change: Alter handling of `replace_once` value to ensure a valid value is used as arg for `preg_replace()`
+* Change: Initialize plugin on `plugins_loaded` action instead of on load
+* Change: Remove plugin setting page help text indicating order matters (it hasn't since v3.8)
+* Change: Update plugin framework to 050
+    * 050:
+    * Allow a hash entry to literally have '0' as a value without being entirely omitted when saved
+    * Output donation markup using `printf()` rather than using string concatenation
+    * Update copyright date (2020)
+    * Note compatibility through WP 5.3+
+    * Drop compatibility with version of WP older than 4.9
+    * 049:
+    * Correct last arg in call to `add_settings_field()` to be an array
+    * Wrap help text for settings in `label` instead of `p`
+    * Only use `label` for help text for checkboxes, otherwise use `p`
+    * Ensure a `textarea` displays as a block to prevent orphaning of subsequent help text
+    * Note compatibility through WP 5.1+
+    * Update copyright date (2019)
+* New: Add CHANGELOG.md and move all but most recent changelog entries into it
+* New: Add TODO.md and move existing TODO list from top of main plugin file into it (and add more items to the list)
+* New: Add inline documentation for hooks
+* Unit tests:
+    * New: Add `capture_filter_value()` as a method for capturing default values provided for a filter
+    * New: Add `get_filter_names()` as a helper method for getting the default and third-party filter names
+    * New: Add `unhook_default_filters()` as a helper method to unhook plugin's default filters hooked to `text_replace()`
+    * New: Add tests for setting defaults
+    * New: Add text_to_replace example values to verify replacement to 0 and an empty string are valid
+    * New: Add failing tests for replacements affecting shortcode tags and shortcode attributes (though current behavior may be desired)
+    * New: Add failing test for replacement text itself getting a replacement (though current behavior may be desired)
+    * New: Add new `test_does_not_replace_within_markup_attributes()`
+    * Change: Rename old `test_does_not_replace_within_markup_attributes()` to `test_does_not_replace_within_markup_attributes_but_does_between_tags()`
+    * Change: Update unit test install script and bootstrap to use latest WP unit test repo
+    * Change: Explicitly check hook priority when checking that hook is registered
+    * Change: Update some inline docs and function names to reflect their relevance to this plugin (and not to the plugin they were copied from)
+    * Fix: Fix unit test function name so that it is treated as a unit test
+* Change: Note compatibility through WP 5.3+
+* Change: Drop compatibility with version of WP older than 4.9
+* Change: Tweak some documentation in readme.txt
+* Change: Update copyright date (2020)
+* Change: Update License URI to be HTTPS
+* Change: Split paragraph in README.md's "Support" section into two
+* Fix: Correct typo in GitHub URL
+
 = 3.8 (2018-07-14) =
 Highlights:
 
@@ -337,6 +389,9 @@ _Full changelog is available in [CHANGELOG.md](https://github.com/coffee2code/te
 
 
 == Upgrade Notice ==
+
+= 3.9 =
+Feature update: added support for Advanced Custom Fields and Elementor, added new setting to allow the plugin to run later to avoid potential conflicts with other plugins, added a number of filters, updated compatibility to be WP 4.9-5.3+, added CHANGELOG.md and TODO.md, and more.
 
 = 3.8 =
 Recommended update: fixed to honor 'replace once' setting, including for multibyte strings; allow for whitespace in text to replace to represent any number of whitespace; updated plugin framework to v048; compatibility is now WP 4.7-4.9; added README.md; more.

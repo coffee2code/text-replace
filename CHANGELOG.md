@@ -1,10 +1,17 @@
 # Changelog
 
-## _(in-progress)_
+## 3.9 _(2020-01-15)_
+
+### Highlights:
+
+This feature release adds support for Advanced Custom Fields and Elementor, adds a new setting that can allow the plugin to run later to avoid potential conflicts with other plugins, adds a number of filters, updates compatibility to be WP 4.9-5.3+, and more.
+
+### Details:
+
 * New: Add support for third-party plugins: Advanced Custom Fields, Elementor
 * New: Add filter `c2c_text_replace_third_party_filters` for filtering third party filters
-* New: Add filter `c2c_text_replace_filter_priority` for filtering hook priority for text replacement handler
 * New: Add new setting to allow control over when text replacements are handled early or late in text processing process
+* New: Add filter `c2c_text_replace_filter_priority` for filtering hook priority for text replacement handler
 * Fix: Ensure the lack of any defined replacements doesn't remove zeroes from text
 * Change: Alter handling of `replace_once` value to ensure a valid value is used as arg for `preg_replace()`
 * Change: Initialize plugin on `plugins_loaded` action instead of on load
