@@ -585,6 +585,8 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	 */
 
 	public function test_changing_priority_via_c2c_text_replace_filter_priority() {
+		$filters = $this->get_filter_names();
+
 		$this->unhook_default_filters();
 
 		add_filter( 'c2c_text_replace_filter_priority', array( $this, 'c2c_text_replace_filter_priority' ) );
