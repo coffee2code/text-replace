@@ -399,6 +399,24 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		}
 	}
 
+	// Note: This KNOWN FAILURE test presumes that shortcode attributes should
+	// not be at risk of seeing a replacement itself. This may not be a valid
+	// presumption though.
+	public function test_does_not_replace_shortcode_KNOWN_FAILURE() {
+		$expected = '[test title="This KNOWN FAILURE may not actually be a valid test"]gibberish[/test]';
+
+		$this->assertEquals( $expected, $this->text_replace( $expected ) );
+	}
+
+	// Note: This KNOWN FAILURE test presumes that shortcode attributes should
+	// not be at risk of seeing a replacement itself. This may not be a valid
+	// presumption though.
+	public function test_does_not_replace_within_shortcodes_attributes_KNOWN_FAILURE() {
+		$expected = '[caption title="This KNOWN FAILURE may not actually be a valid test"]gibberish[/caption]';
+
+		$this->assertEquals( $expected, $this->text_replace( $expected ) );
+	}
+
 	public function test_replaces_multibyte_text_once_via_setting() {
 		$linked = $this->expected_text( 'Cocktail glacé' );
 
