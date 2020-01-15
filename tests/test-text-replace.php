@@ -26,6 +26,8 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		'iPhone 6'       => 'http://example.com/aople2',
 		'test'           => 'http://example.com/txst1',
 		'test place'     => 'http://example.com/txst2',
+		'zero'           => '0',
+		'empty string'   => '',
 	);
 
 	public static function setUpBeforeClass() {
