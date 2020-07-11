@@ -47,13 +47,6 @@ class Text_Replace_Test extends WP_UnitTestCase {
 
 		// Reset options
 		c2c_TextReplace::get_instance()->reset_options();
-
-		remove_filter( 'c2c_text_replace',                array( $this, 'add_text_to_replace' ) );
-		remove_filter( 'c2c_text_replace_once',           '__return_true' );
-		remove_filter( 'c2c_text_replace_case_sensitive', '__return_false' );
-		remove_filter( 'c2c_text_replace_comments',       '__return_true' );
-		remove_filter( 'c2c_text_replace_filters',        array( $this, 'add_custom_filter' ) );
-		remove_filter( 'c2c_text_replace_third_party_filters', array( $this, 'add_custom_filter' ) );
 	}
 
 
