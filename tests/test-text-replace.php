@@ -41,7 +41,6 @@ class Text_Replace_Test extends WP_UnitTestCase {
 
 		$this->obj = c2c_TextReplace::get_instance();
 
-		$this->obj->reset_options();
 		$this->set_option();
 	}
 
