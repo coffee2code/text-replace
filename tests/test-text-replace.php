@@ -210,7 +210,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$expected = array(
 			':wp:'          => "<a href='https://wordpress.org'>WordPress</a>",
 			':codex:'       => "<a href='https://codex.wordpress.org'>WordPress Codex</a>",
-			':coffee2code:' => "<a href='http://coffee2code.com' title='coffee2code'>coffee2code</a>",
+			':coffee2code:' => "<a href='https://coffee2code.com' title='coffee2code'>coffee2code</a>",
 		);
 
 		$this->assertEquals( $expected, $options['text_to_replace'] );

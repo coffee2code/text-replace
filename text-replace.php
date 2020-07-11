@@ -2,9 +2,9 @@
 /**
  * Plugin Name: Text Replace
  * Version:     3.9
- * Plugin URI:  http://coffee2code.com/wp-plugins/text-replace/
+ * Plugin URI:  https://coffee2code.com/wp-plugins/text-replace/
  * Author:      Scott Reilly
- * Author URI:  http://coffee2code.com/
+ * Author URI:  https://coffee2code.com/
  * License:     GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: text-replace
@@ -134,7 +134,7 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_050 {
 				'default'          => array(
 					":wp:"          => "<a href='https://wordpress.org'>WordPress</a>",
 					":codex:"       => "<a href='https://codex.wordpress.org'>WordPress Codex</a>",
-					":coffee2code:" => "<a href='http://coffee2code.com' title='coffee2code'>coffee2code</a>"
+					":coffee2code:" => "<a href='https://coffee2code.com' title='coffee2code'>coffee2code</a>"
 				),
 				'allow_html'       => true,
 				'no_wrap'          => true,
