@@ -141,7 +141,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 
 		// Unhook filters.
 		foreach ( $filters as $filter ) {
-			remove_filter( $filter, array( c2c_TextReplace::get_instance(), 'text_replace' ), $priority );
+			remove_filter( $filter, array( $this->obj, 'text_replace' ), $priority );
 		}
 	}
 
@@ -189,7 +189,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	}
 
 	public function test_instance_object_is_returned() {
-		$this->assertTrue( is_a( c2c_TextReplace::get_instance(), 'c2c_TextReplace' ) );
+		$this->assertTrue( is_a( $this->obj, 'c2c_TextReplace' ) );
 	}
 
 	public function test_hooks_plugins_loaded() {
@@ -557,7 +557,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	public function test_replace_applies_to_default_filters( $filter, $priority = 2 ) {
 		$expected = $this->expected_text( ':coffee2code:' );
 
-		$this->assertEquals( $priority, has_filter( $filter, array( c2c_TextReplace::get_instance(), 'text_replace' ) ) );
+		$this->assertEquals( $priority, has_filter( $filter, array( $this->obj, 'text_replace' ) ) );
 		$this->assertGreaterThan( 0, strpos( apply_filters( $filter, 'a :coffee2code:' ), $expected ) );
 	}
 
@@ -569,7 +569,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 
 		add_filter( 'c2c_text_replace_comments', '__return_true' );
 
-		$this->assertEquals( 11, has_filter( $filter, array( c2c_TextReplace::get_instance(), 'text_replace_comment_text' ) ) );
+		$this->assertEquals( 11, has_filter( $filter, array( $this->obj, 'text_replace_comment_text' ) ) );
 		$this->assertGreaterThan( 0, strpos( apply_filters( $filter, 'a :coffee2code:' ), $expected ) );
 	}
 
@@ -579,7 +579,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	public function test_replace_applies_to_third_party_filters( $filter ) {
 		$expected = $this->expected_text( ':coffee2code:' );
 
-		$this->assertEquals( 2, has_filter( $filter, array( c2c_TextReplace::get_instance(), 'text_replace' ) ) );
+		$this->assertEquals( 2, has_filter( $filter, array( $this->obj, 'text_replace' ) ) );
 		$this->assertGreaterThan( 0, strpos( apply_filters( $filter, 'a :coffee2code:' ), $expected ) );
 	}
 
