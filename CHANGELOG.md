@@ -4,6 +4,7 @@
 * Change: Note compatibility through WP 5.4+
 * Change: Update links to coffee2code.com to be HTTPS
 * Unit tests:
+    * New: Add test for setting name
     * Change: Remove unnecessary unregistering of hooks in `tearDown()`
     * Change: Remove duplicative `reset_options()` call
     * Change: Store plugin instance in test object to simplify referencing it

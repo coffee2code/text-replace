@@ -196,6 +196,10 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( 10, has_action( 'plugins_loaded', array( 'c2c_TextReplace', 'get_instance' ) ) );
 	}
 
+	public function test_setting_name() {
+		$this->assertEquals( 'c2c_text_replace', c2c_TextReplace::SETTING_NAME );
+	}
+
 	/*
 	 * Setting defaults.
 	 */
