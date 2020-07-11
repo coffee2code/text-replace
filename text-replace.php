@@ -10,7 +10,7 @@
  * Text Domain: text-replace
  * Description: Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
  *
- * Compatible with WordPress 4.9+ through 5.3+.
+ * Compatible with WordPress 4.9+ through 5.4+.
  *
  * =>> Read the accompanying readme.txt file for instructions and documentation.
  * =>> Also, visit the plugin's homepage for additional information and updates.
