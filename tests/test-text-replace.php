@@ -654,6 +654,19 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	}
 
 	/*
+	 * options_page_description()
+	 */
+
+	// Note: By no means a text of the full output of the function.
+	public function test_options_page_description() {
+		$expected = '<h1>Text Replace Settings</h1>' . "\n";
+		$expected .= '<p class="see-help">See the "Help" link to the top-right of the page for more help.</p>' . "\n";
+		$expected .= '<p>Text Replace is a plugin that allows you to replace text with other text in posts, etc. Very handy to create shortcuts to commonly-typed and/or lengthy text/HTML, or for smilies.</p>';
+
+		$this->expectOutputRegex( '~' . preg_quote( $expected ) . '~', $this->obj->options_page_description() );
+	}
+
+	/*
 	 * Setting handling
 	 */
 
