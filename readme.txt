@@ -39,7 +39,7 @@ Would have the effect of changing "His majesty" to "Hellos majesty".
 
 * If you intend to use this plugin to handle smilies, you should probably disable WordPress's default smilie handler.
 
-* This plugin is set to filter the_content, the_excerpt, widget_text, and optionally, get_comment_text and get_comment_excerpt. The filter 'c2c_text_replace_filters' can be used to add or modify the list of filters affected.
+* This plugin is set to filter the_content, the_excerpt, widget_text, and optionally, get_comment_text and get_comment_excerpt. Filters from popular plugins such as Advanced Custom Fields (ACF) and Elementor are also handled by default (see FAQ for specifics). The filter 'c2c_text_replace_filters' can be used to add or modify the list of filters affected.
 
 * Text inside of HTML tags (such as tag names and attributes) will not be matched. So, for example, you can't expect the :mycss: shortcut to work in: &lt;a href="" :mycss:&gt;text&lt;/a&gt;.'.
 
@@ -98,7 +98,7 @@ By default, yes. There is a setting you can change so that only the first occurr
 
 = Does this plugin explicitly support any third-party plugins? =
 
-Yes. While this plugin is compatible with many other plugins that modify post and widget text, this plugin has explicit built-in support for Advanced Custom Fields and Elementor, which provide additional content areas. This plugin provides hooks that can be used to enable compatibility with other plugins and themes.
+Yes. While this plugin is compatible with many other plugins that modify post and widget text, this plugin has explicit built-in support for Advanced Custom Fields and Elementor, which provide additional content areas. See documentation on the hook c2c_text_replace_third_party_filters for a complete list of default supported third-party filters and how to enable compatibility with other plugins and themes.
 
 = Does this plugin include unit tests? =
 
