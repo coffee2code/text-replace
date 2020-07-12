@@ -1,6 +1,7 @@
 # Changelog
 
 ## _(in-progress)_
+* Change: Improve and expand upon documentation
 * Change: Note compatibility through WP 5.4+
 * Change: Update links to coffee2code.com to be HTTPS
 * Unit tests:

@@ -19,6 +19,7 @@ Additional features of the plugin controlled both via settings and filters:
 * Text replacement can be enabled for comments (it isn't by default)
 * Text replacement can be made case insensitive (it is case sensitive by default)
 * Text replacement can be limited to doing only one replacement per term, per post (by default, all occurrences of a term are replaced)
+* Text replacement can be handled early or late in WordPress's text filtering process (it's early by default)
 
 A few things to keep these things in mind:
 
