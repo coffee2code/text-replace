@@ -262,9 +262,11 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 
 = 3.9 (2020-01-15) =
 Highlights:
+
 * This feature release adds support for Advanced Custom Fields and Elementor, adds a new setting that can allow the plugin to run later to avoid potential conflicts with other plugins, adds a number of filters, updates compatibility to be WP 4.9-5.3+, and more.
 
 Details:
+
 * New: Add support for third-party plugins: Advanced Custom Fields, Elementor
 * New: Add filter `c2c_text_replace_third_party_filters` for filtering third party filters
 * New: Add new setting to allow control over when text replacements are handled early or late in text processing process
@@ -318,6 +320,7 @@ Highlights:
 * This release adds a setting for links to open in a new window, adds support for linkable text spanning multiple lines in your post, adds a filter for customizing link attributes, improves performance, and makes numerous behind-the-scenes improvements and changes.
 
 Details:
+
 * New: Ensure longer, more precise link strings match before shorter strings that might also match, regardless of order defined
 * Fix: Honor setting to limit text replacements to just once a post for multibyte strings
 * New: Add support for finding text to replace that may span more than one line or whose internal spaces vary in number and type
