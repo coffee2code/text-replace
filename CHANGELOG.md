@@ -5,6 +5,7 @@
 * Change: Improve and expand upon documentation
 * Change: Note compatibility through WP 5.4+
 * Change: Update links to coffee2code.com to be HTTPS
+* Change: Add a number of new TODO items
 * Unit tests:
     * New: Add test for `options_page_description()`
     * New: Add test for setting name
