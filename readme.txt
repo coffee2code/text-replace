@@ -37,7 +37,7 @@ Otherwise, you risk proper but undesired replacements:
 
 Would have the effect of changing "His majesty" to "Hellos majesty".
 
-* If you intend to use this plugin to handle smilies, you should probably disable WordPress's default smilie handler.
+* If you intend to use this plugin to handle smilies, you should probably disable WordPress's default smilie handler on the Writing Settings admin page.
 
 * This plugin is set to filter the_content, the_excerpt, widget_text, and optionally, get_comment_text and get_comment_excerpt. Filters from popular plugins such as Advanced Custom Fields (ACF) and Elementor are also handled by default (see FAQ for specifics). The filter 'c2c_text_replace_filters' can be used to add or modify the list of filters affected.
 
