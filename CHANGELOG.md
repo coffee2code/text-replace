@@ -1,6 +1,13 @@
 # Changelog
 
-## _(in-progress)_
+## 3.9.1 _(2020-07-11)_
+
+### Highlights:
+
+This minor release updates a bunch of documentation, updates a few URLs to be HTTPS, improves unit testing, and notes compatibility through WP 5.4+.
+
+### Details:
+
 * Change: Revamp a lot of the help text on the settings page
 * Change: Improve and expand upon documentation
 * Change: Note compatibility through WP 5.4+

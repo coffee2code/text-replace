@@ -6,7 +6,7 @@ License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 4.9
 Tested up to: 5.4
-Stable tag: 3.9
+Stable tag: 3.9.1
 
 Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
 
@@ -260,6 +260,26 @@ add_filter( 'c2c_text_replace_once', '__return_true' );`
 
 == Changelog ==
 
+= 3.9.1 (2020-07-11) =
+Highlights:
+
+* This minor release updates a bunch of documentation, updates a few URLs to be HTTPS, improves unit testing, and notes compatibility through WP 5.4+.
+
+Details:
+
+* Change: Revamp a lot of the help text on the settings page
+* Change: Improve and expand upon documentation
+* Change: Note compatibility through WP 5.4+
+* Change: Update links to coffee2code.com to be HTTPS
+* Change: Add a number of new TODO items
+* Unit tests:
+    * New: Add test for `options_page_description()`
+    * New: Add test for setting name
+    * Change: Remove unnecessary unregistering of hooks in `tearDown()`
+    * Change: Remove duplicative `reset_options()` call
+    * Change: Store plugin instance in test object to simplify referencing it
+    * Change: Use HTTPS for link to WP SVN repository in bin script for configuring unit tests (and delete commented-out code)
+
 = 3.9 (2020-01-15) =
 Highlights:
 
@@ -364,35 +384,14 @@ Details:
 * Change: Update URLs used in examples and docs to be HTTPS where appropriate
 * Change: Update copyright date (2018)
 
-= 3.7 (2016-05-01) =
-* Change: Update plugin framework to 043:
-    * Fix error message when text replacement field has trailing blank line.
-    * Change class name to c2c_TextReplace_Plugin_043 to be plugin-specific.
-    * Disregard invalid lines supplied as part of hash option value.
-    * Set textdomain using a string instead of a variable.
-    * Don't load textdomain from file.
-    * Change admin page header from 'h2' to 'h1' tag.
-    * Add `c2c_plugin_version()`.
-    * Formatting improvements to inline docs.
-* Change: Add support for language packs:
-    * Set textdomain using a string instead of a variable.
-    * Remove .pot file and /lang subdirectory.
-    * Remove 'Domain Path' from plugin header.
-* Change: Add many more unit tests.
-* Change: Prevent web invocation of unit test bootstrap.php.
-* New: Add LICENSE file.
-* New: Add empty index.php to prevent files from being listed if web server has enabled directory listings.
-* Change: Minor code reformatting.
-* Change: Add proper docblocks to examples in readme.txt.
-* Change: Note compatibility through WP 4.5+.
-* Change: Dropped compatibility with version of WP older than 4.1.
-* Change: Update copyright date (2016).
-
 _Full changelog is available in [CHANGELOG.md](https://github.com/coffee2code/text-replace/blob/master/CHANGELOG.md)._
 
 
 
 == Upgrade Notice ==
+
+= 3.9.1 =
+Minor update: updated a bunch of documentation, updated a few URLs to be HTTPS, improved unit testing, and noted compatibility through WP 5.4+.
 
 = 3.9 =
 Feature update: added support for Advanced Custom Fields and Elementor, added new setting to allow the plugin to run later to avoid potential conflicts with other plugins, added a number of filters, updated compatibility to be WP 4.9-5.3+, added CHANGELOG.md and TODO.md, and more.
