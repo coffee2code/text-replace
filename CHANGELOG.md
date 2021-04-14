@@ -1,7 +1,9 @@
 # Changelog
 
 ## _(in-progress)_
-* Change: Update plugin framework to 060
+* Change: Update plugin framework to 061
+    * 061:
+    * Fix bug preventing settings from getting saved
     * 060:
     * Rename class from `c2c_{PluginName}_Plugin_051` to `c2c_Plugin_060`
     * Move string translation handling into inheriting class making the plugin framework code plugin-agnostic
