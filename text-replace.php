@@ -250,6 +250,76 @@ final class c2c_TextReplace extends c2c_TextReplace_Plugin_050 {
 	}
 
 	/**
+	 * Returns translated strings used by c2c_Plugin parent class.
+	 *
+	 * @since 4.0
+	 *
+	 * @param string $string Optional. The string whose translation should be
+	 *                       returned, or an empty string to return all strings.
+	 *                       Default ''.
+	 * @return string|string[] The translated string, or if a string was provided
+	 *                         but a translation was not found then the original
+	 *                         string, or an array of all strings if $string is ''.
+	 */
+	public function get_c2c_string( $string = '' ) {
+		$strings = array(
+			'A value is required for: "%s"'
+				/* translators: %s: Label for setting. */
+				=> __( 'A value is required for: "%s"', 'text-replace' ),
+			'Click for more help on this plugin'
+				=> __( 'Click for more help on this plugin', 'text-replace' ),
+			' (especially check out the "Other Notes" tab, if present)'
+				=> __( ' (especially check out the "Other Notes" tab, if present)', 'text-replace' ),
+			'Coffee fuels my coding.'
+				=> __( 'Coffee fuels my coding.', 'text-replace' ),
+			'Did you find this plugin useful?'
+				=> __( 'Did you find this plugin useful?', 'text-replace' ),
+			'Donate'
+				=> __( 'Donate', 'text-replace' ),
+			'Expected integer value for: %s'
+				=> __( 'Expected integer value for: %s', 'text-replace' ),
+			'Invalid file specified for C2C_Plugin: %s'
+				/* translators: %s: Path to the plugin file. */
+				=> __( 'Invalid file specified for C2C_Plugin: %s', 'text-replace' ),
+			'More information about %1$s %2$s'
+				/* translators: 1: plugin name 2: plugin version */
+				=> __( 'More information about %1$s %2$s', 'text-replace' ),
+			'More Help'
+				=> __( 'More Help', 'text-replace' ),
+			'More Plugin Help'
+				=> __( 'More Plugin Help', 'text-replace' ),
+			'Please consider a donation'
+				=> __( 'Please consider a donation', 'text-replace' ),
+			'Reset Settings'
+				=> __( 'Reset Settings', 'text-replace' ),
+			'Save Changes'
+				=> __( 'Save Changes', 'text-replace' ),
+			'See the "Help" link to the top-right of the page for more help.'
+				=> __( 'See the "Help" link to the top-right of the page for more help.', 'text-replace' ),
+			'Settings'
+				=> __( 'Settings', 'text-replace' ),
+			'Settings reset.'
+				=> __( 'Settings reset.', 'text-replace' ),
+			'Something went wrong.'
+				=> __( 'Something went wrong.', 'text-replace' ),
+			'The plugin author homepage.'
+				=> __( 'The plugin author homepage.', 'text-replace' ),
+			"The plugin configuration option '%s' must be supplied."
+				/* translators: %s: The setting configuration key name. */
+				=>__( "The plugin configuration option '%s' must be supplied.", 'text-replace' ),
+			'This plugin brought to you by %s.'
+				/* translators: %s: Link to plugin author's homepage. */
+				=> __( 'This plugin brought to you by %s.', 'text-replace' ),
+		);
+
+		if ( ! $string ) {
+			return array_values( $strings );
+		}
+
+		return ! empty( $strings[ $string ] ) ? $strings[ $string ] : $string;
+	}
+
+	/**
 	 * Outputs the text above the setting form.
 	 *
 	 * @param string $localized_heading_text Optional. Localized page heading text.
