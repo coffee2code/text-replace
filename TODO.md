@@ -18,5 +18,6 @@ The following list comprises ideas, suggestions, and known issues, all of which 
 * Add an admin notice that warns if any of the text to replace are alphanumerical and of 3 characters or less. Add filter to allow customizing threshold and/or adding exclusions.
 * Disable support for attempts to use single character replacements. Add admin notice to alert user when present. (Perhaps when saved, also auto-comment them out?)
 * Auto-detect if it looks like smilies are being defined (at least those recognized by WP) AND the setting for WP to convert those is enabled. Show admin notice when this conflict arises, with suggestion to disable the WP setting. Can then remove the "Other considerations" item regarding this.
+* Support preventing a filter from being text replaced (needed to override those added via filters, namely some third party filters). Could use a '-' prefix for more_filters filter (e.g. "-acf/format_value/type=url" prevents a filter from adding that filter). Or maybe better to have a never_filters setting to separately set those.
 
 Feel free to make your own suggestions or champion for something already on the list (via the [plugin's support forum on WordPress.org](https://wordpress.org/support/plugin/text-replace/) or on [GitHub](https://github.com/coffee2code/text-replace/) as an issue or PR).
