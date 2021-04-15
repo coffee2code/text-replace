@@ -13,7 +13,7 @@ The following list comprises ideas, suggestions, and known issues, all of which 
 * Settings page tool to allow testing saved replacements against sample text.
 * Add ability to comment out an entry (e.g. starting line with '#')
 * Change from a simple textarea input field to a repeatable field with separate fields for search string and replacement string
-* Support and enforce a conifgurable max number of total replacements on a per post basis
+* Support and enforce a configurable max number of total replacements on a per post basis
 * Add an admin notice that warns if any of the text to replace are alphanumerical and of 3 characters or less. Add filter to allow customizing threshold and/or adding exclusions.
 * Disable support for attempts to use single character replacements. Add admin notice to alert user when present. (Perhaps when saved, also auto-comment them out?)
 * Auto-detect if it looks like smilies are being defined (at least those recognized by WP) AND the setting for WP to convert those is enabled. Show admin notice when this conflict arises, with suggestion to disable the WP setting. Can then remove the "Other considerations" item regarding this.
