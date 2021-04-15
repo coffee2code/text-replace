@@ -167,6 +167,18 @@ final class c2c_TextReplace extends c2c_Plugin_061 {
 				'label'            => __( 'When to process text?', 'text-replace' ),
 				'help'             => sprintf( __( "Text replacements can happen 'early' (before most other text processing for posts) or 'late' (after most other text processing for posts). By default the plugin handles text early, but depending on the replacements you've defined and the plugins you're using, you can eliminate certain conflicts by switching to 'late'. Finer-grained control can be achieved via the <code>%s</code> filter.", 'text-replace' ), 'c2c_text_replace_filter_priority' ),
 			),
+			'more_filters' => array(
+				'input'            => 'inline_textarea',
+				'datatype'         => 'array',
+				'no_wrap'          => true,
+				'input_attributes' => 'rows="6"',
+				'label'            => __( 'More filters', 'text-replace' ),
+				'help'             => sprintf(
+					/* translators: %s: List of default filters. */
+					__( 'List more filters that should get text replacements. One filter per line. These supplement the default filters: %s (and others added via filters).', 'text-replace' ),
+					implode( ', ', array( 'the_content', 'the_excerpt', 'widget_text' ) )
+				),
+			),
 		);
 	}
 
@@ -208,8 +220,8 @@ final class c2c_TextReplace extends c2c_Plugin_061 {
 			'elementor/widget/render_content',
 		) );
 
-		// Add in relevant stock WP filters.
-		$filters = array_merge( $filters, array( 'the_content', 'the_excerpt', 'widget_text' ) );
+		// Add in relevant stock WP filters and additional filters.
+		$filters = array_unique( array_merge( $filters, array( 'the_content', 'the_excerpt', 'widget_text' ), $options['more_filters'] ) );
 
 		/**
 		 * Filters the hooks that get processed for hover text.

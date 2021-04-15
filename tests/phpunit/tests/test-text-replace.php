@@ -245,6 +245,13 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( 'early', $options['when'] );
 	}
 
+	public function test_default_value_of_more_filters() {
+		$this->obj->reset_options();
+		$options = $this->obj->get_options();
+
+		$this->assertEmpty( $options['more_filters'] );
+	}
+
 	/*
 	 * Text replacements
 	 */
@@ -525,6 +532,16 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		add_filter( 'c2c_text_replace', array( $this, 'add_text_to_replace' ) );
 
 		$this->assertEquals( $expected, $this->text_replace( 'bbPress' ) );
+	}
+
+	public function test_replaces_filter_added_via_more_filters() {
+		$this->assertEquals( 'Hello :wp:', apply_filters( 'the_title', 'Hello :wp:' ) );
+
+		$this->set_option( array( 'more_filters' => array( 'the_title' ) ) );
+		$this->obj->register_filters();
+
+		$this->assertEquals( 2, has_filter( 'the_title', array( $this->obj, 'text_replace' ) ) );
+		$this->assertEquals( 'Hello WordPress', apply_filters( 'the_title', 'Hello :wp:' ) );
 	}
 
 	public function test_replace_does_not_apply_to_comments_by_default() {

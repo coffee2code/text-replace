@@ -11,7 +11,6 @@ The following list comprises ideas, suggestions, and known issues, all of which 
 * Make matching require word barriers on either end to prevent partial string matching (e.g. "cat" should not match "category"). Also control behavior via filter and (advanced) setting.
 * Settings page tool to allow for scanning of all posts to find matches for a given text replacement match term, as a way to preview what would get affected.
 * Settings page tool to allow testing saved replacements against sample text.
-* Add setting to specify additional filters to be handled by the plugin (basically a UI for the `c2c_text_replace_filters` filter)
 * Add ability to comment out an entry (e.g. starting line with '#')
 * Change from a simple textarea input field to a repeatable field with separate fields for search string and replacement string
 * Support and enforce a conifgurable max number of total replacements on a per post basis

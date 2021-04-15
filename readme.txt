@@ -20,6 +20,7 @@ Additional features of the plugin controlled both via settings and filters:
 * Text replacement can be made case insensitive (it is case sensitive by default)
 * Text replacement can be limited to doing only one replacement per term, per post (by default, all occurrences of a term are replaced)
 * Text replacement can be handled early or late in WordPress's text filtering process (it's early by default)
+* Text replacement can be expanded to affect other filters
 
 A few things to keep these things in mind:
 
@@ -74,7 +75,9 @@ By default, the plugin filters the post content, post excerpt fields, widget tex
 
 = How can I get text replacements to apply for post titles (or something not text-replaced by default)? =
 
-You can add to the list of filters that get text replacements using something like this (added to your theme's functions.php file, for instance):
+The easiest way would be to add "the_title" (or whatever the name of the filter is) as a line in the "More filters" setting. That setting allows any additional specified filters to be processed for text replacements.
+
+You can also programmatically add to the list of filters that get text replacements using something like this (added to your theme's functions.php file, for instance):
 
 `
 function more_text_replacements( $filters ) {
@@ -99,6 +102,8 @@ By default, yes. There is a setting you can change so that only the first occurr
 = Does this plugin explicitly support any third-party plugins? =
 
 Yes. While this plugin is compatible with many other plugins that modify post and widget text, this plugin has explicit built-in support for Advanced Custom Fields and Elementor, which provide additional content areas. See documentation on the hook c2c_text_replace_third_party_filters for a complete list of default supported third-party filters and how to enable compatibility with other plugins and themes.
+
+If you know the name of the filter provided by a plugin, you can add it to the "More filters" setting to have its value processed for text replacement.
 
 = Does this plugin include unit tests? =
 
