@@ -138,7 +138,7 @@ final class c2c_TextReplace extends c2c_Plugin_064 {
 				),
 				'allow_html'       => true,
 				'no_wrap'          => true,
-				'input_attributes' => 'rows="15" cols="40"',
+				'input_attributes' => 'rows="15"',
 				'label'            => '',
 				'help'             => '',
 			),
