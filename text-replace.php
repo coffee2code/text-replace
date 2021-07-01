@@ -162,9 +162,14 @@ final class c2c_TextReplace extends c2c_Plugin_064 {
 			),
 			'when' => array(
 				'input'            => 'select',
+				'datatype'         => 'hash',
 				'default'          => 'early',
-				'options'          => array( 'early', 'late' ),
+				'options'          => array(
+					'early' => __( 'early', 'text-replace' ),
+					'late'  => __( 'late', 'text-replace' )
+				),
 				'label'            => __( 'When to process text?', 'text-replace' ),
+				/* translators: %s: The name of a filter provided by the plugin. */
 				'help'             => sprintf( __( "Text replacements can happen 'early' (before most other text processing for posts) or 'late' (after most other text processing for posts). By default the plugin handles text early, but depending on the replacements you've defined and the plugins you're using, you can eliminate certain conflicts by switching to 'late'. Finer-grained control can be achieved via the <code>%s</code> filter.", 'text-replace' ), 'c2c_text_replace_filter_priority' ),
 			),
 			'more_filters' => array(
