@@ -192,11 +192,24 @@ final class c2c_TextReplace extends c2c_Plugin_064 {
 	 *
 	 * The values do not take into account any user-specified filters from the
 	 * more_filters setting nor any filtering. A value returned here does not
-	 * necessary mean it'll get text replaced.
+	 * necessarily mean it'll get text replaced.
+	 *
+	 * Currently supported third-party plugins:
+	 *
+	 * - Advanced Custom Fields
+	 *    'acf/format_value/type=text',
+	 *    'acf/format_value/type=textarea',
+	 *    'acf/format_value/type=url',
+	 *    'acf_the_content',
+	 * - Elementor
+	 *    'elementor/frontend/the_content',
+	 *    'elementor/widget/render_content',
+	 *
+	 * @since 4.0
 	 *
 	 * @param string $type The type of filters. One of 'core', 'third_party', 'both'.
 	 *                     Default 'core'.
-	 * @return array The filters associated with the specified $type. Returns an
+	 * @return array The filters associated with the specified type. Returns an
 	 *               empty array for an invalid type.
 	 */
 	public function get_default_filters( $type = 'core' ) {
