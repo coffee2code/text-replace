@@ -51,6 +51,7 @@
 * Change: Change text_to_replace setting from being a textarea to inline textarea
 * Change: Move translation of all parent class strings into main plugin file
 * Change: Omit 'cols' attribute for textarea since it is overridden
+* Change: Move 'code' tags out of translatable string for 'when' setting
 * Change: Note compatibility through WP 5.7+
 * Change: Update copyright date (2021)
 * Change: Tweak plugin's readme.txt tags
