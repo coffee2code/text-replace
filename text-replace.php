@@ -308,6 +308,12 @@ final class c2c_TextReplace extends c2c_Plugin_064 {
 	 */
 	public function get_c2c_string( $string = '' ) {
 		$strings = array(
+			'%s cannot be cloned.'
+				/* translators: %s: Name of plugin class. */
+				=> __( '%s cannot be cloned.', 'text-replace' ),
+			'%s cannot be unserialized.'
+				/* translators: %s: Name of plugin class. */
+				=> __( '%s cannot be unserialized.', 'text-replace' ),
 			'A value is required for: "%s"'
 				/* translators: %s: Label for setting. */
 				=> __( 'A value is required for: "%s"', 'text-replace' ),
@@ -317,12 +323,12 @@ final class c2c_TextReplace extends c2c_Plugin_064 {
 				=> __( ' (especially check out the "Other Notes" tab, if present)', 'text-replace' ),
 			'Coffee fuels my coding.'
 				=> __( 'Coffee fuels my coding.', 'text-replace' ),
-			'Did you find this plugin useful?'
-				=> __( 'Did you find this plugin useful?', 'text-replace' ),
 			'Donate'
 				=> __( 'Donate', 'text-replace' ),
 			'Expected integer value for: %s'
 				=> __( 'Expected integer value for: %s', 'text-replace' ),
+			'If this plugin has been useful to you, please consider a donation'
+				=> __( 'If this plugin has been useful to you, please consider a donation', 'text-replace' ),
 			'Invalid file specified for C2C_Plugin: %s'
 				/* translators: %s: Path to the plugin file. */
 				=> __( 'Invalid file specified for C2C_Plugin: %s', 'text-replace' ),
@@ -333,8 +339,6 @@ final class c2c_TextReplace extends c2c_Plugin_064 {
 				=> __( 'More Help', 'text-replace' ),
 			'More Plugin Help'
 				=> __( 'More Plugin Help', 'text-replace' ),
-			'Please consider a donation'
-				=> __( 'Please consider a donation', 'text-replace' ),
 			'Reset Settings'
 				=> __( 'Reset Settings', 'text-replace' ),
 			'Save Changes'
@@ -347,6 +351,11 @@ final class c2c_TextReplace extends c2c_Plugin_064 {
 				=> __( 'Settings reset.', 'text-replace' ),
 			'Something went wrong.'
 				=> __( 'Something went wrong.', 'text-replace' ),
+			"Thanks for the consideration; it's much appreciated."
+				=> __( "Thanks for the consideration; it's much appreciated.", 'text-replace' ),
+			'The method %1$s should not be called until after the %2$s action.'
+				/* translators: 1: The name of a code function, 2: The name of a WordPress action. */
+				=> __( 'The method %1$s should not be called until after the %2$s action.', 'text-replace' ),
 			'The plugin author homepage.'
 				=> __( 'The plugin author homepage.', 'text-replace' ),
 			"The plugin configuration option '%s' must be supplied."
