@@ -129,7 +129,7 @@ final class c2c_TextReplace extends c2c_Plugin_064 {
 
 		$this->config = array(
 			'text_to_replace' => array(
-				'input'            => 'textarea',
+				'input'            => 'inline_textarea',
 				'datatype'         => 'hash',
 				'default'          => array(
 					":wp:"          => "<a href='https://wordpress.org'>WordPress</a>",
@@ -139,7 +139,7 @@ final class c2c_TextReplace extends c2c_Plugin_064 {
 				'allow_html'       => true,
 				'no_wrap'          => true,
 				'input_attributes' => 'rows="15"',
-				'label'            => '',
+				'label'            => __( 'Text to replace', 'text-replace' ),
 				'help'             => '',
 			),
 			'text_replace_comments' => array(
