@@ -180,8 +180,8 @@ final class c2c_TextReplace extends c2c_Plugin_064 {
 				'label'            => __( 'More filters', 'text-replace' ),
 				'help'             => sprintf(
 					/* translators: %s: List of default filters. */
-					__( 'List more filters that should get text replacements. One filter per line. These supplement the default filters: %s (and others added via filters).', 'text-replace' ),
-					implode( ', ', $this->get_default_filters() )
+					__( 'List more filters that should get text replacements. One filter per line. These supplement the default filters: %s (and any others added via filters).', 'text-replace' ),
+					'<code>' . implode( '</code>, <code>', $this->get_default_filters() ) . '</code>'
 				),
 			),
 		);
