@@ -671,6 +671,53 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	}
 
 	/*
+	 * get_default_filters()
+	 */
+
+	public function test_get_default_filters_default() {
+		$this->assertEquals( array( 'the_content', 'the_excerpt', 'widget_text' ), $this->obj->get_default_filters() );
+	}
+
+	public function test_get_default_filters_core() {
+		$this->assertEquals( array( 'the_content', 'the_excerpt', 'widget_text' ), $this->obj->get_default_filters( 'core' ) );
+	}
+
+	public function test_get_default_filters_invalid() {
+		$this->assertEmpty( $this->obj->get_default_filters( 'invalid' ) );
+	}
+
+	public function test_get_default_filters_third_party() {
+		$filters = array(
+			'acf/format_value/type=text',
+			'acf/format_value/type=textarea',
+			'acf/format_value/type=url',
+			'acf_the_content',
+			// Support for Elementor plugin.
+			'elementor/frontend/the_content',
+			'elementor/widget/render_content',
+		);
+
+		$this->assertEquals( $filters, $this->obj->get_default_filters( 'third_party' ) );
+	}
+
+	public function test_get_default_filters_both() {
+		$filters = array(
+			'acf/format_value/type=text',
+			'acf/format_value/type=textarea',
+			'acf/format_value/type=url',
+			'acf_the_content',
+			// Support for Elementor plugin.
+			'elementor/frontend/the_content',
+			'elementor/widget/render_content',
+		);
+
+		$this->assertEquals(
+			array_merge( array( 'the_content', 'the_excerpt', 'widget_text' ), $filters ),
+			$this->obj->get_default_filters( 'both' )
+		);
+	}
+
+	/*
 	 * options_page_description()
 	 */
 

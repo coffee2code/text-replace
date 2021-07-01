@@ -176,10 +176,52 @@ final class c2c_TextReplace extends c2c_Plugin_061 {
 				'help'             => sprintf(
 					/* translators: %s: List of default filters. */
 					__( 'List more filters that should get text replacements. One filter per line. These supplement the default filters: %s (and others added via filters).', 'text-replace' ),
-					implode( ', ', array( 'the_content', 'the_excerpt', 'widget_text' ) )
+					implode( ', ', $this->get_default_filters() )
 				),
 			),
 		);
+	}
+
+	/**
+	 * Returns the default filters processed by the plugin.
+	 *
+	 * The values do not take into account any user-specified filters from the
+	 * more_filters setting nor any filtering. A value returned here does not
+	 * necessary mean it'll get text replaced.
+	 *
+	 * @param string $type The type of filters. One of 'core', 'third_party', 'both'.
+	 *                     Default 'core'.
+	 * @return array The filters associated with the specified $type. Returns an
+	 *               empty array for an invalid type.
+	 */
+	public function get_default_filters( $type = 'core' ) {
+		$core        = array( 'the_content', 'the_excerpt', 'widget_text' );
+		$third_party = array(
+			// Support for Advanced Custom Fields plugin.
+			'acf/format_value/type=text',
+			'acf/format_value/type=textarea',
+			'acf/format_value/type=url',
+			'acf_the_content',
+			// Support for Elementor plugin.
+			'elementor/frontend/the_content',
+			'elementor/widget/render_content',
+		);
+
+		switch ( $type ) {
+			case 'both':
+				$filters = array_merge( $core, $third_party );
+				break;
+			case 'core':
+				$filters = $core;
+				break;
+			case 'third_party':
+				$filters = $third_party;
+				break;
+			default:
+				$filters = array();
+		}
+
+		return $filters;
 	}
 
 	/**
@@ -209,19 +251,10 @@ final class c2c_TextReplace extends c2c_Plugin_061 {
 		 * @param array $filters The third party filters that get processed for
 		 *                       hover text. See filter inline docs for defaults.
 		 */
-		$filters = (array) apply_filters( 'c2c_text_replace_third_party_filters', array(
-			// Support for Advanced Custom Fields plugin.
-			'acf/format_value/type=text',
-			'acf/format_value/type=textarea',
-			'acf/format_value/type=url',
-			'acf_the_content',
-			// Support for Elementor plugin.
-			'elementor/frontend/the_content',
-			'elementor/widget/render_content',
-		) );
+		$filters = (array) apply_filters( 'c2c_text_replace_third_party_filters', $this->get_default_filters( 'third_party' ) );
 
 		// Add in relevant stock WP filters and additional filters.
-		$filters = array_unique( array_merge( $filters, array( 'the_content', 'the_excerpt', 'widget_text' ), $options['more_filters'] ) );
+		$filters = array_unique( array_merge( $filters, $this->get_default_filters(), $options['more_filters'] ) );
 
 		/**
 		 * Filters the hooks that get processed for hover text.

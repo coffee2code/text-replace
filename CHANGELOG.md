@@ -2,6 +2,7 @@
 
 ## _(in-progress)_
 * New: Add new setting "More filters" to allow for user-specified filters to be processed for text replacements
+* New: Add `get_default_filters()` to return the default core and/or third-party filters processed by the plugin
 * Change: Update plugin framework to 061
     * 061:
     * Fix bug preventing settings from getting saved
