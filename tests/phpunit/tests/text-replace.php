@@ -622,7 +622,7 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( $this->expected_text( ':coffee2code:' ), apply_filters( 'custom_filter', ':coffee2code:' ) );
 	}
 
-	public function test_hover_applies_to_custom_third_party_filter_via_filter() {
+	public function test_replace_applies_to_custom_third_party_filter_via_filter() {
 		$this->assertEquals( ':coffee2code:', apply_filters( 'custom_filter', ':coffee2code:' ) );
 
 		add_filter( 'c2c_text_replace_third_party_filters', array( $this, 'add_custom_filter' ) );

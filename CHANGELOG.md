@@ -59,6 +59,7 @@
         * Change: Move tests from `tests/` to `tests/phpunit/tests/`
         * Change: Remove 'test-' prefix from unit test files
         * Change: Rename `phpunit.xml` to `phpunit.xml.dist` per best practices
+    * Change: Rename improperly named unit test
 
 ## 3.9.1 _(2020-07-11)_
 
