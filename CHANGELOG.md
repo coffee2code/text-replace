@@ -54,6 +54,7 @@
 * Change: Move 'code' tags out of translatable string for 'when' setting
 * Change: Note compatibility through WP 5.7+
 * Change: Update copyright date (2021)
+* Change: Improve documentation in readme.txt
 * Change: Tweak plugin's readme.txt tags
 * Change: Sync installation instructions in README.txt with what's in readme.txt
 * Unit tests:

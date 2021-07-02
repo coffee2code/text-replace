@@ -42,9 +42,9 @@ Would have the effect of changing "His majesty" to "Hellos majesty".
 
 * This plugin is set to filter 'the_content', 'the_excerpt', 'widget_text', and optionally, 'get_comment_text' and 'get_comment_excerpt'. Filters from popular plugins such as Advanced Custom Fields (ACF) and Elementor are also handled by default (see FAQ for specifics). The "More filters" setting can be used to specify additional filters that should be handled by the plugin. The filter 'c2c_text_replace_filters' can also be used to add or modify the list of filters affected.
 
-* Text inside of HTML tags (such as tag names and attributes) will not be matched. So, for example, you can't expect the :mycss: shortcut to work in: &lt;a href="" :mycss:&gt;text&lt;/a&gt;.'.
+* Text inside of HTML tags (such as tag names and attributes) will not be matched. So, for example, you can't expect the :mycss: shortcut to work in `<a href="" style=":mycss:">text</a>`
 
-* **SPECIAL CONSIDERATION:** Be aware that the shortcut text that you use in your posts will be stored that way in the database (naturally). While calls to display the posts will see the filtered, text replaced version, anything that operates directly on the database will not see the expanded replacement text. So if you only ever referred to "America Online" as ":aol:" (where ":aol:" => "<a href='http://www.aol.com'>America Online</a>"), visitors to your site will see the linked, expanded text due to the text replace, but a database search would never turn up a match for "America Online".
+* **SPECIAL CONSIDERATION:** Be aware that the shortcut text that you use in your posts will be stored that way in the database. While calls to display the posts will see the filtered, text-replaced version, anything that operates directly on the database will not see the expanded replacement text. So if you only ever referred to "America Online" as ":aol:" (where `:aol: => <a href='http://www.aol.com'>America Online</a>`), visitors to your site will see the linked, expanded text due to the text replace, but a database search would never turn up a match for "America Online".
 
 * However, a benefit of the replacement text not being saved to the database and instead evaluated when the data is being loaded into a web page is that if the replacement text is modified, all pages making use of the shortcut will henceforth use the updated replacement text.
 
@@ -63,9 +63,13 @@ Links: [Plugin Homepage](https://coffee2code.com/wp-plugins/text-replace/) | [Pl
 
 == Frequently Asked Questions ==
 
-= Does this plugin modify the post content in the database? =
+= Does this plugin modify the post content before it gets saved to the database? =
 
-No. The plugin filters post content on-the-fly.
+No. The plugin filters post content on-the-fly as it is being output or displayed. The data saved to the database is as you typed it.
+
+= Does this plugin modify post content that already exists in the database? =
+
+No. The plugin filters post content on-the-fly as it is being output or displayed. The actual data stored in the database, whether it be pre-existing or new, is never affected by this plugin.
 
 = Will this work for posts I wrote prior to installing this plugin? =
 
@@ -95,7 +99,7 @@ By default, yes. There is a setting you can change so that only the first occurr
 
 = Does this plugin explicitly support any third-party plugins? =
 
-Yes. While this plugin is compatible with many other plugins that modify post and widget text, this plugin has explicit built-in support for Advanced Custom Fields and Elementor, which provide additional content areas. See documentation on the hook c2c_text_replace_third_party_filters for a complete list of default supported third-party filters and how to enable compatibility with other plugins and themes.
+Yes. While this plugin is compatible with many other plugins that modify post and widget text, this plugin has explicit built-in support for Advanced Custom Fields and Elementor, which provide additional content areas. See documentation on the hook 'c2c_text_replace_third_party_filters' for a complete list of default supported third-party filters and how to enable compatibility with other plugins and themes.
 
 If you know the name of the filter provided by a plugin, you can add it to the "More filters" setting to have its value processed for text replacement.
 
