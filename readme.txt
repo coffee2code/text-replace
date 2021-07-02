@@ -40,7 +40,7 @@ Would have the effect of changing "His majesty" to "Hellos majesty".
 
 * If you intend to use this plugin to handle smilies, you should probably disable WordPress's default smilie handler on the Writing Settings admin page.
 
-* This plugin is set to filter the_content, the_excerpt, widget_text, and optionally, get_comment_text and get_comment_excerpt. Filters from popular plugins such as Advanced Custom Fields (ACF) and Elementor are also handled by default (see FAQ for specifics). The filter 'c2c_text_replace_filters' can be used to add or modify the list of filters affected.
+* This plugin is set to filter 'the_content', 'the_excerpt', 'widget_text', and optionally, 'get_comment_text' and 'get_comment_excerpt'. Filters from popular plugins such as Advanced Custom Fields (ACF) and Elementor are also handled by default (see FAQ for specifics). The "More filters" setting can be used to specify additional filters that should be handled by the plugin. The filter 'c2c_text_replace_filters' can also be used to add or modify the list of filters affected.
 
 * Text inside of HTML tags (such as tag names and attributes) will not be matched. So, for example, you can't expect the :mycss: shortcut to work in: &lt;a href="" :mycss:&gt;text&lt;/a&gt;.'.
 
@@ -73,21 +73,13 @@ Yes, if they include strings that you've now defined as shortcuts.
 
 = What post fields get handled by this plugin? =
 
-By default, the plugin filters the post content, post excerpt fields, widget text, and optionally comments and comment excerpts. You can use the 'c2c_text_replace_filters' filter to modify that behavior (see Hooks section).
+By default, the plugin filters the post content, post excerpt, widget text, and optionally comments and comment excerpts. You can use the "More filters" setting to specify additional filters to be processed for text replacement. You can also programmatically use the 'c2c_text_replace_filters' filter to modify the affected filters (see Hooks section).
 
 = How can I get text replacements to apply for post titles (or something not text-replaced by default)? =
 
-The easiest way would be to add "the_title" (or whatever the name of the filter is) as a line in the "More filters" setting. That setting allows any additional specified filters to be processed for text replacements.
+The easiest way would be to add "the_title" (or some other filter's name) as a line in the "More filters" setting. That setting allows any additional specified filters to be processed for text replacement.
 
-You can also programmatically add to the list of filters that get text replacements using something like this (added to your theme's functions.php file, for instance):
-
-`
-function more_text_replacements( $filters ) {
-	$filters[] = 'the_title'; // Here you could put in the name of any filter you want
-	return $filters;
-}
-add_filter( 'c2c_text_replace_filters', 'more_text_replacements' );
-`
+You can also programmatically add to the list of filters that get text replacements. See the Hooks section for an example.
 
 = Is the plugin case sensitive? =
 
