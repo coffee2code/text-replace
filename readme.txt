@@ -54,9 +54,11 @@ Links: [Plugin Homepage](https://coffee2code.com/wp-plugins/text-replace/) | [Pl
 == Installation ==
 
 1. Whether installing or updating, whether this plugin or any other, it is always advisable to back-up your data before starting
-1. Install via the built-in WordPress plugin installer. Or download and unzip `text-replace.zip` inside the plugins directory for your site (typically `wp-content/plugins/`)
+1. Install via the built-in WordPress plugin installer. Or install the plugin code inside the plugins directory for your site (typically `/wp-content/plugins/`).
 1. Activate the plugin through the 'Plugins' admin menu in WordPress
 1. Go to the `Settings` -> `Text Replace` admin options page and customize the options (notably to define the shortcuts and their replacements)
+1. Optional: Configure other plugin options as desired.
+1. Use the shortcuts in posts/pages. Shortcuts appearing in existing posts will also be affected by this plugin.
 
 
 == Frequently Asked Questions ==

@@ -55,6 +55,7 @@
 * Change: Note compatibility through WP 5.7+
 * Change: Update copyright date (2021)
 * Change: Tweak plugin's readme.txt tags
+* Change: Sync installation instructions in README.txt with what's in readme.txt
 * Unit tests:
     * Change: Restructure unit test file structure
         * New: Create new subdirectory `tests/phpunit/` to house all files related to PHP unit testing
