@@ -410,8 +410,8 @@ class Text_Replace_Test extends WP_UnitTestCase {
 	// Note: This KNOWN FAILURE test presumes that replacement text should not
 	// be at risk of seeing a replacement itself. This may not be a valid
 	// presumption though.
-	public function test_does_not_replace_a_previous_replacement_KNOWN_FAILURE() {
-		$expected = 'this KNOWN FAILURE may not actually be considered a valid test';
+	public function test_does_not_replace_a_previous_replacement() {
+		$expected = 'this may not actually be considered a valid test';
 
 		$this->set_option( array(
 			'text_to_replace' => array(
@@ -420,25 +420,37 @@ class Text_Replace_Test extends WP_UnitTestCase {
 			)
 		) );
 
-		$this->assertEquals( $expected, $this->text_replace( 'test thing' ) );
+		$this->assertEquals(
+			$expected,
+			$this->text_replace( 'test thing' ),
+			'This is a KNOWN FAILURE that presumes replacement text should not themselves see replacements. The existing behavior could be considered a feature.'
+		);
+	}
+
+	// Note: This KNOWN FAILURE test presumes that shortcode tag should
+	// not be at risk of seeing a replacement itself. This may not be a valid
+	// presumption though.
+	public function test_does_not_replace_shortcode() {
+		$expected = '[test title="This may not actually be a valid test"]gibberish[/test]';
+
+		$this->assertEquals(
+			$expected,
+			$this->text_replace( $expected ),
+			'This is a KNOWN FAILURE that presumes shortcode tags should not get replaced. The existing behavior could be considered a feature.'
+		);
 	}
 
 	// Note: This KNOWN FAILURE test presumes that shortcode attributes should
 	// not be at risk of seeing a replacement itself. This may not be a valid
 	// presumption though.
-	public function test_does_not_replace_shortcode_KNOWN_FAILURE() {
-		$expected = '[test title="This KNOWN FAILURE may not actually be a valid test"]gibberish[/test]';
+	public function test_does_not_replace_within_shortcodes_attributes() {
+		$expected = '[caption title="This may not actually be a valid test"]gibberish[/caption]';
 
-		$this->assertEquals( $expected, $this->text_replace( $expected ) );
-	}
-
-	// Note: This KNOWN FAILURE test presumes that shortcode attributes should
-	// not be at risk of seeing a replacement itself. This may not be a valid
-	// presumption though.
-	public function test_does_not_replace_within_shortcodes_attributes_KNOWN_FAILURE() {
-		$expected = '[caption title="This KNOWN FAILURE may not actually be a valid test"]gibberish[/caption]';
-
-		$this->assertEquals( $expected, $this->text_replace( $expected ) );
+		$this->assertEquals(
+			$expected,
+			$this->text_replace( $expected ),
+			'This is a KNOWN FAILURE that presumes shortcode attributes should not get replacements. The existing behavior could be considered a feature.'
+		);
 	}
 
 	public function test_replaces_multibyte_text_once_via_setting() {
