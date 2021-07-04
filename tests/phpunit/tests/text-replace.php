@@ -91,6 +91,29 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		return array_map( function($v) { return array( $v ); }, array_keys( self::$text_to_link ) );
 	}
 
+	public static function get_ending_punctuation() {
+		return array(
+			array( '.' ),
+			array( ',' ),
+			array( '!' ),
+			array( '?' ),
+			array( ';' ),
+			array( ':' ),
+		);
+	}
+
+	public static function get_special_chars() {
+		return array(
+			array( array( '>', '<' ) ),
+			array( array( '(', ')' ) ),
+			array( array( ')', '(' ) ),
+			array( array( '{', '}' ) ),
+			array( array( ']', '[' ) ),
+			array( array( '[', ']' ) ),
+			array( array( '<strong>', '</strong>' ) ),
+		);
+	}
+
 
 	//
 	//
@@ -277,11 +300,38 @@ class Text_Replace_Test extends WP_UnitTestCase {
 		$this->assertEquals( $this->expected_text( 'Matt Mullenweg' ), $this->text_replace( 'Matt Mullenweg' ) );
 	}
 
+	public function test_replaces_partially_matching_text() {
+		$this->assertEquals( 'con' . $this->expected_text( 'test' ), $this->text_replace( 'contest' ) );
+	}
+
 	/**
 	 * @dataProvider get_text_to_link
 	 */
 	public function test_replaces_text_as_defined_in_setting( $text ) {
 		$this->assertEquals( $this->expected_text( $text ), $this->text_replace( $text ) );
+	}
+
+	/**
+	 * @dataProvider get_ending_punctuation
+	 */
+	public function test_replaces_text_adjacent_to_punctuation( $punctuation ) {
+		$this->assertEquals(
+			$this->text_replace( ':wp:' ) . $punctuation,
+			$this->text_replace( ':wp:' . $punctuation )
+		);
+	}
+
+	/**
+	 * @dataProvider get_special_chars
+	 */
+	public function test_replaces_text_adjacent_to_special_characters( $data ) {
+		list( $start_char, $end_char ) = $data;
+
+		$this->assertEquals(
+			$start_char . $this->text_replace( ':wp:' ) . ' & ' . $this->text_replace( ':coffee2code:' ) . $end_char,
+			$this->text_replace( $start_char . ':wp: & :coffee2code:' . $end_char ),
+			"Failed asserting text replace within special characters '{$start_char}' and '{$end_char}'."
+		);
 	}
 
 	public function test_replaces_text_with_html_encoded_amp_ampersand() {

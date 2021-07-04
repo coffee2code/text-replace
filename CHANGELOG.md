@@ -68,6 +68,7 @@
         * Change: Move tests from `tests/` to `tests/phpunit/tests/`
         * Change: Remove 'test-' prefix from unit test files
         * Change: Rename `phpunit.xml` to `phpunit.xml.dist` per best practices
+    * New: Add unit tests for shortcuts adjacent to punction and special characters
     * Change: Output custom error message for known failing tests explaining the issues and why they may not actually be bugs
     * Change: Rename improperly named unit test
 
