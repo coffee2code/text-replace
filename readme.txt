@@ -131,7 +131,7 @@ Developer documentation can be found in [DEVELOPER-DOCS.md](https://github.com/c
 = 3.9.1 (2020-07-11) =
 Highlights:
 
-* This minor release updates a bunch of documentation, updates a few URLs to be HTTPS, improves unit testing, and notes compatibility through WP 5.4+.
+This minor release updates a bunch of documentation, updates a few URLs to be HTTPS, improves unit testing, and notes compatibility through WP 5.4+.
 
 Details:
 
@@ -151,7 +151,7 @@ Details:
 = 3.9 (2020-01-15) =
 Highlights:
 
-* This feature release adds support for Advanced Custom Fields and Elementor, adds a new setting that can allow the plugin to run later to avoid potential conflicts with other plugins, adds a number of filters, updates compatibility to be WP 4.9-5.3+, and more.
+This feature release adds support for Advanced Custom Fields and Elementor, adds a new setting that can allow the plugin to run later to avoid potential conflicts with other plugins, adds a number of filters, updates compatibility to be WP 4.9-5.3+, and more.
 
 Details:
 
