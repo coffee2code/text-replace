@@ -414,6 +414,7 @@ final class c2c_TextReplace extends c2c_Plugin_064 {
 		echo '<li>' . sprintf( __( 'The %s represents the replacement text.', 'text-replace' ), '<code>&lt;a href=\'https://wordpress.org\'&gt;WordPress&lt;/a&gt;</code>' ) . "</li>\n";
 		echo "</ul>\n";
 		printf( '<p>' . __( 'If you are solely interested in replacing words or phrases with links to the URLs of your choosing, then check out my <a href="%s">Linkify Text</a> plugin, which better facilitates that variety of replacements.', 'text-replace' ) . '</p>', 'https://wordpress.org/plugins/linkify-text/' );
+		printf( '<p>' . __( 'If you are solely interested in adding help text as tooltips that appear when a visitor hovers over a word or phrase, then check out my <a href="%s">Text Hover</a> plugin, which better facilitates that variety of replacements.', 'text-replace' ) . '</p>', 'https://wordpress.org/plugins/text-hover/' );
 		echo '<p>' . __( 'Other considerations:', 'text-replace' ) . '</p>';
 		echo '<ul class="c2c-plugin-list"><li>';
 		echo __( 'Be careful not to define text that could match partially when you don\'t want it to:<br />i.e.  <code>Me => Scott</code> would also inadvertently change "Men" to be "Scottn"', 'text-replace' );
