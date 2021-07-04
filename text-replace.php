@@ -403,26 +403,26 @@ final class c2c_TextReplace extends c2c_Plugin_064 {
 	public function options_page_description( $localized_heading_text = '' ) {
 		parent::options_page_description( __( 'Text Replace Settings', 'text-replace' ) );
 
-		echo '<p>' . __( 'Text Replace is a plugin that allows you to replace text with other text in posts, etc. Very handy to create shortcuts to commonly-typed and/or lengthy text/HTML, or for smilies.', 'text-replace' ) . '</p>';
-		echo '<div class="c2c-hr">&nbsp;</div>';
-		echo '<h3>' . __( 'Shortcuts and text replacements', 'text-replace' ) . '</h3>';
-		echo '<p>' . __( 'Shortcuts and text replacement expansions defined below should be formatted like this:', 'text-replace' ) . '</p>';
-		echo "<blockquote><code>:wp: => &lt;a href='https://wordpress.org'>WordPress&lt;/a></code></blockquote>";
-		echo '<ul class="c2c-plugin-list">';
-		echo '<li>' . sprintf( __( "The %s represents the text in your existing posts that you want to get replaced. (The colons aren't necessary, but is a good technique to use to reduce unexpected replacements.)", 'text-replace' ), '<code>:wp:</code>' ) . "</li>\n";
-		echo '<li>' . sprintf( __( 'The %s is the separator between the text to replace and the text replacement.', 'text-replace' ), '<code> => </code>' ) . "</li>\n";
-		echo '<li>' . sprintf( __( 'The %s represents the replacement text.', 'text-replace' ), '<code>&lt;a href=\'https://wordpress.org\'&gt;WordPress&lt;/a&gt;</code>' ) . "</li>\n";
+		echo '<p>' . __( 'Text Replace is a plugin that allows you to replace text with other text in posts, etc. Very handy to create shortcuts to commonly-typed and/or lengthy text/HTML, or for smilies.', 'text-replace' ) . "</p>\n";
+		echo '<div class="c2c-hr">&nbsp;</div>' . "\n";
+		echo '<h3>' . __( 'Shortcuts and text replacements', 'text-replace' ) . "</h3>\n";
+		echo '<p>' . __( 'Shortcuts and text replacement expansions defined below should be formatted like this:', 'text-replace' ) . "</p>\n";
+		echo "<blockquote><code>:wp: => &lt;a href='https://wordpress.org'>WordPress&lt;/a></code></blockquote>\n";
+		echo '<ul class="c2c-plugin-list">' . "\n";
+		echo "\t<li>" . sprintf( __( "The %s represents the text in your existing posts that you want to get replaced. (The colons aren't necessary, but is a good technique to use to reduce unexpected replacements.)", 'text-replace' ), '<code>:wp:</code>' ) . "</li>\n";
+		echo "\t<li>" . sprintf( __( 'The %s is the separator between the text to replace and the text replacement.', 'text-replace' ), '<code> => </code>' ) . "</li>\n";
+		echo "\t<li>" . sprintf( __( 'The %s represents the replacement text.', 'text-replace' ), '<code>&lt;a href=\'https://wordpress.org\'&gt;WordPress&lt;/a&gt;</code>' ) . "</li>\n";
 		echo "</ul>\n";
-		printf( '<p>' . __( 'If you are solely interested in replacing words or phrases with links to the URLs of your choosing, then check out my <a href="%s">Linkify Text</a> plugin, which better facilitates that variety of replacements.', 'text-replace' ) . '</p>', 'https://wordpress.org/plugins/linkify-text/' );
-		printf( '<p>' . __( 'If you are solely interested in adding help text as tooltips that appear when a visitor hovers over a word or phrase, then check out my <a href="%s">Text Hover</a> plugin, which better facilitates that variety of replacements.', 'text-replace' ) . '</p>', 'https://wordpress.org/plugins/text-hover/' );
-		echo '<p>' . __( 'Other considerations:', 'text-replace' ) . '</p>';
-		echo '<ul class="c2c-plugin-list"><li>';
-		echo __( 'Be careful not to define text that could match partially when you don\'t want it to:<br />i.e.  <code>Me => Scott</code> would also inadvertently change "Men" to be "Scottn"', 'text-replace' );
-		echo '</li><li>';
+		printf( '<p>' . __( 'If you are solely interested in replacing words or phrases with links to the URLs of your choosing, then check out my <a href="%s">Linkify Text</a> plugin, which better facilitates that variety of replacements.', 'text-replace' ) . "</p>\n", 'https://wordpress.org/plugins/linkify-text/' );
+		printf( '<p>' . __( 'If you are solely interested in adding help text as tooltips that appear when a visitor hovers over a word or phrase, then check out my <a href="%s">Text Hover</a> plugin, which better facilitates that variety of replacements.', 'text-replace' ) . "</p>\n", 'https://wordpress.org/plugins/text-hover/' );
+		echo '<p>' . __( 'Other considerations:', 'text-replace' ) . "</p>\n";
+		echo '<ul class="c2c-plugin-list">' . "\n\t" . '<li>';
+		_e( 'Be careful not to define text that could match partially when you don\'t want it to:<br />i.e.  <code>Me => Scott</code> would also inadvertently change "Men" to be "Scottn"', 'text-replace' );
+		echo "</li>\n\t<li>";
 		printf( __( 'If you intend to use this plugin to handle smilies, you should probably disable WordPress\'s default smilie/emoticon handler on the <a href="%s">Writing Settings</a> page.', 'text-replace' ), admin_url( 'options-writing.php' ) );
-		echo '</li><li>';
-		echo __( 'Text inside of HTML tags (such as tag names and attributes) will not be matched. So, for example, you can\'t expect a <code>:mycss:</code> shortcut to work in: <code>&lt;a href="" :mycss:&gt;text&lt;/a&gt;.</code>', 'text-replace' );
-		echo '</li></ul>';
+		echo "</li>\n\t<li>";
+		_e( 'Text inside of HTML tags (such as tag names and attributes) will not be matched. So, for example, you can\'t expect a <code>:mycss:</code> shortcut to work in: <code>&lt;a href="" :mycss:&gt;text&lt;/a&gt;.</code>', 'text-replace' );
+		echo "</li>\n</ul>\n";
 	}
 
 	/**
