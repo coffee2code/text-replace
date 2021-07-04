@@ -6,7 +6,7 @@ License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 4.9
 Tested up to: 5.7
-Stable tag: 3.9.1
+Stable tag: 4.0
 
 Replace text with other text. Handy for creating shortcuts to common, lengthy, or frequently changing text/HTML, or for smilies.
 
@@ -128,6 +128,89 @@ Developer documentation can be found in [DEVELOPER-DOCS.md](https://github.com/c
 
 == Changelog ==
 
+= 4.0 (2021-07-04) =
+Highlights:
+
+This feature release adds a new setting to allow for user-specified filters to be processed, updates the plugin framework significantly, improves the plugin settings page, extracts developer docs from readme into new DEVELOPER-DOCS.md, restructures unit test files, notes compatibility through WP 5.7, and more.
+
+Details:
+
+* New: Add new setting "More filters" to allow for user-specified filters to be processed for text replacements
+* New: Add `get_default_filters()` to return the default core and/or third-party filters processed by the plugin
+* Change: Update plugin framework to 064
+    * 064:
+    * New: For checkbox settings, support a 'more_help' config option for defining help text to appear below checkbox and its label
+    * Fix: Fix URL for plugin listing donate link
+    * Change: Store donation URL as object variable
+    * Change: Update strings used for settings page donation link
+    * 063:
+    * Fix: Simplify settings initialization to prevent conflicts with other plugins
+    * Change: Remove ability to detect plugin settings page before current screen is set, as it is no longer needed
+    * Change: Enqueue thickbox during `'admin_enqueue_scripts'` action instead of during `'init'`
+    * Change: Use `is_plugin_admin_page()` in `help_tabs()` instead of reproducing its functionality
+    * Change: Trigger a debugging warning if `is_plugin_admin_page()` is used before `'admin_init'` action is fired
+    * 062:
+    * Change: Update `is_plugin_admin_page()` to use `get_current_screen()` when available
+    * Change: Actually prevent object cloning and unserialization by throwing an error
+    * Change: Check that there is a current screen before attempting to access its property
+    * Change: Remove 'type' attribute from `style` tag
+    * Change: Incorporate commonly defined styling for inline_textarea
+    * 061:
+    * Fix bug preventing settings from getting saved
+    * 060:
+    * Rename class from `c2c_{PluginName}_Plugin_051` to `c2c_Plugin_060`
+    * Move string translation handling into inheriting class making the plugin framework code plugin-agnostic
+        * Add abstract function `get_c2c_string()` as a getter for translated strings
+        * Replace all existing string usage with calls to `get_c2c_string()`
+    * Handle WordPress's deprecation of the use of the term "whitelist"
+        * Change: Rename `whitelist_options()` to `allowed_options()`
+        * Change: Use `add_allowed_options()` instead of deprecated `add_option_whitelist()` for WP 5.5+
+        * Change: Hook `allowed_options` filter instead of deprecated `whitelist_options` for WP 5.5+
+    * New: Add initial unit tests (currently just covering `is_wp_version_cmp()` and `get_c2c_string()`)
+    * Add `is_wp_version_cmp()` as a utility to compare current WP version against a given WP version
+    * Refactor `contextual_help()` to be easier to read, and correct function docblocks
+    * Don't translate urlencoded donation email body text
+    * Add inline comments for translators to clarify purpose of placeholders
+    * Change PHP package name (make it singular)
+    * Tweak inline function description
+    * Note compatibility through WP 5.7+
+    * Update copyright date (2021)
+    * 051:
+    * Allow setting integer input value to include commas
+    * Use `number_format_i18n()` to format integer value within input field
+    * Update link to coffee2code.com to be HTTPS
+    * Update `readme_url()` to refer to plugin's readme.txt on plugins.svn.wordpress.org
+    * Remove defunct line of code
+* Change: Allow displayed dropdown values for 'when' setting to be translated
+* Change: Improve settings page help text by adding, rephrasing, relocating, and tweaaking some formatting
+* Change: Change text_to_replace setting from being a textarea to inline textarea
+* Change: Move translation of all parent class strings into main plugin file
+* New: Add DEVELOPER-DOCS.md and move hooks documentation into it
+* New: Suggest Text Hover plugin as an option for those needing support for a specific subset use case
+* Change: Output newlines after block-level tags in settings page
+* Change: Omit 'cols' attribute for textarea since it is overridden
+* Change: Move 'code' tags out of translatable string for 'when' setting
+* Change: Note compatibility through WP 5.7+
+* Change: Update copyright date (2021)
+* Change: Improve documentation in readme.txt
+* Change: Tweak plugin's readme.txt tags
+* Change: Sync installation instructions in README.txt with what's in readme.txt
+* Change: Remove "A screenshot of" prefix from caption
+* Unit tests:
+    * Change: Restructure unit test file structure
+        * New: Create new subdirectory `tests/phpunit/` to house all files related to PHP unit testing
+        * Change: Move `bin/` to `tests/bin/`
+        * Change: Move `tests/bootstrap.php` into `tests/phpunit/`
+        * Change: In bootstrap, store path to plugin file constant so its value can be used within that file and in test file
+        * Change: Move tests from `tests/` to `tests/phpunit/tests/`
+        * Change: Remove 'test-' prefix from unit test files
+        * Change: Rename `phpunit.xml` to `phpunit.xml.dist` per best practices
+    * New: Add unit tests for shortcuts adjacent to punction and special characters
+    * Change: Output custom error message for known failing tests explaining the issues and why they may not actually be bugs
+    * Change: Rename improperly named unit test
+* New: Add a few more possible TODO items
+* Change: Updated screenshot for settings page
+
 = 3.9.1 (2020-07-11) =
 Highlights:
 
@@ -202,61 +285,13 @@ Details:
 * Change: Split paragraph in README.md's "Support" section into two
 * Fix: Correct typo in GitHub URL
 
-= 3.8 (2018-07-14) =
-Highlights:
-
-* This release adds a setting for links to open in a new window, adds support for linkable text spanning multiple lines in your post, adds a filter for customizing link attributes, improves performance, and makes numerous behind-the-scenes improvements and changes.
-
-Details:
-
-* New: Ensure longer, more precise link strings match before shorter strings that might also match, regardless of order defined
-* Fix: Honor setting to limit text replacements to just once a post for multibyte strings
-* New: Add support for finding text to replace that may span more than one line or whose internal spaces vary in number and type
-* Change: Update plugin framework to 048
-    * 048:
-    * When resetting options, delete the option rather than setting it with default values
-    * Prevent double "Settings reset" admin notice upon settings reset
-    * 047:
-    * Don't save default setting values to database on install
-    * Change "Cheatin', huh?" error messages to "Something went wrong.", consistent with WP core
-    * Note compatibility through WP 4.9+
-    * Drop compatibility with version of WP older than 4.7
-    * 046:
-    * Fix `reset_options()` to reference instance variable `$options`
-    * Note compatibility through WP 4.7+
-    * Update copyright date (2017)
-    * 045:
-    * Ensure `reset_options()` resets values saved in the database
-    * 044:
-    * Add `reset_caches()` to clear caches and memoized data. Use it in `reset_options()` and `verify_config()`
-    * Add `verify_options()` with logic extracted from `verify_config()` for initializing default option attributes
-    * Add `add_option()` to add a new option to the plugin's configuration
-    * Add filter 'sanitized_option_names' to allow modifying the list of whitelisted option names
-    * Change: Refactor `get_option_names()`
-* Change: Cast return values of hooks to expected data types
-* New: Add README.md
-* New: Add GitHub link to readme
-* Change: Store setting name in constant
-* Unit tests:
-    * Change: Improve test initialization
-    * Change: Improve tests for settings handling
-    * Change: Default `WP_TESTS_DIR` to `/tmp/wordpress-tests-lib` rather than erroring out if not defined via environment variable
-    * Change: Enable more error output for unit tests
-    * New: Add more tests
-    * New: Add header comments to bootstrap
-* Change: Note compatibility through WP 4.9+
-* Change: Drop compatibility with version of WP older than 4.7.
-* Change: Rename readme.txt section from 'Filters' to 'Hooks'
-* Change: Modify formatting of hook name in readme to prevent being uppercased when shown in the Plugin Directory
-* Change: Update installation instruction to prefer built-in installer over .zip file
-* Change: Update URLs used in examples and docs to be HTTPS where appropriate
-* Change: Update copyright date (2018)
-
 _Full changelog is available in [CHANGELOG.md](https://github.com/coffee2code/text-replace/blob/master/CHANGELOG.md)._
 
 
-
 == Upgrade Notice ==
+
+= 4.0 =
+Recommended release: added new setting to allow user-specified filters to be processed, updated plugin framework significantly, improved plugin settings page, extracted developer docs from readme into new DEVELOPER-DOCS.md, restructured unit test files, noted compatibility through WP 5.7, +more.
 
 = 3.9.1 =
 Minor update: updated a bunch of documentation, updated a few URLs to be HTTPS, improved unit testing, and noted compatibility through WP 5.4+.

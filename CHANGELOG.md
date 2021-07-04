@@ -1,6 +1,13 @@
 # Changelog
 
-## _(in-progress)_
+## 4.0 _(2021-07-04)_
+
+### Highlights:
+
+This feature release adds a new setting to allow for user-specified filters to be processed, updates the plugin framework significantly, improves the plugin settings page, extracts developer docs from readme into new DEVELOPER-DOCS.md, restructures unit test files, notes compatibility through WP 5.7, and more.
+
+### Details:
+
 * New: Add new setting "More filters" to allow for user-specified filters to be processed for text replacements
 * New: Add `get_default_filters()` to return the default core and/or third-party filters processed by the plugin
 * Change: Update plugin framework to 064
