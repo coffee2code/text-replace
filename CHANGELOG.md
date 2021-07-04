@@ -73,6 +73,7 @@
     * New: Add unit tests for shortcuts adjacent to punction and special characters
     * Change: Output custom error message for known failing tests explaining the issues and why they may not actually be bugs
     * Change: Rename improperly named unit test
+* New: Add a few more possible TODO items
 * Change: Updated screenshot for settings page
 
 ## 3.9.1 _(2020-07-11)_
