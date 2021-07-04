@@ -110,7 +110,7 @@ Yes.
 
 == Screenshots ==
 
-1. A screenshot of the admin options page for the plugin, where you define the terms/phrases/shortcuts and their related replacement text
+1. The admin options page for the plugin, where you define the terms/phrases/shortcuts and their related replacement text
 
 
 == Hooks ==

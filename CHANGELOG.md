@@ -59,6 +59,7 @@
 * Change: Improve documentation in readme.txt
 * Change: Tweak plugin's readme.txt tags
 * Change: Sync installation instructions in README.txt with what's in readme.txt
+* Change: Remove "A screenshot of" prefix from caption
 * Unit tests:
     * Change: Restructure unit test file structure
         * New: Create new subdirectory `tests/phpunit/` to house all files related to PHP unit testing
