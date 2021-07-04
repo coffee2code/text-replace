@@ -51,6 +51,7 @@
 * Change: Improve settings page help text by adding, rephrasing, relocating, and tweaaking some formatting
 * Change: Change text_to_replace setting from being a textarea to inline textarea
 * Change: Move translation of all parent class strings into main plugin file
+* New: Add DEVELOPER-DOCS.md and move hooks documentation into it
 * New: Suggest Text Hover plugin as an option for those needing support for a specific subset use case
 * Change: Omit 'cols' attribute for textarea since it is overridden
 * Change: Move 'code' tags out of translatable string for 'when' setting

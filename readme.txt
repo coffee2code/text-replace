@@ -77,17 +77,17 @@ Yes, if they include strings that you've now defined as shortcuts.
 
 = What post fields get handled by this plugin? =
 
-By default, the plugin filters the post content, post excerpt, widget text, and optionally comments and comment excerpts. You can use the "More filters" setting to specify additional filters to be processed for text replacement. You can also programmatically use the 'c2c_text_replace_filters' filter to modify the affected filters (see Hooks section).
+By default, the plugin filters the post content, post excerpt, widget text, and optionally comments and comment excerpts. You can use the "More filters" setting to specify additional filters to be processed for text replacement. You can also programmatically use the 'c2c_text_replace_filters' filter to modify the affected filters (see Developer Documentation section).
 
 = How can I get text replacements to apply for post titles (or something not text-replaced by default)? =
 
 The easiest way would be to add "the_title" (or some other filter's name) as a line in the "More filters" setting. That setting allows any additional specified filters to be processed for text replacement.
 
-You can also programmatically add to the list of filters that get text replacements. See the Hooks section for an example.
+You can also programmatically add to the list of filters that get text replacements. See the Developer Documentation section for an example.
 
 = Is the plugin case sensitive? =
 
-By default, yes. There is a setting you can change to make it case insensitive. Or you can use the 'c2c_text_replace_case_sensitive' filter (see Hooks section).
+By default, yes. There is a setting you can change to make it case insensitive. Or you can use the 'c2c_text_replace_case_sensitive' filter (see Developer Documentation section).
 
 = I use :wp: all the time as a shortcut for WordPress, but when I search posts for the term "WordPress", I don't see posts where I used the shortcut; why not? =
 
@@ -95,7 +95,7 @@ Rest assured search engines will see those posts since they only ever see the po
 
 = Will all instances of a given term be replaced in a single post? =
 
-By default, yes. There is a setting you can change so that only the first occurrence of the term in the post gets replaced. Or if you are a coder, you can use the 'c2c_text_replace_once' filter (see Hooks section).
+By default, yes. There is a setting you can change so that only the first occurrence of the term in the post gets replaced. Or if you are a coder, you can use the 'c2c_text_replace_once' filter (see Developer Documentation section).
 
 = Does this plugin explicitly support any third-party plugins? =
 
@@ -113,152 +113,17 @@ Yes.
 1. The admin options page for the plugin, where you define the terms/phrases/shortcuts and their related replacement text
 
 
-== Hooks ==
+== Developer Documentation ==
 
-The plugin exposes a number of filters for hooking. Typically, the code to utilize these hooks would go inside your active theme's functions.php file. Bear in mind that all of the features controlled by these filters are configurable via the plugin's settings page. These filters are likely only of interest to advanced users able to code.
+Developer documentation can be found in [DEVELOPER-DOCS.md](https://github.com/coffee2code/text-replace/blob/master/DEVELOPER-DOCS.md). That documentation covers the numerous hooks provided by the plugin. Those hooks are listed below to provide an overview of what's available.
 
-**c2c_text_replace_filters (filter)**
-
-The 'c2c_text_replace_filters' hook allows you to customize what hooks get text replacement applied to them.
-
-Arguments:
-
-* $hooks (array): Array of hooks that will be text replaced.
-
-Example:
-
-`
-/**
- * Enable text replacement for post/page titles.
- *
- * @param array $filters Filters handled by the Text Replace plugin.
- * @return array
- */
-function more_text_replacements( $filters ) {
-	$filters[] = 'the_title'; // Here you could put in the name of any filter you want
-	return $filters;
-}
-add_filter( 'c2c_text_replace_filters', 'more_text_replacements' );
-`
-
-**c2c_text_replace_third_party_filters (filter)**
-
-The 'c2c_text_replace_third_party_filters' hook allows you to customize what third-party hooks get text replacement applied to them. Note: the results of this filter are then passed through the `c2c_text_replace_filters` filter, so third-party filters can be modified using either hook.
-
-Arguments:
-
-* $filters (array): The third-party filters whose text should have text replacement applied. Default `array( 'acf/format_value/type=text', 'acf/format_value/type=textarea', 'acf/format_value/type=url', 'acf_the_content', 'elementor/frontend/the_content', 'elementor/widget/render_content' )`.
-
-Example:
-
-`
-/**
- * Stop text replacements for ACF text fields and add text replacements for a custom filter.
- *
- * @param array $filters
- * @return array
- */
-function my_c2c_text_replace_third_party_filters( $filters ) {
-	// Remove a filter already in the list.
-	unset( $filters[ 'acf/format_value/type=text' ] );
-	// Add a filter to the list.
-	$filters[] = 'my_plugin_filter';
-	return $filters;
-}
-add_filter( 'c2c_text_replace_third_party_filters', 'my_c2c_text_replace_third_party_filters' );
-`
-
-**c2c_text_replace_filter_priority (filter)**
-
-The 'c2c_text_replace_filter_priority' hook allows you to override the default priority for the 'c2c_text_replace' filter.
-
-Arguments:
-
-* $priority (int): The priority for the 'c2c_text_replace' filter. The default value is 2.
-* $filter (string): The filter name.
-
-Example:
-
-`
-/**
- * Change the default priority of the 'c2c_text_replace' filter to run after most other plugins.
- *
- * @param int $priority The priority for the 'c2c_text_replace' filter.
- * @return int
- */
-function my_change_priority_for_c2c_text_replace( $priority, $filter ) {
-	return 1000;
-}
-add_filter( 'c2c_text_replace_filter_priority', 'my_change_priority_for_c2c_text_replace', 10, 2 );
-`
-
-**c2c_text_replace (filter)**
-
-The 'c2c_text_replace' hook allows you to customize or override the setting defining all of the text replacement shortcuts and their replacements.
-
-Arguments:
-
-* $text_replacement_array (array): Array of text replacement shortcuts and their replacements. This will be the value set via the plugin's settings page.
-
-Example:
-
-`
-/**
- * Add dynamic shortcuts.
- *
- * @param array $replacements Array of replacement terms and their replacement text.
- * @return array
- */
-function my_text_replacements( $replacements ) {
-	// Add replacement
-	$replacements[':matt:'] => 'Matt Mullenweg';
-	// Unset a replacement that we never want defined
-	if ( isset( $replacements[':wp:'] ) )
-		unset( $replacements[':wp:'] );
-	// Important!
-	return $replacements;
-}
-add_filter( 'c2c_text_replace', 'my_text_replacements' );
-`
-
-**c2c_text_replace_comments (filter)**
-
-The 'c2c_text_replace_comments' hook allows you to customize or override the setting indicating if text replacement should be enabled in comments.
-
-Arguments:
-
-* $state (bool): Either true or false indicating if text replacement is enabled for comments. The default value will be the value set via the plugin's settings page.
-
-Example:
-
-`// Prevent text replacements from ever being enabled in comments.
-add_filter( 'c2c_text_replace_comments', '__return_false' );`
-
-**c2c_text_replace_case_sensitive (filter)**
-
-The 'c2c_text_replace_case_sensitive' hook allows you to customize or override the setting indicating if text replacement should be case sensitive.
-
-Arguments:
-
-* $state (bool): Either true or false indicating if text replacement is case sensitive. This will be the value set via the plugin's settings page.
-
-Example:
-
-`// Prevent text replacement from ever being case sensitive.
-add_filter( 'c2c_text_replace_case_sensitive', '__return_false' );`
-
-**c2c_text_replace_once (filter)**
-
-The 'c2c_text_replace_once' hook allows you to customize or override the setting indicating if text replacement should be limited to once per term per piece of text being processed regardless of how many times the term appears.
-
-Arguments:
-
-* $state (bool): Either true or false indicating if text replacement is to only occur once per term. The default value will be the value set via the plugin's settings page.
-
-Example:
-
-`// Only replace a term/shortcut once per post.
-add_filter( 'c2c_text_replace_once', '__return_true' );`
+* `c2c_text_replace_filters` : Customize what hooks get text replacement applied to them.
+* `c2c_text_replace_third_party_filters` : Customize what third-party hooks get text replacement applied to them.
+* `c2c_text_replace_filter_priority` : Override the default priority for the 'c2c_text_replace' filter.
+* `c2c_text_replace` Customize or override the setting defining all of the text replacement shortcuts and their replacements.
+* `c2c_text_replace_comments` : Customize or override the setting indicating if text replacement should be enabled in comments.
+* `c2c_text_replace_case_sensitive` : Customize or override the setting indicating if text replacement should be case sensitive.
+* `c2c_text_replace_once` : Customize or override the setting indicating if text replacement should be limited to once per term per piece of text being processed regardless of how many times the term appears.
 
 
 == Changelog ==
