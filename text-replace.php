@@ -140,13 +140,13 @@ final class c2c_TextReplace extends c2c_Plugin_064 {
 				'no_wrap'          => true,
 				'input_attributes' => 'rows="15"',
 				'label'            => __( 'Text to replace', 'text-replace' ),
-				'help'             => '',
+				'help'             => __( 'One per line. A shortcut definition must not span multiple lines. HTML is allowed for shortcuts and their replacement strings. Only use quotes if they are an actual part of the shortcut or replacement strings.', 'text-replace' ),
 			),
 			'text_replace_comments' => array(
 				'input'            => 'checkbox',
 				'default'          => false,
 				'label'            => __( 'Enable text replacement in comments?', 'text-replace' ),
-				'help'             => '',
+				'help'             => __( 'If checked, then all comments, including those from visitors, will be processed for text replacements.', 'text-replace' ),
 			),
 			'replace_once' => array(
 				'input'            => 'checkbox',
@@ -158,7 +158,8 @@ final class c2c_TextReplace extends c2c_Plugin_064 {
 				'input'            => 'checkbox',
 				'default'          => true,
 				'label'            => __( 'Case sensitive text replacement?', 'text-replace' ),
-				'help'             => __( 'If unchecked, then a replacement for :wp: would also replace :WP:.', 'text-replace' ),
+				'help'             => __( 'If checked, then a replacement for :wp: would not replace :WP:.', 'text-replace' ),
+				'more_help'        => __( 'This setting applies to all shortcuts. If you want to selectively have case insensitive shortcuts, then leave this option checked and create separate entries for each variation.', 'text-replace' ),
 			),
 			'when' => array(
 				'input'            => 'select',
@@ -420,15 +421,7 @@ final class c2c_TextReplace extends c2c_Plugin_064 {
 		printf( __( 'If you intend to use this plugin to handle smilies, you should probably disable WordPress\'s default smilie/emoticon handler on the <a href="%s">Writing Settings</a> page.', 'text-replace' ), admin_url( 'options-writing.php' ) );
 		echo '</li><li>';
 		echo __( 'Text inside of HTML tags (such as tag names and attributes) will not be matched. So, for example, you can\'t expect a <code>:mycss:</code> shortcut to work in: <code>&lt;a href="" :mycss:&gt;text&lt;/a&gt;.</code>', 'text-replace' );
-		echo '</li><li>';
-		echo __( 'HTML is allowed for both text to replace and text replacements.', 'text-replace' );
-		echo '</li><li>';
-		echo __( 'Only use quotes if they are an actual part of the original or replacement strings.', 'text-replace' );
-		echo '</li><li><strong><em>';
-		echo __( 'Define only one shortcut per line.', 'text-replace' );
-		echo '</em></strong></li><li><strong><em>';
-		echo __( 'Define a shortcut fully on a single line without spanning onto multiple lines.', 'text-replace' );
-		echo '</em></strong></li></ul>';
+		echo '</li></ul>';
 	}
 
 	/**
